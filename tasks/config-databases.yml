@@ -1,0 +1,13 @@
+---
+
+- name: CLICKHOUSE | Create databases
+  command: "clickhouse-client -u {{ admin_user }} --password {{ admin_password }} -q 'CREATE DATABASE IF NOT EXISTS `{{ item.name }}`'"
+  with_items: "{{ default_databases }}"
+  changed_when: False
+  when: default_databases is defined
+
+- name: CLICKHOUSE | Create custom databases
+  command: "clickhouse-client -u {{ admin_user }} --password {{ admin_password }} -q 'CREATE DATABASE IF NOT EXISTS `{{ item.name }}`'"
+  with_items: "{{ custom_databases }}"
+  changed_when: False
+  when: custom_databases is defined

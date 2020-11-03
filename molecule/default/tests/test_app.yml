@@ -1,0 +1,102 @@
+---
+
+file:
+  {{ clickhouse_data_directory }}:
+    owner: {{ clickhouse_user }}
+    group: {{ clickhouse_group }}
+    exists: true
+    filetype: directory
+  {{ clickhouse_config_directory }}:
+    owner: {{ clickhouse_user }}
+    group: {{ clickhouse_group }}
+    exists: true
+    filetype: directory
+  {{ clickhouse_log_directory }}:
+    owner: {{ clickhouse_user }}
+    group: {{ clickhouse_group }}
+    exists: true
+    filetype: directory
+  {{ clickhouse_tmp_directory }}:
+    owner: {{ clickhouse_user }}
+    group: {{ clickhouse_group }}
+    exists: true
+    filetype: directory
+{% for item in clickhouse_config_files %}
+{{ clickhouse_config_directory }}/{{ item }}:
+    exists: true
+    filetype: file
+{% endfor %}
+
+service:
+  {{ clickhouse_service }}:
+    enabled: true
+    running: true 
+
+port:
+  tcp:{{ clickhouse_tcp_port }}:
+    listening: true
+
+user:
+  {{ clickhouse_user }}:
+    exists: true
+    groups:
+      - {{ clickhouse_group }}
+    shell: /usr/sbin/nologin
+
+group:
+  {{ clickhouse_group }}:
+    exists: true
+
+command:
+  clickhouse-server_version:
+    exit-status: 0
+    exec: "clickhouse-server --version"
+    stdout:
+      - "{{ clickhouse_version }}"
+    stderr: []
+    timeout: 10000
+    skip: false
+  clickhouse-client_version:
+    exit-status: 0
+    exec: "clickhouse-client --version"
+    stdout:
+      - "{{ clickhouse_version }}"
+    stderr: []
+    timeout: 10000
+    skip: false
+
+http:
+  http://localhost:8123?query=SHOW+USERS:
+    status: 200
+    timeout: 10000
+    body: ["admin","default","readonly","user1","user2"]
+    username: {{ admin_user }}
+    password: {{ admin_password }}
+    skip: false
+  http://localhost:8123?query=SHOW+DATABASES:
+    status: 200
+    timeout: 10000
+    body: ["system","test1","test2","test3"]
+    username: {{ admin_user }}
+    password: {{ admin_password }}
+    skip: false
+  http://localhost:8123?query=SHOW+GRANTS+FOR+user1:
+    status: 200
+    timeout: 10000
+    body: ["GRANT CREATE TEMPORARY TABLE, KILL QUERY, SYSTEM SHUTDOWN, SYSTEM DROP CACHE, SYSTEM RELOAD, SYSTEM FLUSH LOGS, INTROSPECTION, SOURCES ON *.* TO user1",
+    "GRANT SHOW DICTIONARIES, CREATE DICTIONARY, DROP DICTIONARY, dictGet ON `<no_database>`.* TO user1",
+    "GRANT SHOW, SELECT, INSERT, ALTER, CREATE DATABASE, CREATE TABLE, CREATE VIEW, CREATE DICTIONARY, DROP, TRUNCATE, OPTIMIZE, SYSTEM MERGES, SYSTEM TTL MERGES, SYSTEM FETCHES, SYSTEM MOVES, SYSTEM SENDS, SYSTEM REPLICATION QUEUES, SYSTEM DROP REPLICA, SYSTEM SYNC REPLICA, SYSTEM RESTART REPLICA, SYSTEM FLUSH DISTRIBUTED, dictGet ON test1.* TO user1"
+   ]
+    username: {{ admin_user }}
+    password: {{ admin_password }}
+    skip: false
+  http://localhost:8123?query=SHOW+GRANTS+FOR+user2:
+    status: 200
+    timeout: 10000
+    body: ["GRANT CREATE TEMPORARY TABLE, KILL QUERY, SYSTEM SHUTDOWN, SYSTEM DROP CACHE, SYSTEM RELOAD, SYSTEM FLUSH LOGS, INTROSPECTION, SOURCES ON *.* TO user2",
+          "GRANT SHOW DICTIONARIES, CREATE DICTIONARY, DROP DICTIONARY, dictGet ON `<no_database>`.* TO user2",
+          "GRANT SHOW, SELECT, INSERT, ALTER, CREATE DATABASE, CREATE TABLE, CREATE VIEW, CREATE DICTIONARY, DROP, TRUNCATE, OPTIMIZE, SYSTEM MERGES, SYSTEM TTL MERGES, SYSTEM FETCHES, SYSTEM MOVES, SYSTEM SENDS, SYSTEM REPLICATION QUEUES, SYSTEM DROP REPLICA, SYSTEM SYNC REPLICA, SYSTEM RESTART REPLICA, SYSTEM FLUSH DISTRIBUTED, dictGet ON test2.* TO user2"
+    ]
+    username: {{ admin_user }}
+    password: {{ admin_password }}
+    skip: false

@@ -1,0 +1,17 @@
+---
+
+- name: CLICKHOUSE | Copy Daemon script
+  template:
+    src: "{{ clickhouse_service_template_path }}"
+    dest: /etc/systemd/system/clickhouse.service
+    mode: 0644
+    owner: root
+    group: root
+  notify: restart-clickhouse
+
+- name: CLICKHOUSE | Configuring service
+  systemd:
+    name: "{{ clickhouse_service }}"
+    state: "{{ clickhouse_service_state }}"
+    enabled: "{{ clickhouse_service_enabled }}"
+    daemon_reload: yes

@@ -1,0 +1,22 @@
+---
+
+- name: CLICKHOUSE | Install
+  include: "install-{{ ansible_distribution }}.yml"
+  tags:
+    - clickhouse_install
+
+- name: CLICKHOUSE | Configure clickhouse
+  include: config-clickhouse.yml
+  notify: reload-clickhouse
+  tags:
+    - clickhouse_configure
+
+- name: CLICKHOUSE | Service
+  include: service-clickhouse.yml
+  tags:
+    - clickhouse_service
+
+- name: CLICKHOUSE | Configure databases
+  include: config-databases.yml
+  tags:
+    - clickhouse_configure

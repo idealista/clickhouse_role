@@ -1,0 +1,176 @@
+---
+
+## General
+# Version
+clickhouse_version: 20.8.4.11
+
+## Service options
+# Documentation
+clickhouse_documentation_link: https://clickhouse.tech/docs/en/
+
+# Owner
+clickhouse_user: clickhouse
+clickhouse_group: clickhouse
+
+# Maximum number of files limit
+clickhouse_max_files: 32768
+
+# Start on boot
+clickhouse_service_enabled: True
+# Current state: started, stopped
+clickhouse_service_state: started
+
+# Logs
+# If wanted to output the logs to a file define the following variable
+# More information at https://www.freedesktop.org/software/systemd/man/systemd.exec.html#StandardOutput=
+#clickhouse_log_file:
+clickhouse_log_output: "{% if clickhouse_log_file is defined %} file:{{ clickhouse_log_file }} {% else %} journal {% endif %}"
+
+clickhouse_private_tmp: false
+clickhouse_limit_NO_FILE: 500000
+
+# DEBIAN - Clickhouse
+clickhouse_prerequisite_repos:
+  - apt-transport-https
+  - ca-certificates
+  - dirmngr
+clickhouse_service: "clickhouse-server"
+clickhouse_deb_repo: "deb https://repo.clickhouse.tech/deb/stable/ main/" #latest stable right now, fix a version.
+clickhouse_deb_keyserver: keyserver.ubuntu.com
+clickhouse_deb_keyid: E0C56BD4
+clickhouse_packages:
+  - "clickhouse-client={{clickhouse_version}}"
+  - "clickhouse-common-static={{clickhouse_version}}"
+  - "clickhouse-server={{clickhouse_version}}"
+
+#TEMPLATES
+clickhouse_config_files:
+  - "{{ config_file_name }}"
+  - "{{ users_file_name }}"
+
+clickhouse_service_template_path: clickhouse-server.service.j2
+clickhouse_config_file_name: config.xml
+clickhouse_users_file_name: users.xml
+# Directories
+clickhouse_base_path: "/var/lib"
+clickhouse_config_directory: "/etc/clickhouse-server"
+clickhouse_log_directory: "/var/log/clickhouse-server"
+clickhouse_data_directory: "{{ clickhouse_base_path }}/clickhouse"
+clickhouse_tmp_directory: "{{ clickhouse_base_path }}/clickhouse/tmp"
+clickhouse_user_files_directory: "{{ clickhouse_base_path }}/clickhouse/user_files"
+clickhouse_access_control_directory: "{{ clickhouse_base_path }}/clickhouse/access/"
+
+#logs
+clickhouse_logger:
+  level: trace
+  log: "{{ clickhouse_log_directory }}/clickhouse-server.log"
+  errorlog: "{{ clickhouse_log_directory }}/clickhouse-server.err.log"
+  size: 1000M
+  count: 10
+
+#ports
+clickhouse_http_port: 8123
+clickhouse_tcp_port: 9000
+clickhouse_mysql_port: 9004
+clickhouse_https_port: 8443
+clickhouse_tcp_port_secure: 9440
+clickhouse_interserver_http_port: 9009
+
+#config
+clickhouse_config:
+  max_connections: 4096
+  keep_alive_timeout: 3
+  max_concurrent_queries: 100
+  max_server_memory_usage: 0
+  max_thread_pool_size: 10000
+  max_server_memory_usage_to_ram_ratio: 0.9
+  total_memory_profiler_step: 4194304
+  total_memory_tracker_sample_probability: 0
+  uncompressed_cache_size: 8589934592
+  mark_cache_size: 5368709120
+  builtin_dictionaries_reload_interval: 3600
+  max_session_timeout: 3600
+  default_session_timeout: 60
+
+default_clickhouse_networks:
+  - "::1"
+  - "127.0.0.1"
+
+# <prometheus>
+clickhouse_prometheus: true
+clickhouse_prometheus_endpoint: "/metrics"
+clickhouse_prometheus_port: 9363
+
+#users.xml
+
+#<profiles>
+default_clickhouse_profiles:
+  default:
+    max_memory_usage: 10000000000
+    use_uncompressed_cache: 0
+    load_balancing: random
+    max_partitions_per_insert_block: 100
+  readonly:
+    readonly: 1
+
+#custom_clickhouse_profiles: []
+
+ # <users>
+default_clickhouse_users:
+  - { name: "default", password: "", networks: "{{ default_clickhouse_networks }}", profile: "default", quota: "default"}
+  - { name: "readonly", password: "readonly", networks: "{{ default_clickhouse_networks }}", profile: "readonly", quota: "default" }
+
+# USERS EXAMPLES
+# admin_user: admin
+# admin_password: admin
+
+## Other possible passwords format aside of plain text (plain text is not recommended):
+# - password_sha256_hex
+# - password_double_sha1_hex
+##How to generate decent password:
+# Execute: PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha256sum | tr -d '-'
+# In first line will be password and in second - corresponding SHA256.
+# How to generate double SHA1:
+# Execute: PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
+# In first line will be password and in second - corresponding double SHA1.
+
+# custom_clickhouse_users:
+#   - { name: "{{ admin_user }}",
+#       password: "{{ admin_password }}",
+#       networks: "{{ default_clickhouse_networks }}",
+#       profile: "default",
+#       quota: "default",
+#       access_management: 1 }
+#   - { name: "user1",
+#       password: "user1",
+#       networks: "{{ default_clickhouse_networks }}",
+#       profile: "default",
+#       quota: "default",
+#       databases: [test1]}
+#   - { name: "user2",
+#       password: "user2",
+#       networks: "{{ default_clickhouse_networks }}",
+#       profile: "default",
+#       quota: "default",
+#       databases: [test2]}
+
+## <quotas>
+default_clickhouse_quotas:
+  - { name: "default",
+    duration: 3600,
+    queries: 0,
+    errors: 0,
+    result_rows: 0,
+    read_rows: 0,
+    execution_time: 0gv
+  }
+
+#custom_clickhouse_quotas: []
+
+## Databases
+# default_databases:
+#   - { name: test1 }
+#   - { name: test2 }
+#   - { name: test3 }
+
+#custom_database: []

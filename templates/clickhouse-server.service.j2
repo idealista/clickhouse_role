@@ -1,0 +1,29 @@
+{{ ansible_managed | comment }}
+[Unit]
+Description=ClickHouse Server (analytic DBMS for big data)
+Documentation= {{ clickhouse_documentation_link }}
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+PrivateTmp= {{ clickhouse_private_tmp }}
+Type=simple
+User={{ clickhouse_user }}
+Group={{ clickhouse_group }}
+RuntimeDirectory={{ clickhouse_service }}
+LimitNOFILE={{ clickhouse_limit_NO_FILE }}
+
+ExecStart=/usr/bin/{{ clickhouse_service }} --config={{ clickhouse_config_directory }}/{{ config_file_name }} --pid-file=/run/clickhouse-server/{{ clickhouse_service }}.pid
+
+StandardOutput={{ clickhouse_log_output }}
+StandardError={{ clickhouse_log_output }}
+ExecReload=/bin/kill -HUP $MAINPID
+KillSignal=SIGTERM
+Restart=always
+RestartSec=30
+
+LimitCORE=infinity
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_IPC_LOCK CAP_SYS_NICE
+
+[Install]
+WantedBy=multi-user.target

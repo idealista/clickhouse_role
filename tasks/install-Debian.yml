@@ -1,0 +1,95 @@
+---
+
+- name: CLICKHOUSE | Ensure clickhouse group
+  group:
+    name: "{{ clickhouse_group }}"
+    system: yes
+    state: present
+
+- name: CLICKHOUSE | Ensure clickhouse user
+  user:
+    name: "{{ clickhouse_user }}"
+    group: "{{ clickhouse_group }}"
+    system: yes
+    shell: /usr/sbin/nologin
+    createhome: no
+
+- name: CLICKHOUSE | Check clickhouse version
+  command: "{{ clickhouse_service }} server --version"
+  register: clickhouse_check
+  changed_when: false
+  ignore_errors: true
+
+- block:
+  - name: CLICKHOUSE | Update repositires cache and install apt-transport-https, dirmngr packages
+    apt:
+      name: "{{ clickhouse_prerequisite_repos }}"
+      state: present
+  - name: CLICKHOUSE | Be sure key is present
+    apt_key:
+      keyserver: "{{ clickhouse_deb_keyserver }}"
+      id: "{{ clickhouse_deb_keyid }}"
+    when: clickhouse_check is failed
+  - name: CLICKHOUSE | Add clickhouse apt repository (deb)
+    apt_repository:
+      repo: "{{ clickhouse_deb_repo }}"
+      state: present
+    when: clickhouse_check is failed
+  - name: CLICKHOUSE | Be sure clickhouse packages are installed (apt)
+    apt:
+      name: "{{ clickhouse_packages }}"
+      state: present
+      update_cache: true
+    when: clickhouse_check is failed
+
+- name: CLICKHOUSE | Ensure data directory with 0700 mode exist
+  file:
+    state: directory
+    dest: "{{ item }}"
+    owner: "{{ clickhouse_user }}"
+    group: "{{ clickhouse_group }}"
+    mode: 0700
+  with_items:
+    - "{{ clickhouse_data_directory }}"
+  become: true
+
+- name: CLICKHOUSE | Ensure user files and access control directories with 0750 mode exist
+  file:
+    state: directory
+    dest: "{{ item }}"
+    owner: "{{ clickhouse_user }}"
+    group: "{{ clickhouse_group }}"
+    mode: 0750
+  with_items:
+    - "{{ clickhouse_access_control_directory }}"
+    - "{{ clickhouse_user_files_directory }}"
+  become: true
+
+- name: CLICKHOUSE | Ensure needed config and tmp directories with 0755 mode exist
+  file:
+    state: directory
+    dest: "{{ item }}"
+    owner: "{{ clickhouse_user }}"
+    group: "{{ clickhouse_group }}"
+    mode: 0755
+  with_items:
+    - "{{ clickhouse_config_directory }}"
+    - "{{ clickhouse_tmp_directory }}"
+  become: true
+
+- name: CLICKHOUSE | Ensure needed log directory with 0775 mode exist
+  file:
+    state: directory
+    dest: "{{ item }}"
+    owner: "{{ clickhouse_user }}"
+    group: "{{ clickhouse_group }}"
+    mode: 0775
+  with_items:
+    - "{{ clickhouse_log_directory }}"
+  become: true
+
+- name: CLICKHOUSE | Be sure clickhouse is running and enabled
+  service:
+    name: "{{ clickhouse_service }}"
+    state: "{{ clickhouse_service_state }}"
+    enabled: "{{ clickhouse_service_enabled }}"

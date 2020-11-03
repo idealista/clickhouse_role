@@ -1,0 +1,5 @@
+---
+- name: Converge
+  hosts: clickhouse_group
+  roles:
+    - role: clickhouse_role
