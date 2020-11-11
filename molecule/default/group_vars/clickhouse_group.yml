@@ -1,35 +1,6 @@
 ---
     
 clickhouse_version: 20.8.4.11
-clickhouse_user: clickhouse
-clickhouse_group: clickhouse
-clickhouse_service: clickhouse-server
-
-
-clickhouse_config_files:
-    - "{{ config_file_name }}"
-    - "{{ users_file_name }}"
-
-config_file_name: config.xml
-users_file_name: users.xml
-# Directories
-clickhouse_base_path: "/var/lib"
-clickhouse_config_directory: "/etc/clickhouse-server"
-clickhouse_log_directory: "/var/log/clickhouse-server"
-clickhouse_data_directory: "{{ clickhouse_base_path }}/clickhouse"
-clickhouse_tmp_directory: "{{ clickhouse_base_path }}/clickhouse/tmp"
-clickhouse_user_files_directory: "{{ clickhouse_base_path }}/clickhouse/user_files"
-clickhouse_access_control_directory: "{{ clickhouse_base_path }}/clickhouse/access/"
-
-#ports
-clickhouse_http_port: 8123
-clickhouse_tcp_port: 9000
-clickhouse_mysql_port: 9004
-clickhouse_https_port: 8443
-clickhouse_tcp_port_secure: 9440
-clickhouse_interserver_http_port: 9009
-
-#custom_clickhouse_profiles: []
 
 admin_user: admin
 admin_password: admin
