@@ -14,7 +14,7 @@ platforms:
     groups:
       - clickhouse_group
     image: ${MOLECULE_DISTRO:-debian:buster-slim}
-    privileged: true
+    privileged: false
     capabilities:
       - SYS_ADMIN
     tmpfs:
