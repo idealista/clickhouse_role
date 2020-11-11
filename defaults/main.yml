@@ -39,6 +39,7 @@ clickhouse_deb_repo: "deb https://repo.clickhouse.tech/deb/stable/ main/" #lates
 clickhouse_deb_keyserver: keyserver.ubuntu.com
 clickhouse_deb_keyid: E0C56BD4
 clickhouse_packages:
+  - procps
   - "clickhouse-client={{clickhouse_version}}"
   - "clickhouse-common-static={{clickhouse_version}}"
   - "clickhouse-server={{clickhouse_version}}"
