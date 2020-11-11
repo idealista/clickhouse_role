@@ -87,9 +87,3 @@
   with_items:
     - "{{ clickhouse_log_directory }}"
   become: true
-
-- name: CLICKHOUSE | Be sure clickhouse is running and enabled
-  service:
-    name: "{{ clickhouse_service }}"
-    state: "{{ clickhouse_service_state }}"
-    enabled: "{{ clickhouse_service_enabled }}"

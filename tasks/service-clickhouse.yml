@@ -1,6 +1,6 @@
 ---
 
-- name: CLICKHOUSE | Copy Daemon script
+- name: CLICKHOUSE | Copy systemd unit configuration file
   template:
     src: "{{ clickhouse_service_template_path }}"
     dest: "/etc/systemd/system/{{ clickhouse_service }}.service"
