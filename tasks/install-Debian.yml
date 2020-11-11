@@ -21,7 +21,7 @@
   ignore_errors: true
 
 - block:
-  - name: CLICKHOUSE | Update repositires cache and install apt-transport-https, dirmngr packages
+  - name: CLICKHOUSE | Update repositories cache and install apt-transport-https, dirmngr packages
     apt:
       name: "{{ clickhouse_prerequisite_repos }}"
       state: present
