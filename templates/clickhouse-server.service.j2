@@ -13,7 +13,7 @@ Group={{ clickhouse_group }}
 RuntimeDirectory={{ clickhouse_service }}
 LimitNOFILE={{ clickhouse_limit_NO_FILE }}
 
-ExecStart=/usr/bin/{{ clickhouse_service }} --config={{ clickhouse_config_directory }}/{{ config_file_name }} --pid-file=/run/clickhouse-server/{{ clickhouse_service }}.pid
+ExecStart=/usr/bin/{{ clickhouse_service }} --config={{ clickhouse_config_directory }}/{{ clickhouse_config_file_name }} --pid-file=/run/clickhouse-server/{{ clickhouse_service }}.pid
 
 StandardOutput={{ clickhouse_log_output }}
 StandardError={{ clickhouse_log_output }}
