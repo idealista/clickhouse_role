@@ -76,7 +76,7 @@ http:
   http://localhost:8123?query=SHOW+DATABASES:
     status: 200
     timeout: 10000
-    body: ["system","test1","test2","test3"]
+    body: ["system","default","test1","test2","test3"]
     username: {{ admin_user }}
     password: {{ admin_password }}
     skip: false

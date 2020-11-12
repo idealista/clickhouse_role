@@ -1,5 +1,5 @@
 ---
-    
+
 clickhouse_version: 20.8.4.11
 
 admin_user: admin
@@ -8,27 +8,28 @@ admin_password: admin
 custom_clickhouse_users:
   - { name: "{{ admin_user }}",
       password: "{{ admin_password }}",
-      networks: "{{ default_clickhouse_networks }}",
+      networks: "{{ clickhouse_default_networks }}",
       profile: "default",
       quota: "default",
       access_management: 1 }
   - { name: "user1",
       password: "user1",
-      networks: "{{ default_clickhouse_networks }}",
+      networks: "{{ clickhouse_default_networks }}",
       profile: "default",
       quota: "default",
       databases: [test1]}
   - { name: "user2",
       password: "user2",
-      networks: "{{ default_clickhouse_networks }}",
+      networks: "{{ clickhouse_default_networks }}",
       profile: "default",
       quota: "default",
       databases: [test2]}
-
+clickhouse_listen_hosts:
+  - 0.0.0.0
 #custom_clickhouse_quotas: []
 
 ## Databases
-default_databases:
+clickhouse_custom_databases:
   - { name: test1 }
   - { name: test2 }
   - { name: test3 }

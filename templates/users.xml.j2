@@ -29,11 +29,11 @@
 
     <profiles>
         <!-- DEFAULT PROFILES -->
-        {% if default_clickhouse_profiles is defined %}
-        {% for profile in default_clickhouse_profiles %}
+        {% if clickhouse_default_profiles is defined %}
+        {% for profile in clickhouse_default_profiles %}
         <{{ profile }}>
-        {% for item in default_clickhouse_profiles[profile] %}
-            <{{ item }}>{{ default_clickhouse_profiles[profile][item] }}</{{ item }}>
+        {% for item in clickhouse_default_profiles[profile] %}
+            <{{ item }}>{{ clickhouse_default_profiles[profile][item] }}</{{ item }}>
         {% endfor %}
         </{{ profile }}>
         {% endfor %}
@@ -119,8 +119,8 @@
     </users> -->
     <users>
     <!-- DEFAULT USERS -->
-    {% if default_clickhouse_users is defined %}
-    {% for user in default_clickhouse_users %}
+    {% if clickhouse_default_users is defined %}
+    {% for user in clickhouse_default_users %}
     <{{ user.name }}>
         {% if user.password is defined %}
         <password>{{ user.password }}</password>
@@ -201,8 +201,8 @@
     </quotas>
     -->
   <quotas>
-        {% if default_clickhouse_quotas is defined %}
-        {% for quota in default_clickhouse_quotas %}
+        {% if clickhouse_default_quotas is defined %}
+        {% for quota in clickhouse_default_quotas %}
         <{{ quota.name }}>
         <interval>
             <duration>{{ quota.duration }}</duration>

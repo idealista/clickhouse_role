@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 ## [Unreleased](https://github.com/idealista/clickhouse_role/tree/develop)
 - *[#1](https://github.com/idealista/clickhouse_role/issues/1) Fix mismatched var names* @frantsao
 - *Fix systemd service config: prevent restarting after unit file changes; fix reloading (needs /bin/kill)* @frantsao
+- *Fix default database creation* @frantsao
+- *Fix missing listening host templating in config.xml* @frantsao
 
 ## [1.0.0](https://github.com/idealista/clickhouse_role/tree/1.0.0) (2020-11-03)
 ### Added

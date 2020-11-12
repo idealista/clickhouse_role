@@ -62,9 +62,12 @@
     <tcp_port>{{ clickhouse_tcp_port }}</tcp_port>
     <mysql_port>{{ clickhouse_mysql_port }}</mysql_port>
     <!-- For HTTPS and SSL over native protocol. -->
-
+{% if clickhouse_https_port is defined %}
     <https_port>{{ clickhouse_https_port }}</https_port>
+{% endif %}
+{% if clickhouse_tcp_port_secure is defined %}
     <tcp_port_secure>{{ clickhouse_tcp_port_secure }}</tcp_port_secure>
+{% endif %}
     
     <!-- Used with https_port and tcp_port_secure. Full ssl options list: https://github.com/ClickHouse-Extras/poco/blob/master/NetSSL_OpenSSL/include/Poco/Net/SSLManager.h#L71 -->
     <openSSL>
@@ -120,6 +123,13 @@
     <listen_host>::1</listen_host>
     <listen_host>127.0.0.1</listen_host>
     -->
+
+{% if clickhouse_listen_hosts is defined %}
+   {% for host in clickhouse_listen_hosts %}
+    <listen_host>{{ host }}</listen_host>
+   {% endfor %}
+{% endif %}
+
     <!-- Don't exit if ipv6 or ipv4 unavailable, but listen_host with this protocol specified -->
     <!-- <listen_try>0</listen_try> -->
 
@@ -269,7 +279,7 @@
     <!-- <system_profile>default</system_profile> -->
 
     <!-- Default database. -->
-    <default_database>default</default_database>
+    <default_database>{{ clickhouse_default_database }}</default_database>
 
     <!-- Server time zone could be set here.
 
@@ -294,7 +304,7 @@
           and to prevent clickhouse executable from being paged out under high IO load.
          Enabling this option is recommended but will lead to increased startup time for up to a few seconds.
     -->
-    <mlock_executable>true</mlock_executable>
+    <mlock_executable>{{ clickhouse_config.mlock_executable }}</mlock_executable>
 
     <!-- Configuration of clusters that could be used in Distributed tables.
          https://clickhouse.tech/docs/en/operations/table_engines/distributed/

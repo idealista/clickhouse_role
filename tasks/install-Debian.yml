@@ -21,26 +21,26 @@
   ignore_errors: true
 
 - block:
-  - name: CLICKHOUSE | Update repositories cache and install apt-transport-https, dirmngr packages
-    apt:
-      name: "{{ clickhouse_prerequisite_repos }}"
-      state: present
-  - name: CLICKHOUSE | Be sure key is present
-    apt_key:
-      keyserver: "{{ clickhouse_deb_keyserver }}"
-      id: "{{ clickhouse_deb_keyid }}"
-    when: clickhouse_check is failed
-  - name: CLICKHOUSE | Add clickhouse apt repository (deb)
-    apt_repository:
-      repo: "{{ clickhouse_deb_repo }}"
-      state: present
-    when: clickhouse_check is failed
-  - name: CLICKHOUSE | Be sure clickhouse packages are installed (apt)
-    apt:
-      name: "{{ clickhouse_packages }}"
-      state: present
-      update_cache: true
-    when: clickhouse_check is failed
+    - name: CLICKHOUSE | Update repositories cache and install apt-transport-https, dirmngr packages
+      apt:
+        name: "{{ clickhouse_prerequisite_repos }}"
+        state: present
+    - name: CLICKHOUSE | Be sure key is present
+      apt_key:
+        keyserver: "{{ clickhouse_deb_keyserver }}"
+        id: "{{ clickhouse_deb_keyid }}"
+      when: clickhouse_check is failed
+    - name: CLICKHOUSE | Add clickhouse apt repository (deb)
+      apt_repository:
+        repo: "{{ clickhouse_deb_repo }}"
+        state: present
+      when: clickhouse_check is failed
+    - name: CLICKHOUSE | Be sure clickhouse packages are installed (apt)
+      apt:
+        name: "{{ clickhouse_packages }}"
+        state: present
+        update_cache: true
+      when: clickhouse_check is failed
 
 - name: CLICKHOUSE | Ensure data directory with 0700 mode exist
   file:

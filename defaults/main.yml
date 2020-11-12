@@ -44,7 +44,7 @@ clickhouse_packages:
   - "clickhouse-common-static={{clickhouse_version}}"
   - "clickhouse-server={{clickhouse_version}}"
 
-#TEMPLATES
+# Config templates
 clickhouse_config_files:
   - "{{ clickhouse_config_file_name }}"
   - "{{ clickhouse_users_file_name }}"
@@ -61,7 +61,7 @@ clickhouse_tmp_directory: "{{ clickhouse_base_path }}/clickhouse/tmp"
 clickhouse_user_files_directory: "{{ clickhouse_base_path }}/clickhouse/user_files"
 clickhouse_access_control_directory: "{{ clickhouse_base_path }}/clickhouse/access/"
 
-#logs
+# Logs
 clickhouse_logger:
   level: trace
   log: "{{ clickhouse_log_directory }}/clickhouse-server.log"
@@ -69,15 +69,16 @@ clickhouse_logger:
   size: 1000M
   count: 10
 
-#ports
+# Network
 clickhouse_http_port: 8123
 clickhouse_tcp_port: 9000
 clickhouse_mysql_port: 9004
-clickhouse_https_port: 8443
-clickhouse_tcp_port_secure: 9440
+# You must define the next two vars if you need to enable https/tcp secured
+# clickhouse_https_port: 8443
+# clickhouse_tcp_port_secure: 9440
 clickhouse_interserver_http_port: 9009
 
-#config
+# Configuration
 clickhouse_config:
   max_connections: 4096
   keep_alive_timeout: 3
@@ -92,20 +93,25 @@ clickhouse_config:
   builtin_dictionaries_reload_interval: 3600
   max_session_timeout: 3600
   default_session_timeout: 60
+  mlock_executable: "true"
 
-default_clickhouse_networks:
+clickhouse_default_networks:
   - "::1"
   - "127.0.0.1"
 
-# <prometheus>
+# clickhouse_listen_hosts:
+#  - "::1"
+#  - "127.0.0.1"
+
+# Prometheus
 clickhouse_prometheus: true
 clickhouse_prometheus_endpoint: "/metrics"
 clickhouse_prometheus_port: 9363
 
 #users.xml
 
-#<profiles>
-default_clickhouse_profiles:
+# Profiles
+clickhouse_default_profiles:
   default:
     max_memory_usage: 10000000000
     use_uncompressed_cache: 0
@@ -114,64 +120,56 @@ default_clickhouse_profiles:
   readonly:
     readonly: 1
 
-#custom_clickhouse_profiles: []
+# custom_clickhouse_profiles: []
 
- # <users>
-default_clickhouse_users:
-  - { name: "default", password: "", networks: "{{ default_clickhouse_networks }}", profile: "default", quota: "default"}
-  - { name: "readonly", password: "readonly", networks: "{{ default_clickhouse_networks }}", profile: "readonly", quota: "default" }
+# Users
+clickhouse_default_users:
+  - { name: "default", password: "", networks: "{{ clickhouse_default_networks }}", profile: "default", quota: "default"}
+  - { name: "readonly", password: "readonly", networks: "{{ clickhouse_default_networks }}", profile: "readonly", quota: "default" }
 
-# USERS EXAMPLES
+# Users examples
 # admin_user: admin
 # admin_password: admin
 
-## Other possible passwords format aside of plain text (plain text is not recommended):
-# - password_sha256_hex
-# - password_double_sha1_hex
-##How to generate decent password:
-# Execute: PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha256sum | tr -d '-'
-# In first line will be password and in second - corresponding SHA256.
-# How to generate double SHA1:
-# Execute: PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
-# In first line will be password and in second - corresponding double SHA1.
+## See templates/users.xml.j2 for other possible passwords format (plain text is not recommended).
 
 # custom_clickhouse_users:
 #   - { name: "{{ admin_user }}",
 #       password: "{{ admin_password }}",
-#       networks: "{{ default_clickhouse_networks }}",
+#       networks: "{{ clickhouse_default_networks }}",
 #       profile: "default",
 #       quota: "default",
 #       access_management: 1 }
 #   - { name: "user1",
 #       password: "user1",
-#       networks: "{{ default_clickhouse_networks }}",
+#       networks: "{{ clickhouse_default_networks }}",
 #       profile: "default",
 #       quota: "default",
 #       databases: [test1]}
 #   - { name: "user2",
 #       password: "user2",
-#       networks: "{{ default_clickhouse_networks }}",
+#       networks: "{{ clickhouse_default_networks }}",
 #       profile: "default",
 #       quota: "default",
 #       databases: [test2]}
 
-## <quotas>
-default_clickhouse_quotas:
+# Quotas
+clickhouse_default_quotas:
   - { name: "default",
-    duration: 3600,
-    queries: 0,
-    errors: 0,
-    result_rows: 0,
-    read_rows: 0,
-    execution_time: 0gv
+      duration: 3600,
+      queries: 0,
+      errors: 0,
+      result_rows: 0,
+      read_rows: 0,
+      execution_time: 0gv
   }
 
-#custom_clickhouse_quotas: []
+# custom_clickhouse_quotas: []
 
-## Databases
-# default_databases:
+clickhouse_default_database: "default"
+
+# Databases examples
+# clickhouse_custom_databases: []
 #   - { name: test1 }
 #   - { name: test2 }
 #   - { name: test3 }
-
-#custom_database: []
