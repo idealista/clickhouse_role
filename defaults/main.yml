@@ -120,7 +120,7 @@ clickhouse_default_profiles:
   readonly:
     readonly: 1
 
-# custom_clickhouse_profiles: []
+# clickhouse_custom_profiles: []
 
 # Users
 clickhouse_default_users:
@@ -133,7 +133,7 @@ clickhouse_default_users:
 
 ## See templates/users.xml.j2 for other possible passwords format (plain text is not recommended).
 
-# custom_clickhouse_users:
+# clickhouse_custom_users:
 #   - { name: "{{ admin_user }}",
 #       password: "{{ admin_password }}",
 #       networks: "{{ clickhouse_default_networks }}",
@@ -164,7 +164,7 @@ clickhouse_default_quotas:
       execution_time: 0gv
   }
 
-# custom_clickhouse_quotas: []
+# clickhouse_custom_quotas: []
 
 clickhouse_default_database: "default"
 

@@ -39,11 +39,11 @@
         {% endfor %}
         {% endif %}
         <!-- CUSTOM PROFILES -->
-        {% if custom_clickhouse_profiles is defined %}
-        {% for profile in custom_clickhouse_profiles %}
+        {% if clickhouse_custom_profiles is defined %}
+        {% for profile in clickhouse_custom_profiles %}
         <{{ profile }}>
-        {% for item in custom_clickhouse_profiles[profile] %}
-            <{{ item }}>{{ custom_clickhouse_profiles[profile][item] }}</{{ item }}>
+        {% for item in clickhouse_custom_profiles[profile] %}
+            <{{ item }}>{{ clickhouse_custom_profiles[profile][item] }}</{{ item }}>
         {% endfor %}
         </{{ profile }}>
         {% endfor %}
@@ -148,8 +148,8 @@
     {% endif %}
 
     <!-- CUSTOM USERS -->
-    {% if custom_clickhouse_users is defined %}
-    {% for user in custom_clickhouse_users %} 
+    {% if clickhouse_custom_users is defined %}
+    {% for user in clickhouse_custom_users %}
         <{{ user.name }}>
             {% if user.password is defined %}
             <password>{{ user.password }}</password>
@@ -216,8 +216,8 @@
         {% endfor %}
         {% endif %}
 
-        {% if custom_clickhouse_quotas is defined %}
-        {% for quota in custom_clickhouse_quotas %}
+        {% if clickhouse_custom_quotas is defined %}
+        {% for quota in clickhouse_custom_quotas %}
         <{{ quota.name }}>
         <interval>
             <duration>{{ quota.duration }}</duration>
