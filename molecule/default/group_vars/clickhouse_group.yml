@@ -2,12 +2,12 @@
 
 clickhouse_version: 20.8.4.11
 
-admin_user: admin
-admin_password: admin
+clickhouse_admin_user: admin
+clickhouse_admin_password: admin
 
 clickhouse_custom_users:
-  - { name: "{{ admin_user }}",
-      password: "{{ admin_password }}",
+  - { name: "{{ clickhouse_admin_user }}",
+      password: "{{ clickhouse_admin_password }}",
       networks: "{{ clickhouse_default_networks }}",
       profile: "default",
       quota: "default",

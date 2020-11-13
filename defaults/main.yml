@@ -128,14 +128,14 @@ clickhouse_default_users:
   - { name: "readonly", password: "readonly", networks: "{{ clickhouse_default_networks }}", profile: "readonly", quota: "default" }
 
 # Users examples
-# admin_user: admin
-# admin_password: admin
+# clickhouse_admin_user: admin
+# clickhouse_admin_password: admin
 
 ## See templates/users.xml.j2 for other possible passwords format (plain text is not recommended).
 
 # clickhouse_custom_users:
-#   - { name: "{{ admin_user }}",
-#       password: "{{ admin_password }}",
+#   - { name: "{{ clickhouse_admin_user }}",
+#       password: "{{ clickhouse_admin_password }}",
 #       networks: "{{ clickhouse_default_networks }}",
 #       profile: "default",
 #       quota: "default",
