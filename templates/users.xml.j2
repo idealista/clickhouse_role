@@ -143,6 +143,9 @@
         </allow_databases>
         {% endif %}
         <quota>{{ user.quota }}</quota>
+        {% if user.access_management is defined%}
+        <access_management>{{ user.access_management }}</access_management>
+        {% endif %}
     </{{ user.name }}>
     {% endfor %}
     {% endif %}
