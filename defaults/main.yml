@@ -7,6 +7,8 @@ clickhouse_version: 20.8.4.11
 ## Service options
 # Documentation
 clickhouse_documentation_link: https://clickhouse.tech/docs/en/
+
+# Set to restart-clickhouse if you need a complete restart of the service i.e. changing listeners config
 clickhouse_handler_on_config_change: "reload-clickhouse"
 
 # Owner

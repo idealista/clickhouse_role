@@ -8,6 +8,11 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 - *Fix systemd service config: prevent restarting after unit file changes; fix reloading (needs /bin/kill)* @frantsao
 - *Fix default database creation* @frantsao
 - *Fix missing listening host templating in config.xml* @frantsao
+- *Fix admin user templating* @frantsao
+### Added
+- *Added var in order to control service behaviour in config changes* @frantsao
+### Changed
+- *Renamed vars in order to differentiate from other roles vars (BREAKING)* @frantsao
 
 ## [1.0.0](https://github.com/idealista/clickhouse_role/tree/1.0.0) (2020-11-03)
 ### Added
