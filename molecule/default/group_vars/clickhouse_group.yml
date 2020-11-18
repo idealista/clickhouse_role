@@ -1,63 +1,35 @@
 ---
-    
+
 clickhouse_version: 20.8.4.11
-clickhouse_user: clickhouse
-clickhouse_group: clickhouse
-clickhouse_service: clickhouse-server
 
+clickhouse_admin_user: admin
+clickhouse_admin_password: admin
 
-clickhouse_config_files:
-    - "{{ config_file_name }}"
-    - "{{ users_file_name }}"
-
-config_file_name: config.xml
-users_file_name: users.xml
-# Directories
-clickhouse_base_path: "/var/lib"
-clickhouse_config_directory: "/etc/clickhouse-server"
-clickhouse_log_directory: "/var/log/clickhouse-server"
-clickhouse_data_directory: "{{ clickhouse_base_path }}/clickhouse"
-clickhouse_tmp_directory: "{{ clickhouse_base_path }}/clickhouse/tmp"
-clickhouse_user_files_directory: "{{ clickhouse_base_path }}/clickhouse/user_files"
-clickhouse_access_control_directory: "{{ clickhouse_base_path }}/clickhouse/access/"
-
-#ports
-clickhouse_http_port: 8123
-clickhouse_tcp_port: 9000
-clickhouse_mysql_port: 9004
-clickhouse_https_port: 8443
-clickhouse_tcp_port_secure: 9440
-clickhouse_interserver_http_port: 9009
-
-#custom_clickhouse_profiles: []
-
-admin_user: admin
-admin_password: admin
-
-custom_clickhouse_users:
-  - { name: "{{ admin_user }}",
-      password: "{{ admin_password }}",
-      networks: "{{ default_clickhouse_networks }}",
+clickhouse_custom_users:
+  - { name: "{{ clickhouse_admin_user }}",
+      password: "{{ clickhouse_admin_password }}",
+      networks: "{{ clickhouse_default_networks }}",
       profile: "default",
       quota: "default",
       access_management: 1 }
   - { name: "user1",
       password: "user1",
-      networks: "{{ default_clickhouse_networks }}",
+      networks: "{{ clickhouse_default_networks }}",
       profile: "default",
       quota: "default",
       databases: [test1]}
   - { name: "user2",
       password: "user2",
-      networks: "{{ default_clickhouse_networks }}",
+      networks: "{{ clickhouse_default_networks }}",
       profile: "default",
       quota: "default",
       databases: [test2]}
-
-#custom_clickhouse_quotas: []
+clickhouse_listen_hosts:
+  - 0.0.0.0
+#clickhouse_custom_quotas: []
 
 ## Databases
-default_databases:
+clickhouse_custom_databases:
   - { name: test1 }
   - { name: test2 }
   - { name: test3 }

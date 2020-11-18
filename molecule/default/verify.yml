@@ -17,6 +17,7 @@
     goss_format: documentation
 
   vars_files:
+    - ../../defaults/main.yml
     - group_vars/clickhouse_group.yml
 
   tasks:

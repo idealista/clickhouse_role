@@ -4,10 +4,8 @@
   systemd:
     name: "{{ clickhouse_service }}"
     state: restarted
-  become: true
 
 - name: reload-clickhouse
   systemd:
     name: "{{ clickhouse_service }}"
     state: reloaded
-    daemon_reaload: true

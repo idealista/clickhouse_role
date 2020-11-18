@@ -14,7 +14,7 @@ platforms:
     groups:
       - clickhouse_group
     image: ${MOLECULE_DISTRO:-debian:buster-slim}
-    privileged: true
+    privileged: false
     capabilities:
       - SYS_ADMIN
     tmpfs:
@@ -25,7 +25,7 @@ platforms:
       - '/sys/fs/cgroup:/sys/fs/cgroup:ro'
     command: '/lib/systemd/systemd'
     stop_signal: 'RTMIN+3'
-    
+
 provisioner:
   name: ansible
   lint:

@@ -70,15 +70,15 @@ http:
     status: 200
     timeout: 10000
     body: ["admin","default","readonly","user1","user2"]
-    username: {{ admin_user }}
-    password: {{ admin_password }}
+    username: {{ clickhouse_admin_user }}
+    password: {{ clickhouse_admin_password }}
     skip: false
   http://localhost:8123?query=SHOW+DATABASES:
     status: 200
     timeout: 10000
-    body: ["system","test1","test2","test3"]
-    username: {{ admin_user }}
-    password: {{ admin_password }}
+    body: ["system","default","test1","test2","test3"]
+    username: {{ clickhouse_admin_user }}
+    password: {{ clickhouse_admin_password }}
     skip: false
   http://localhost:8123?query=SHOW+GRANTS+FOR+user1:
     status: 200
@@ -87,8 +87,8 @@ http:
     "GRANT SHOW DICTIONARIES, CREATE DICTIONARY, DROP DICTIONARY, dictGet ON `<no_database>`.* TO user1",
     "GRANT SHOW, SELECT, INSERT, ALTER, CREATE DATABASE, CREATE TABLE, CREATE VIEW, CREATE DICTIONARY, DROP, TRUNCATE, OPTIMIZE, SYSTEM MERGES, SYSTEM TTL MERGES, SYSTEM FETCHES, SYSTEM MOVES, SYSTEM SENDS, SYSTEM REPLICATION QUEUES, SYSTEM DROP REPLICA, SYSTEM SYNC REPLICA, SYSTEM RESTART REPLICA, SYSTEM FLUSH DISTRIBUTED, dictGet ON test1.* TO user1"
    ]
-    username: {{ admin_user }}
-    password: {{ admin_password }}
+    username: {{ clickhouse_admin_user }}
+    password: {{ clickhouse_admin_password }}
     skip: false
   http://localhost:8123?query=SHOW+GRANTS+FOR+user2:
     status: 200
@@ -97,6 +97,6 @@ http:
           "GRANT SHOW DICTIONARIES, CREATE DICTIONARY, DROP DICTIONARY, dictGet ON `<no_database>`.* TO user2",
           "GRANT SHOW, SELECT, INSERT, ALTER, CREATE DATABASE, CREATE TABLE, CREATE VIEW, CREATE DICTIONARY, DROP, TRUNCATE, OPTIMIZE, SYSTEM MERGES, SYSTEM TTL MERGES, SYSTEM FETCHES, SYSTEM MOVES, SYSTEM SENDS, SYSTEM REPLICATION QUEUES, SYSTEM DROP REPLICA, SYSTEM SYNC REPLICA, SYSTEM RESTART REPLICA, SYSTEM FLUSH DISTRIBUTED, dictGet ON test2.* TO user2"
     ]
-    username: {{ admin_user }}
-    password: {{ admin_password }}
+    username: {{ clickhouse_admin_user }}
+    password: {{ clickhouse_admin_password }}
     skip: false

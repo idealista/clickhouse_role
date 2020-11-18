@@ -5,3 +5,4 @@
     src: "{{ item }}.j2"
     dest: "{{ clickhouse_config_directory }}/{{ item }}"
   with_items: "{{ clickhouse_config_files }}"
+  notify: "{{ clickhouse_handler_on_config_change }}"

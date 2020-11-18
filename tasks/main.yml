@@ -7,7 +7,6 @@
 
 - name: CLICKHOUSE | Configure clickhouse
   include: config-clickhouse.yml
-  notify: reload-clickhouse
   tags:
     - clickhouse_configure
 
