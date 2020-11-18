@@ -38,7 +38,7 @@ Create or add to your roles dependency file (e.g requirements.yml):
 
 ```
 - src: idealista.clickhouse_role
-  version: 1.0.0
+  version: 2.0.0
   name: clickhouse_role
 ```
 
