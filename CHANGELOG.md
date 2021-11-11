@@ -5,6 +5,23 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/clickhouse_role/tree/develop)
 
+### :hammer_and_wrench: Fixed
+
+- Defined hkp apt keyserver protocol
+
+### :heavy_plus_sign: Added
+
+- Required vars for new config templates
+### :repeat: Changed
+
+- Fully parametrized config files
+- .gitignore rules for various IDEs
+- Deleted old stretch distro and add bullseye to .travis.yml
+- Update test-requirements versions
+- Update default version to latest (at this moment v21.11.2.2)
+- Check how to check installed version
+- Update molecule config and vars
+
 ## [2.0.0](https://github.com/idealista/clickhouse_role/tree/2.0.0) (2020-11-18)
 - *[#1](https://github.com/idealista/clickhouse_role/issues/1) Fix mismatched var names* @frantsao
 - *Fix systemd service config: prevent restarting after unit file changes; fix reloading (needs /bin/kill)* @frantsao

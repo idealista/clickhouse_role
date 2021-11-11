@@ -1,35 +1,41 @@
 ---
 
-clickhouse_version: 20.8.4.11
+clickhouse_version: 21.11.2.2
 
 clickhouse_admin_user: admin
 clickhouse_admin_password: admin
 
 clickhouse_custom_users:
-  - { name: "{{ clickhouse_admin_user }}",
-      password: "{{ clickhouse_admin_password }}",
-      networks: "{{ clickhouse_default_networks }}",
-      profile: "default",
-      quota: "default",
-      access_management: 1 }
-  - { name: "user1",
-      password: "user1",
-      networks: "{{ clickhouse_default_networks }}",
-      profile: "default",
-      quota: "default",
-      databases: [test1]}
-  - { name: "user2",
-      password: "user2",
-      networks: "{{ clickhouse_default_networks }}",
-      profile: "default",
-      quota: "default",
-      databases: [test2]}
+  - user:
+    name: "{{ clickhouse_admin_user }}"
+    password: "{{ clickhouse_admin_password }}"
+    networks: "{{ clickhouse_default_networks }}"
+    profile: "default"
+    quota: "default"
+    access_management: 1
+  - user:
+    name: "user1"
+    password: "user1"
+    networks: "{{ clickhouse_default_networks }}"
+    profile: "default"
+    quota: "default"
+    databases: [test1]
+  - user:
+    name: "user2"
+    password: "user2"
+    networks: "{{ clickhouse_default_networks }}"
+    profile: "default"
+    quota: "default"
+    databases: [test2]
+
 clickhouse_listen_hosts:
   - 0.0.0.0
-#clickhouse_custom_quotas: []
+
+clickhouse_default_networks:
+  - "::/0"
 
 ## Databases
 clickhouse_custom_databases:
-  - { name: test1 }
-  - { name: test2 }
-  - { name: test3 }
+  - name: test1
+  - name: test2
+  - name: test3

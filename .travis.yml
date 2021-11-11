@@ -1,7 +1,7 @@
 ---
 dist: xenial
 language: python
-python: "3.7"
+python: "3.8"
 os: linux
 services:
   - docker
@@ -10,7 +10,7 @@ install:
   - pipenv sync
 env:
   jobs:
-    - MOLECULE_DISTRO=debian:stretch-slim
+    - MOLECULE_DISTRO=debian:bullseye-slim
     - MOLECULE_DISTRO=debian:buster-slim
 script:
   - pipenv run molecule test

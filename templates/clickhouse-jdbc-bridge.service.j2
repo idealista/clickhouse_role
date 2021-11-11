@@ -1,0 +1,29 @@
+{{ ansible_managed | comment }}
+[Unit]
+Description=ClickHouse JDBC Bridge
+Documentation={{ clickhouse_jdbc_bridge_documentation_link }}
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+PrivateTmp={{ clickhouse_private_tmp }}
+Type=simple
+User=root
+Group=root
+RuntimeDirectory={{ clickhouse_jdbc_bridge_service }}
+LimitNOFILE={{ clickhouse_limit_NO_FILE }}
+
+ExecStart=/usr/local/bin/clickhouse-jdbc-bridge
+
+StandardOutput={{ clickhouse_jdbc_bridge_log }}
+StandardError={{ clickhouse_jdbc_bridge_log }}
+ExecReload=/bin/kill -HUP $MAINPID
+KillSignal=SIGTERM
+Restart=always
+RestartSec=30
+
+LimitCORE=infinity
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_IPC_LOCK CAP_SYS_NICE
+
+[Install]
+WantedBy=multi-user.target
