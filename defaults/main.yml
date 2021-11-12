@@ -566,6 +566,11 @@ clickhouse_send_crash_reports:
 #       cf_options:
 #         num_levels: 2
 
+# For additional config, for example: when you need to define catboost library paths
+# clickhouse_config_xml_extra_config: |
+#   <catboost_dynamic_library_path>/home/catboost/data/libcatboostmodel.so</catboost_dynamic_library_path>
+#   <models_config>/home/catboost/models/*_model.xml</models_config>
+
 # users.xml
 
 # Profiles
@@ -646,3 +651,12 @@ clickhouse_default_quotas:
 #   - name: test3
 
 # clickhouse_remote_servers: "fclickhouse_default_database"
+
+# For additional config, like clickhouse_config_xml_extra_config but in users.xml
+# clickhouse_user_xml_extra_config: |
+#   <example1>value</example1>
+#   <example2>
+#     <tag>
+#       value
+#     </tag>
+#   </example2>

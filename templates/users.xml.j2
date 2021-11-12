@@ -1,128 +1,132 @@
 <?xml version="1.0"?>
 <clickhouse>
-	<!-- See also the files in users.d directory where the settings can be overridden. -->
+  <!-- See also the files in users.d directory where the settings can be overridden. -->
 
-	<!-- Profiles of settings. -->
-	<profiles>
-		<!-- Default settings. -->
+  <!-- Profiles of settings. -->
+  <profiles>
+    <!-- Default settings. -->
 {% if clickhouse_default_profiles is defined %}
 {% for profile in clickhouse_default_profiles %}
-		<{{ profile }}>
+    <{{ profile }}>
 {% for item in clickhouse_default_profiles[profile] %}
-			<{{ item }}>{{ clickhouse_default_profiles[profile][item] }}</{{ item }}>
+      <{{ item }}>{{ clickhouse_default_profiles[profile][item] }}</{{ item }}>
 {% endfor %}
-		</{{ profile }}>
+    </{{ profile }}>
 {% endfor %}
 {% endif %}
-		<!-- Custom settings. -->
+    <!-- Custom settings. -->
 {% if clickhouse_custom_profiles is defined %}
 {% for profile in clickhouse_custom_profiles %}
-		<{{ profile }}>
+    <{{ profile }}>
 {% for item in clickhouse_custom_profiles[profile] %}
-			<{{ item }}>{{ clickhouse_custom_profiles[profile][item] }}</{{ item }}>
+      <{{ item }}>{{ clickhouse_custom_profiles[profile][item] }}</{{ item }}>
 {% endfor %}
-		</{{ profile }}>
+    </{{ profile }}>
 {% endfor %}
 {% endif %}
-	</profiles>
+  </profiles>
 
-	<!-- Users and ACL. -->
-	<users>
-	<!-- Default users -->
+  <!-- Users and ACL. -->
+  <users>
+  <!-- Default users -->
 {% if clickhouse_default_users is defined %}
 {% for user in clickhouse_default_users %}
-		<{{ user.name }}>
+    <{{ user.name }}>
 {% if user.password is defined %}
-			<password>{{ user.password }}</password>
+      <password>{{ user.password }}</password>
 {% elif user.password_sha256_hex is defined %}
-			<password_sha256_hex>{{ user.password_sha256_hex }}</password_sha256_hex>
+      <password_sha256_hex>{{ user.password_sha256_hex }}</password_sha256_hex>
 {% elif user.password_double_sha1_hex is defined %}
-			<password_double_sha1_hex>{{ user.password_double_sha1_hex }}</password_double_sha1_hex>
+      <password_double_sha1_hex>{{ user.password_double_sha1_hex }}</password_double_sha1_hex>
 {% endif %}
-			<networks>
+      <networks>
 {% for network in user.networks %}
-				<ip>{{ network }}</ip>
+        <ip>{{ network }}</ip>
 {% endfor %}
-			</networks>
-			<profile>{{ user.profile }}</profile>
+      </networks>
+      <profile>{{ user.profile }}</profile>
 {% if user.databases is defined %}
-			<allow_databases>
+      <allow_databases>
 {% for database in user.databases %}
-				<database>{{ database }}</database>
+        <database>{{ database }}</database>
 {% endfor %}
-			</allow_databases>
+      </allow_databases>
 {% endif %}
-			<quota>{{ user.quota }}</quota>
+      <quota>{{ user.quota }}</quota>
 {% if user.access_management is defined%}
-			<access_management>{{ user.access_management }}</access_management>
+      <access_management>{{ user.access_management }}</access_management>
 {% endif %}
-		</{{ user.name }}>
+    </{{ user.name }}>
 {% endfor %}
 {% endif %}
-	<!-- Custom users -->
+  <!-- Custom users -->
 {% if clickhouse_custom_users is defined %}
 {% for user in clickhouse_custom_users %}
-		<{{ user.name }}>
+    <{{ user.name }}>
 {% if user.password is defined %}
-			<password>{{ user.password }}</password>
+      <password>{{ user.password }}</password>
 {% elif user.password_sha256_hex is defined %}
-			<password_sha256_hex>{{ user.password_sha256_hex }}</password_sha256_hex>
+      <password_sha256_hex>{{ user.password_sha256_hex }}</password_sha256_hex>
 {% elif user.password_double_sha1_hex is defined %}
-			<password_double_sha1_hex>{{ user.password_double_sha1_hex }}</password_double_sha1_hex>
+      <password_double_sha1_hex>{{ user.password_double_sha1_hex }}</password_double_sha1_hex>
 {% endif %}
-			<networks>
+      <networks>
 {% for network in user.networks %}
-				<ip>{{ network }}</ip>
+        <ip>{{ network }}</ip>
 {% endfor %}
-			</networks>
-			<profile>{{ user.profile }}</profile>
-			<quota>{{ user.quota }}</quota>
+      </networks>
+      <profile>{{ user.profile }}</profile>
+      <quota>{{ user.quota }}</quota>
 {% if user.databases is defined %}
-			<allow_databases>
+      <allow_databases>
 {% for database in user.databases %}
-				<database>{{ database }}</database>
+        <database>{{ database }}</database>
 {% endfor %}
-			</allow_databases>
+      </allow_databases>
 {% endif %}
 {% if user.access_management is defined%}
-			<access_management>{{ user.access_management }}</access_management>
+      <access_management>{{ user.access_management }}</access_management>
 {% endif %}
-		</{{ user.name }}>
+    </{{ user.name }}>
 {% endfor %}
 {% endif %}
-	</users>
+  </users>
 
-	<!-- Quotas. -->
-	<quotas>
-	<!-- Default quotas -->
+  <!-- Quotas. -->
+  <quotas>
+  <!-- Default quotas -->
 {% if clickhouse_default_quotas is defined %}
 {% for quota in clickhouse_default_quotas %}
-		<{{ quota.name }}>
-			<interval>
-				<duration>{{ quota.duration }}</duration>
-				<queries>{{ quota.queries }}</queries>
-				<errors>{{ quota.errors }}</errors>
-				<result_rows>{{ quota.result_rows }}</result_rows>
-				<read_rows>{{ quota.read_rows }}</read_rows>
-				<execution_time>{{ quota.execution_time }}</execution_time>
-			</interval>
-		</{{ quota.name }}>
+    <{{ quota.name }}>
+      <interval>
+        <duration>{{ quota.duration }}</duration>
+        <queries>{{ quota.queries }}</queries>
+        <errors>{{ quota.errors }}</errors>
+        <result_rows>{{ quota.result_rows }}</result_rows>
+        <read_rows>{{ quota.read_rows }}</read_rows>
+        <execution_time>{{ quota.execution_time }}</execution_time>
+      </interval>
+    </{{ quota.name }}>
 {% endfor %}
 {% endif %}
 {% if clickhouse_custom_quotas is defined %}
-	<!-- Custom quotas -->
+  <!-- Custom quotas -->
 {% for quota in clickhouse_custom_quotas %}
-		<{{ quota.name }}>
-			<interval>
-				<duration>{{ quota.duration }}</duration>
-				<queries>{{ quota.queries }}</queries>
-				<errors>{{ quota.errors }}</errors>
-				<result_rows>{{ quota.result_rows }}</result_rows>
-				<read_rows>{{ quota.read_rows }}</read_rows>
-				<execution_time>{{ quota.execution_time }}</execution_time>
-			</interval>
-		</{{ quota.name }}>
+    <{{ quota.name }}>
+      <interval>
+        <duration>{{ quota.duration }}</duration>
+        <queries>{{ quota.queries }}</queries>
+        <errors>{{ quota.errors }}</errors>
+        <result_rows>{{ quota.result_rows }}</result_rows>
+        <read_rows>{{ quota.read_rows }}</read_rows>
+        <execution_time>{{ quota.execution_time }}</execution_time>
+      </interval>
+    </{{ quota.name }}>
 {% endfor %}
 {% endif %}
-	</quotas>
+  </quotas>
+
+{% if clickhouse_user_xml_extra_config is defined %}
+{{ clickhouse_user_xml_extra_config|indent(2, true) }}
+{% endif %}
 </clickhouse>
