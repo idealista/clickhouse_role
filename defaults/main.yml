@@ -30,7 +30,7 @@ clickhouse_service_state: started
 clickhouse_log_output: "{% if clickhouse_log_file is defined %} file:{{ clickhouse_log_file }} {% else %} journal {% endif %}"
 
 clickhouse_private_tmp: false
-clickhouse_limit_NO_FILE: 500000
+clickhouse_limit_no_file: 500000
 
 # DEBIAN - Clickhouse
 clickhouse_prerequisite_repos:
@@ -200,20 +200,20 @@ clickhouse_verbose_logs: false
 
 # SSL
 # Server
-clickhouse_certificateFile: /etc/clickhouse-server/server.crt
-clickhouse_privateKeyFile: /etc/clickhouse-server/server.key
-clickhouse_dhParamsFile: /etc/clickhouse-server/dhparam.pem
-clickhouse_verificationMode: none
-clickhouse_loadDefaultCAFile_server: true
-clickhouse_cacheSessions_server: true
-clickhouse_disableProtocols_server: sslv2,sslv3
-clickhouse_preferServerCiphers_server: true
+clickhouse_certificatefile: /etc/clickhouse-server/server.crt
+clickhouse_privatekeyfile: /etc/clickhouse-server/server.key
+clickhouse_dhparamsfile: /etc/clickhouse-server/dhparam.pem
+clickhouse_verificationmode: none
+clickhouse_loaddefaultcafile_server: true
+clickhouse_cachesessions_server: true
+clickhouse_disableprotocols_server: sslv2,sslv3
+clickhouse_preferserverciphers_server: true
 # Client
-clickhouse_loadDefaultCAFile_client: true
-clickhouse_cacheSessions_client: true
-clickhouse_disableProtocols_client: sslv2,sslv3
-clickhouse_preferServerCiphers_client: true
-clickhouse_invalidCertificateHandler:
+clickhouse_loaddefaultcafile_client: true
+clickhouse_cachesessions_client: true
+clickhouse_disableprotocols_client: sslv2,sslv3
+clickhouse_preferserverciphers_client: true
+clickhouse_invalidcertificatehandler:
   name: RejectCertificateHandler  # Use for self-signed: AcceptCertificateHandler
 
 # LDAP
@@ -243,7 +243,6 @@ clickhouse_invalidCertificateHandler:
 #   search_filter:
 #   attribute:
 #   prefix:
-
 
 # Kerberos
 # clickhouse_kerberos:

@@ -282,30 +282,30 @@
 	<openSSL>
 		<server> <!-- Used for https server AND secure tcp port -->
 			<!-- openssl req -subj "/CN=localhost" -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout /etc/clickhouse-server/server.key -out /etc/clickhouse-server/server.crt -->
-			<certificateFile>{{ clickhouse_certificateFile }}</certificateFile>
-			<privateKeyFile>{{ clickhouse_privateKeyFile }}</privateKeyFile>
+			<certificateFile>{{ clickhouse_certificatefile }}</certificateFile>
+			<privateKeyFile>{{ clickhouse_privatekeyfile }}</privateKeyFile>
 			<!-- dhparams are optional. You can delete the <dhParamsFile> element.
 				To generate dhparams, use the following command:
 				openssl dhparam -out /etc/clickhouse-server/dhparam.pem 4096
 				Only file format with BEGIN DH PARAMETERS is supported.
 			-->
-			<dhParamsFile>{{ clickhouse_dhParamsFile }}</dhParamsFile>
-			<verificationMode>{{ clickhouse_verificationMode }}</verificationMode>
-			<loadDefaultCAFile>{{ clickhouse_loadDefaultCAFile_server }}</loadDefaultCAFile>
-			<cacheSessions>{{ clickhouse_cacheSessions_server }}</cacheSessions>
-			<disableProtocols>{{ clickhouse_disableProtocols_server }}</disableProtocols>
-			<preferServerCiphers>{{ clickhouse_preferServerCiphers_server }}</preferServerCiphers>
+			<dhParamsFile>{{ clickhouse_dhparamsfile }}</dhParamsFile>
+			<verificationMode>{{ clickhouse_verificationmode }}</verificationMode>
+			<loadDefaultCAFile>{{ clickhouse_loaddefaultcafile_server }}</loadDefaultCAFile>
+			<cacheSessions>{{ clickhouse_cachesessions_server }}</cacheSessions>
+			<disableProtocols>{{ clickhouse_disableprotocols_server }}</disableProtocols>
+			<preferServerCiphers>{{ clickhouse_preferserverciphers_server }}</preferServerCiphers>
 		</server>
 
 		<client> <!-- Used for connecting to https dictionary source and secured Zookeeper communication -->
-			<loadDefaultCAFile>{{ clickhouse_loadDefaultCAFile_client }}</loadDefaultCAFile>
-			<cacheSessions>{{ clickhouse_cacheSessions_client }}</cacheSessions>
-			<disableProtocols>{{ clickhouse_disableProtocols_client }}</disableProtocols>
-			<preferServerCiphers>{{ clickhouse_preferServerCiphers_client }}</preferServerCiphers>
+			<loadDefaultCAFile>{{ clickhouse_loaddefaultcafile_client }}</loadDefaultCAFile>
+			<cacheSessions>{{ clickhouse_cachesessions_client }}</cacheSessions>
+			<disableProtocols>{{ clickhouse_disableprotocols_client }}</disableProtocols>
+			<preferServerCiphers>{{ clickhouse_preferserverciphers_client }}</preferServerCiphers>
 			<!-- Use for self-signed: <verificationMode>none</verificationMode> -->
 			<invalidCertificateHandler>
 				<!-- Use for self-signed: <name>AcceptCertificateHandler</name> -->
-				<name>{{ clickhouse_invalidCertificateHandler.name }}</name>
+				<name>{{ clickhouse_invalidcertificatehandler.name }}</name>
 			</invalidCertificateHandler>
 		</client>
 	</openSSL>
