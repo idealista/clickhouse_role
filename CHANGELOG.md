@@ -7,14 +7,15 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ### :hammer_and_wrench: Fixed
 
-- Defined hkp apt keyserver protocol
+- [#5](https://github.com/idealista/clickhouse_role/issues/5) Defined hkp apt keyserver protocol
 
 ### :heavy_plus_sign: Added
 
-- Required vars for new config templates
+- [#4](https://github.com/idealista/clickhouse_role/issues/4) Required vars for new config templates
+
 ### :repeat: Changed
 
-- Fully parametrized config files
+- [#4](https://github.com/idealista/clickhouse_role/issues/4) Fully parametrized config files
 - .gitignore rules for various IDEs
 - Deleted old stretch distro and add bullseye to .travis.yml
 - Update test-requirements versions
@@ -23,16 +24,23 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 - Update molecule config and vars
 
 ## [2.0.0](https://github.com/idealista/clickhouse_role/tree/2.0.0) (2020-11-18)
+
 - *[#1](https://github.com/idealista/clickhouse_role/issues/1) Fix mismatched var names* @frantsao
 - *Fix systemd service config: prevent restarting after unit file changes; fix reloading (needs /bin/kill)* @frantsao
 - *Fix default database creation* @frantsao
 - *Fix missing listening host templating in config.xml* @frantsao
 - *Fix admin user templating* @frantsao
+
 ### Added
+
 - *Added var in order to control service behaviour in config changes* @frantsao
+
 ### Changed
+
 - *Renamed vars in order to differentiate from other roles vars (BREAKING)* @frantsao
 
 ## [1.0.0](https://github.com/idealista/clickhouse_role/tree/1.0.0) (2020-11-03)
+
 ### Added
+
 - *First version* @xtianae7
