@@ -14,12 +14,6 @@
     shell: /usr/sbin/nologin
     createhome: no
 
-- name: CLICKHOUSE | Check clickhouse version
-  command: "{{ clickhouse_service }} server --version"
-  register: clickhouse_check
-  changed_when: false
-  ignore_errors: true
-
 - block:
     - name: CLICKHOUSE | Update repositories cache and install apt-transport-https, dirmngr packages
       apt:
@@ -29,18 +23,16 @@
       apt_key:
         keyserver: "{{ clickhouse_deb_keyserver }}"
         id: "{{ clickhouse_deb_keyid }}"
-      when: clickhouse_check is failed
+        state: present
     - name: CLICKHOUSE | Add clickhouse apt repository (deb)
       apt_repository:
         repo: "{{ clickhouse_deb_repo }}"
         state: present
-      when: clickhouse_check is failed
     - name: CLICKHOUSE | Be sure clickhouse packages are installed (apt)
       apt:
         name: "{{ clickhouse_packages }}"
         state: present
         update_cache: true
-      when: clickhouse_check is failed
 
 - name: CLICKHOUSE | Ensure data directory with 0700 mode exist
   file:
@@ -87,3 +79,20 @@
   with_items:
     - "{{ clickhouse_log_directory }}"
   become: true
+
+- name: CLICKHOUSE | Install Clickhouse JDBC Bridge if required
+  apt:
+    deb: "{{ clickhouse_jdbc_bridge_deb_package }}"
+    install_recommends: no
+  when: clickhouse_jdbc_bridge is defined
+
+- name: CLICKHOUSE | Copy Clickhouse JDBC Bridge driver config
+  copy:
+    src: "{{ item }}"
+    dest: "{{ clickhouse_jdbc_bridge_playbook_drivers_path }}"
+    owner: "{{ clickhouse_user }}"
+    group: "{{ clickhouse_group }}"
+    mode: 0640
+  with_fileglob:
+    - "{{ clickhouse_jdbc_bridge_drivers_path }}/*"
+  when: clickhouse_jdbc_bridge is defined

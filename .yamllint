@@ -4,6 +4,7 @@ extends: default
 
 ignore: |
   molecule/**/tests/
+  .ansible-lint
 
 rules:
   braces:
