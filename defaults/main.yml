@@ -2,14 +2,14 @@
 
 ## General
 # Version
-clickhouse_version: 20.8.4.11
+clickhouse_version: 21.11.2.2
 
 ## Service options
 # Documentation
 clickhouse_documentation_link: https://clickhouse.tech/docs/en/
 
 # Set to restart-clickhouse if you need a complete restart of the service i.e. changing listeners config
-clickhouse_handler_on_config_change: "reload-clickhouse"
+clickhouse_handler_on_config_change: "restart-clickhouse"
 
 # Owner
 clickhouse_user: clickhouse
@@ -30,7 +30,7 @@ clickhouse_service_state: started
 clickhouse_log_output: "{% if clickhouse_log_file is defined %} file:{{ clickhouse_log_file }} {% else %} journal {% endif %}"
 
 clickhouse_private_tmp: false
-clickhouse_limit_NO_FILE: 500000
+clickhouse_limit_no_file: 500000
 
 # DEBIAN - Clickhouse
 clickhouse_prerequisite_repos:
@@ -39,7 +39,7 @@ clickhouse_prerequisite_repos:
   - dirmngr
 clickhouse_service: "clickhouse-server"
 clickhouse_deb_repo: "deb https://repo.clickhouse.tech/deb/stable/ main/" #latest stable right now, fix a version.
-clickhouse_deb_keyserver: keyserver.ubuntu.com
+clickhouse_deb_keyserver: hkp://keyserver.ubuntu.com:80
 clickhouse_deb_keyid: E0C56BD4
 clickhouse_packages:
   - procps
@@ -71,15 +71,62 @@ clickhouse_logger:
   errorlog: "{{ clickhouse_log_directory }}/clickhouse-server.err.log"
   size: 1000M
   count: 10
+  console: autodetection
+
+# clickhouse_logger_overrides_legacy: >
+#   <levels>
+#     <ConfigReloader>none</ConfigReloader>
+#   </levels>
+
+# clickhouse_logger_overrides: >
+#   <levels>
+#     <logger>
+#     <name>ContextAccess (default)</name>
+#     <level>none</level>
+#     </logger>
+#     <logger>
+#     <name>DatabaseOrdinary (test)</name>
+#     <level>none</level>
+#     </logger>
+#   </levels>
+
+# CORS
+# clickhouse_custom_headers_response: >
+#   <http_options_response>
+#     <header>
+#       <name>Access-Control-Allow-Origin</name>
+#       <value>*</value>
+#     </header>
+#     <header>
+#       <name>Access-Control-Allow-Headers</name>
+#       <value>origin, x-requested-with</value>
+#     </header>
+#     <header>
+#       <name>Access-Control-Allow-Methods</name>
+#       <value>POST, GET, OPTIONS</value>
+#     </header>
+#     <header>
+#       <name>Access-Control-Max-Age</name>
+#       <value>86400</value>
+#     </header>
+#   </http_options_response>
 
 # Network
 clickhouse_http_port: 8123
 clickhouse_tcp_port: 9000
 clickhouse_mysql_port: 9004
+clickhouse_postgresql_port: 9005
 # You must define the next two vars if you need to enable https/tcp secured
 # clickhouse_https_port: 8443
 # clickhouse_tcp_port_secure: 9440
+# clickhouse_tcp_with_proxy_port: 9011
 clickhouse_interserver_http_port: 9009
+# clickhouse_interserver_https_port: 9010
+# clickhouse_interserver_http_host:
+# clikhouse_interserver_http_credentials:
+#   user: interserver
+#   password: "{{ interserver_http_credentials_password }}"
+
 
 # Configuration
 clickhouse_config:
@@ -93,10 +140,36 @@ clickhouse_config:
   total_memory_tracker_sample_probability: 0
   uncompressed_cache_size: 8589934592
   mark_cache_size: 5368709120
+  # max_open_files: 262144
+  mmap_cache_size: 1000
+  compiled_expression_cache_size: 134217728
+  compiled_expression_cache_elements_size: 10000
+  # tmp_policy: tmp
+  default_profile: default
+  custom_settings_prefixes: ""
+  # system_profile: default
+  # buffer_profile: default
+  default_database: default
+  # timezone:
+  # umask: 027
+  mlock_executable: true
+  remap_executable: true
   builtin_dictionaries_reload_interval: 3600
   max_session_timeout: 3600
   default_session_timeout: 60
-  mlock_executable: "true"
+  # regions_hierarchy_file: /opt/geo/regions_hierarchy.txt
+  # regions_names_files_path: /opt/geo/
+  # top_level_domains_path: /var/lib/clickhouse/top_level_domains/
+  # top_level_domains:  # Path to the list is under top_level_domains_path
+  #   - domain:
+  #     name: example_name
+  #     path: /path/to/example_name.dat
+  dictionaries_config: "*_dictionary.xml"
+  user_defined_executable_functions_config: "*_function.xml"
+  # max_table_size_to_drop: 0
+  # max_partition_size_to_drop: 0
+  format_schema_path: /var/lib/clickhouse/format_schemas/
+  # disable_internal_dns_cache: 1
 
 clickhouse_default_networks:
   - "::1"
@@ -105,21 +178,410 @@ clickhouse_default_networks:
 # clickhouse_listen_hosts:
 #  - "::1"
 #  - "127.0.0.1"
+# clickhouse_listen_try: 0
+# clickhouse_listen_reuse_port: 0
+# clickhouse_listen_backlog: 4096
+# clickhouse_remote_url_allow_hosts:
+
+clickhouse_http_server_default_response: <![CDATA[<html ng-app="SMI2"><head><base href="http://ui.tabix.io/"></head><body><div ui-view="" class="content-ui"></div><script src="http://loader.tabix.io/master.js"></script></body></html>]]>
+
+# GRPC
+# clickhouse_grpc_port: 9100
+clickhouse_enable_ssl: false
+clickhouse_ssl_cert_file: /path/to/ssl_cert_file
+clickhouse_ssl_key_file: /path/to/ssl_key_file
+clickhouse_ssl_require_client_auth: false
+clickhouse_ssl_ca_cert_file: /path/to/ssl_ca_cert_file
+clickhouse_grpc_compression: deflate
+clickhouse_grpc_compression_level: medium
+clickhouse_max_send_message_size: -1
+clickhouse_max_receive_message_size: -1
+clickhouse_verbose_logs: false
+
+# SSL
+# Server
+clickhouse_certificatefile: /etc/clickhouse-server/server.crt
+clickhouse_privatekeyfile: /etc/clickhouse-server/server.key
+clickhouse_dhparamsfile: /etc/clickhouse-server/dhparam.pem
+clickhouse_verificationmode: none
+clickhouse_loaddefaultcafile_server: true
+clickhouse_cachesessions_server: true
+clickhouse_disableprotocols_server: sslv2,sslv3
+clickhouse_preferserverciphers_server: true
+# Client
+clickhouse_loaddefaultcafile_client: true
+clickhouse_cachesessions_client: true
+clickhouse_disableprotocols_client: sslv2,sslv3
+clickhouse_preferserverciphers_client: true
+clickhouse_invalidcertificatehandler:
+  name: RejectCertificateHandler  # Use for self-signed: AcceptCertificateHandler
+
+# LDAP
+# clickhouse_ldap:
+#   serverame:
+#   host:
+#   port:
+#   bind_dn:
+#   base_dn:
+#   scope:
+#   search_filter:
+#   verification_cooldown:
+#   enable_tls:
+#   tls_minimum_protocol_version:
+#   tls_require_cert:
+#   tls_cert_file:
+#   tls_key_file:
+#   tls_ca_cert_file:
+#   tls_ca_cert_dir:
+#   tls_cipher_suite:
+
+# clickhouse_user_directories_ldap:
+#   server:
+#   roles: []
+#   base_dn:
+#   scope:
+#   search_filter:
+#   attribute:
+#   prefix:
+
+# Kerberos
+# clickhouse_kerberos:
+#   principal:
+#   realm:
+
+# JDBC Bridge
+# clickhouse_jdbc_bridge_service: clickhouse-jdbc-bridge
+# clickhouse_jdbc_bridge_service_template_path: clickhouse-jdbc-bridge.service.j2
+# clickhouse_jdbc_bridge_service_state: started
+# clickhouse_jdbc_bridge_service_enabled: True
+# clickhouse_jdbc_bridge_playbook_drivers_path:
+# clickhouse_jdbc_bridge_drivers_path:
+# clickhouse_jdbc_bridge_documentation_link: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/blob/v{{ clickhouse_jdbc_bridge_version }}/README.md"
+# clickhouse_jdbc_bridge_log: /var/log/clickhouse-jdbc-bridge
+# clickhouse_jdbc_bridge_version: 2.0.6
+# clickhouse_jdbc_bridge_deb_package: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v{{ clickhouse_jdbc_bridge_version }}/clickhouse-jdbc-bridge_{{ clickhouse_jdbc_bridge_version }}-1_all.deb"
+# clickhouse_jdbc_bridge_rpm_package: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v{{ clickhouse_jdbc_bridge_version }}/clickhouse-jdbc-bridge-{{ clickhouse_jdbc_bridge_version }}-1.noarch.rpm"
+# clickhouse_jdbc_bridge:
+#   host: 127.0.0.1
+#   port: 9019
+
+# clickhouse_remote_servers:
+#   - server:
+#     servername:
+#     # secret:
+#     shards:
+#       - shard:
+#         # internal_replication:
+#         # weight:
+#         replicas:
+#           - replica:
+#             host:
+#             port:
+#             # priority:
+#             # secure:
+
+clickhouse_remote_servers:
+  - server:
+    servername: test_shard_localhost
+    shards:
+      - shard:
+        replicas:
+          - replica:
+            host: localhost
+            port: 9000
+  - server:
+    servername: test_cluster_two_shards_localhost
+    shards:
+      - shard:
+        replicas:
+          - replica:
+            host: localhost
+            port: 9000
+      - shard:
+        replicas:
+          - replica:
+            host: localhost
+            port: 9000
+  - server:
+    servername: test_cluster_two_shards
+    shards:
+      - shard:
+        replicas:
+          - replica:
+            host: 127.0.0.1
+            port: 9000
+      - shard:
+        replicas:
+          - replica:
+            host: 127.0.0.1
+            port: 9000
+  - server:
+    servername: test_cluster_two_shards_internal_replication
+    shards:
+      - shard:
+        internal_replication: true
+        replicas:
+          - replica:
+            host: 127.0.0.1
+            port: 9000
+      - shard:
+        internal_replication: true
+        replicas:
+          - replica:
+            host: 127.0.0.1
+            port: 9000
+  - server:
+    servername: test_shard_localhost_secure
+    shards:
+      - shard:
+        replicas:
+          - replica:
+            host: localhost
+            port: 9440
+            secure: 1
+  - server:
+    servername: test_unavailable_shard
+    shards:
+      - shard:
+        replicas:
+          - replica:
+            host: localhost
+            port: 9000
+      - shard:
+        replicas:
+          - replica:
+            host: localhost
+            port: 1
+
+# Zookeeper
+# clickhouse_zookeeper:
+#   - node:
+#     host:
+#     port:
+
+# clickhouse_replicated_tables_macros:
+#   layer:
+#   shard:
+#   replica:
+
+# Graphite
+# clickhouse_graphite:
+#   - node:
+#     host:  # required if defined clickhouse_graphite
+#     port:  # required if defined clickhouse_graphite
+#     timeout:  # required if defined clickhouse_graphite
+#     interval:
+#     root_path:
+#     hostname_in_path:
+#     metrics:
+#     events:
+#     events_cumulative:
+#     asynchronous_metrics:
 
 # Prometheus
-clickhouse_prometheus: true
-clickhouse_prometheus_endpoint: "/metrics"
-clickhouse_prometheus_port: 9363
+# clickhouse_prometheus:
+#   endpoint: "/metrics"
+#   port: 9363
+#   metrics: true
+#   events: true
+#   asynchronous_metrics: true
+#   status_info: true
 
-#users.xml
+# Query tables
+clickhouse_tables_log:
+  # Query log (Used only for queries with setting log_queries = 1.)
+  query_log:
+    database: system
+    table: query_log
+    # ttl: event_date + INTERVAL 30 DAY DELETE
+    partition_by: toYYYYMM(event_date)
+    # engine: ENGINE = MergeTree PARTITION BY toYYYYMM(event_date) ORDER BY (event_date, event_time) SETTINGS index_granularity = 1024  # Instead of partition_by, you can provide full engine expression
+    flush_interval_milliseconds: 7500
+  # Trace log
+  trace_log:
+    database: system
+    table: trace_log
+    partition_by: toYYYYMM(event_date)
+    flush_interval_milliseconds: 7500
+  # Thread log
+  thread_log:
+    database: system
+    table: query_thread_log
+    partition_by: toYYYYMM(event_date)
+    flush_interval_milliseconds: 7500
+  # Views log
+  views_log:
+    database: system
+    table: query_views_log
+    partition_by: toYYYYMM(event_date)
+    flush_interval_milliseconds: 7500
+  # Part log
+  part_log:
+    database: system
+    table: part_log
+    partition_by: toYYYYMM(event_date)
+    flush_interval_milliseconds: 7500
+  # Text log
+  # Uncomment to write text log into table. Text log contains all information from usual server log but stores it in structured and efficient way. The level of the messages that goes to the table can be limited (<level>), if not specified all messages will go to the table.
+  # text_log:
+  #   database: system
+  #   table: text_log
+  #   flush_interval_milliseconds: 7500
+  #   level:
+  # Metric log
+  metric_log:
+    database: system
+    table: metric_log
+    flush_interval_milliseconds: 7500
+    collect_interval_milliseconds: 1000
+  # Asynchronous metric log:
+  asynchronous_metric_log:
+    database: system
+    table: asynchronous_metric_log
+    flush_interval_milliseconds: 7000
+  # OpenTelemetry log
+  opentelemetry_span_log:
+    engine: >
+      engine MergeTree
+      partition by toYYYYMM(finish_date)
+      order by (finish_date, finish_time_us, trace_id)
+    database: system
+    table: opentelemetry_span_log
+    flush_interval_milliseconds: 7500
+  # Crash log
+  crash_log:
+    database: system
+    table: crash_log
+    partition_by:
+    flush_interval_milliseconds: 1000
+  # Session log
+  session_log:
+    database: system
+    table: session_log
+    partition_by: toYYYYMM(event_date)
+    flush_interval_milliseconds: 7500
+
+# Compression
+# clickhouse_compression:
+#   - case:
+#     min_part_size:
+#     min_part_size_ratio:
+#     method:
+#     level:
+
+# Encryption
+# clickhouse_encryption:
+#   encryption:
+#   current_key_id:
+#   nonce:
+#   elements:
+#     - key:
+#       type:  # key or keyhex
+#       id:
+#       # Key from a value / file or from ENV, use only one option.
+#       value:
+#       # from_env: ENV
+
+# Distributed DDL
+# clickhouse_distributed_ddl:
+#   path:
+#   profile:
+#   pool_size:
+#   task_max_lifetime:
+#   cleanup_delay_period:
+#   max_tasks_in_queue:
+
+# MergeTree settings. See See documentation in clickhouse source code, in MergeTreeSettings.h
+# clickhouse_mergetree_settings:
+#   min_compress_block_size:
+#   max_compress_block_size:
+#   index_granularity:
+
+clickhouse_graphitemergetree_settings:
+  name: graphite_rollup_example
+  path_column_name: Path
+  time_column_name: Time
+  value_column_name: Value
+  version_column_name: Version
+  pattern:
+    regexp: click_cost
+    function: any
+    retention:
+      - age: 0
+        precision: 3600
+      - age: 86400
+        precision: 60
+  default:
+    function: max
+    retention:
+      - age: 0
+        precision: 60
+      - age: 3600
+        precision: 300
+      - age: 86400
+        precision: 3600
+
+clickhouse_query_masking_rules:
+  - rule:
+    name: hide encrypt/decrypt arguments
+    regexp: ((?:aes_)?(?:encrypt|decrypt)(?:_mysql)?)\s*\(\s*(?:'(?:\\'|.)+'|.*?)\s*\)  # or more secure, but also more invasive: (aes_\w+)\s*\(.*\)
+    replace: \1(???)
+
+# clickhouse_http_handlers:
+#   - rule:
+#     url: /
+#     methods: POST,GET
+#     headers: <pragma>no-cache</pragma>
+#     handler:
+#       type: dynamic_query_handler
+#       query_param_name: query
+#   - rule:
+#     url: /predefined_query
+#     methods: POST,GET
+#     handler:
+#       type: predefined_query_handler
+#       query: SELECT * FROM system.settings
+#   - rule:
+#     handler:
+#       type: static
+#       status: 200
+#       content_type: text/plain; charset=UTF-8
+#       response_content: config://http_server_default_response
+
+clickhouse_send_crash_reports:
+  enabled: false
+  anonymize: false
+  endpoint: https://6f33034cfe684dd7a3ab9875e57b1c8d@o388870.ingest.sentry.io/5226277
+
+# clickhouse_rocksdb:
+#   db_options:
+#     max_background_jobs: 8
+#   cf_options:
+#     num_levels: 2
+#   table_options:
+#     - table:
+#       name: TABLE
+#       options:
+#         max_background_jobs: 8
+#       cf_options:
+#         num_levels: 2
+
+# For additional config, for example: when you need to define catboost library paths
+# clickhouse_config_xml_extra_config: |
+#   <catboost_dynamic_library_path>/home/catboost/data/libcatboostmodel.so</catboost_dynamic_library_path>
+#   <models_config>/home/catboost/models/*_model.xml</models_config>
+
+# users.xml
 
 # Profiles
 clickhouse_default_profiles:
+  # Default settings
   default:
     max_memory_usage: 10000000000
     use_uncompressed_cache: 0
     load_balancing: random
     max_partitions_per_insert_block: 100
+  # Profile that allows only read queries
   readonly:
     readonly: 1
 
@@ -127,8 +589,18 @@ clickhouse_default_profiles:
 
 # Users
 clickhouse_default_users:
-  - { name: "default", password: "", networks: "{{ clickhouse_default_networks }}", profile: "default", quota: "default"}
-  - { name: "readonly", password: "readonly", networks: "{{ clickhouse_default_networks }}", profile: "readonly", quota: "default" }
+  - user:
+    name: default
+    password:
+    networks: "{{ clickhouse_default_networks }}"
+    profile: default
+    quota: default
+  - user:
+    name: readonly
+    password: readonly
+    networks: "{{ clickhouse_default_networks }}"
+    profile: readonly
+    quota: default
 
 # Users examples
 # clickhouse_admin_user: admin
@@ -137,42 +609,54 @@ clickhouse_default_users:
 ## See templates/users.xml.j2 for other possible passwords format (plain text is not recommended).
 
 # clickhouse_custom_users:
-#   - { name: "{{ clickhouse_admin_user }}",
-#       password: "{{ clickhouse_admin_password }}",
-#       networks: "{{ clickhouse_default_networks }}",
-#       profile: "default",
-#       quota: "default",
-#       access_management: 1 }
-#   - { name: "user1",
-#       password: "user1",
-#       networks: "{{ clickhouse_default_networks }}",
-#       profile: "default",
-#       quota: "default",
-#       databases: [test1]}
-#   - { name: "user2",
-#       password: "user2",
-#       networks: "{{ clickhouse_default_networks }}",
-#       profile: "default",
-#       quota: "default",
-#       databases: [test2]}
+#   - user:
+#     name: "{{ clickhouse_admin_user }}"
+#     password: "{{ clickhouse_admin_password }}"
+#     networks: "{{ clickhouse_default_networks }}"
+#     profile: "default"
+#     quota: "default"
+#     access_management: 1
+#   - user:
+#     name: "user1"
+#     password: "user1"
+#     networks: "{{ clickhouse_default_networks }}"
+#     profile: "default"
+#     quota: "default"
+#     databases: [test1]
+#   - user:
+#     name: "user2"
+#     password: "user2"
+#     networks: "{{ clickhouse_default_networks }}"
+#     profile: "default"
+#     quota: "default"
+#     databases: [test2]
 
 # Quotas
 clickhouse_default_quotas:
-  - { name: "default",
-      duration: 3600,
-      queries: 0,
-      errors: 0,
-      result_rows: 0,
-      read_rows: 0,
-      execution_time: 0gv
-  }
+  - quota:
+    name: default
+    duration: 3600
+    queries: 0
+    errors: 0
+    result_rows: 0
+    read_rows: 0
+    execution_time: 0gv
 
 # clickhouse_custom_quotas: []
 
-clickhouse_default_database: "default"
-
 # Databases examples
-# clickhouse_custom_databases: []
-#   - { name: test1 }
-#   - { name: test2 }
-#   - { name: test3 }
+# clickhouse_custom_databases:
+#   - name: test1
+#   - name: test2
+#   - name: test3
+
+# clickhouse_remote_servers: "fclickhouse_default_database"
+
+# For additional config, like clickhouse_config_xml_extra_config but in users.xml
+# clickhouse_user_xml_extra_config: |
+#   <example1>value</example1>
+#   <example2>
+#     <tag>
+#       value
+#     </tag>
+#   </example2>
