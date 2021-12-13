@@ -2,7 +2,8 @@
 
 ## General
 # Version
-clickhouse_version: 21.11.2.2
+clickhouse_version: 21.11.5.33
+clickhouse_release_type: stable  # Values should be: stable, lts or testing
 
 ## Service options
 # Documentation
@@ -38,7 +39,7 @@ clickhouse_prerequisite_repos:
   - ca-certificates
   - dirmngr
 clickhouse_service: "clickhouse-server"
-clickhouse_deb_repo: "deb https://repo.clickhouse.tech/deb/stable/ main/" #latest stable right now, fix a version.
+clickhouse_deb_repo: "deb https://repo.clickhouse.com/deb/{{ clickhouse_release_type }}/ main/"
 clickhouse_deb_keyserver: hkp://keyserver.ubuntu.com:80
 clickhouse_deb_keyid: E0C56BD4
 clickhouse_packages:
@@ -58,9 +59,13 @@ clickhouse_users_file_name: users.xml
 # Directories
 clickhouse_base_path: "/var/lib"
 clickhouse_config_directory: "/etc/clickhouse-server"
+clickhouse_config_directory_mode: 0760
 clickhouse_log_directory: "/var/log/clickhouse-server"
+clickhouse_log_directory_mode: 0740
 clickhouse_data_directory: "{{ clickhouse_base_path }}/clickhouse"
+clickhouse_data_directory_mode: 0700
 clickhouse_tmp_directory: "{{ clickhouse_base_path }}/clickhouse/tmp"
+clickhouse_tmp_directory_mode: 0755
 clickhouse_user_files_directory: "{{ clickhouse_base_path }}/clickhouse/user_files"
 clickhouse_access_control_directory: "{{ clickhouse_base_path }}/clickhouse/access/"
 
@@ -360,9 +365,10 @@ clickhouse_remote_servers:
 #     port:
 
 # clickhouse_replicated_tables_macros:
-#   layer:
-#   shard:
-#   replica:
+#   - server: servername
+#     macro: |
+#       <shard>1</shard>
+#       <replica>1</replica>
 
 # Graphite
 # clickhouse_graphite:

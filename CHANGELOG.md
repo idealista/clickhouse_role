@@ -5,6 +5,23 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/clickhouse_role/tree/develop)
 
+### :hammer_and_wrench: Fixed
+
+- [#10](https://github.com/idealista/clickhouse_role/issues/10) Fix paths permissions
+- [#11](https://github.com/idealista/clickhouse_role/issues/10) Allow custom tag values for replicated macro var
+
+### :heavy_plus_sign: Added
+
+- Add .gitattributes.
+- Add option to set CH release branch version.
+
+### :repeat: Changed
+
+- Update CH default version
+- Update .travis python version to 3.9
+- Update test-requirements, ansible, molecule, etc
+- Update Readme
+
 ## [3.0.0](https://github.com/idealista/clickhouse_role/tree/3.0.0) (2021-11-23)
 
 ### :hammer_and_wrench: Fixed
