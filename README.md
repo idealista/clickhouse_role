@@ -24,7 +24,8 @@ This role has been generated using the [cookiecutter](https://github.com/cookiec
 These instructions will get you a copy of the role for your Ansible playbook. Once launched, it will install [Clickhouse](https://clickhouse.com/) in a Debian system.
 
 ### Prerequisites :ballot_box_with_check:
-Ansible 2.9.x version installed.
+
+Ansible 4.6.x version installed.
 
 Molecule 3.x.x version installed.
 
@@ -37,7 +38,7 @@ Create or add to your roles dependency file (e.g requirements.yml):
 ```yml
 - src: idealista.clickhouse_role
   scm: git
-  version: 3.0.0
+  version: 3.0.1
   name: clickhouse_role
 ```
 
@@ -80,8 +81,15 @@ $ pipenv run molecule test
 
 ## Built With :building_construction:
 
-![Ansible](https://img.shields.io/badge/ansible-2.9.21-green.svg)
-![Molecule](https://img.shields.io/badge/molecule-3.0.8-green.svg)
+ansible==4.6.0
+ansible-lint==5.2.1
+molecule==3.5.2
+docker==5.0.3
+molecule-containers==1.0.0
+yamllint==1.26.3
+
+![Ansible](https://img.shields.io/badge/ansible-4.6.0-green.svg)
+![Molecule](https://img.shields.io/badge/molecule-3.5.2-green.svg)
 ![Goss](https://img.shields.io/badge/goss-0.3.13-green.svg)
 
 ## Versioning :card_file_box:
