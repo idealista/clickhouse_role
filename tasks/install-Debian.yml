@@ -14,38 +14,38 @@
     shell: /usr/sbin/nologin
     createhome: no
 
-- block:
-    - name: CLICKHOUSE | Update repositories cache and install apt-transport-https, dirmngr packages
-      apt:
-        name: "{{ clickhouse_prerequisite_repos }}"
-        state: present
-    - name: CLICKHOUSE | Be sure key is present
-      apt_key:
-        keyserver: "{{ clickhouse_deb_keyserver }}"
-        id: "{{ clickhouse_deb_keyid }}"
-        state: present
-    - name: CLICKHOUSE | Add clickhouse apt repository (deb)
-      apt_repository:
-        repo: "{{ clickhouse_deb_repo }}"
-        state: present
-    - name: CLICKHOUSE | Be sure clickhouse packages are installed (apt)
-      apt:
-        name: "{{ clickhouse_packages }}"
-        state: present
-        update_cache: true
+- name: CLICKHOUSE | Update repositories cache and install apt-transport-https, dirmngr packages
+  apt:
+    name: "{{ clickhouse_prerequisite_repos }}"
+    state: present
 
-- name: CLICKHOUSE | Ensure data directory with 0700 mode exist
+- name: CLICKHOUSE | Be sure key is present
+  apt_key:
+    keyserver: "{{ clickhouse_deb_keyserver }}"
+    id: "{{ clickhouse_deb_keyid }}"
+    state: present
+
+- name: CLICKHOUSE | Add clickhouse apt repository (deb)
+  apt_repository:
+    repo: "{{ clickhouse_deb_repo }}"
+    state: present
+
+- name: CLICKHOUSE | Be sure clickhouse packages are installed (apt)
+  apt:
+    name: "{{ clickhouse_packages }}"
+    state: present
+    update_cache: true
+
+- name: CLICKHOUSE | Ensure data directory exist
   file:
     state: directory
-    dest: "{{ item }}"
+    dest: "{{ clickhouse_data_directory }}"
     owner: "{{ clickhouse_user }}"
     group: "{{ clickhouse_group }}"
-    mode: 0700
-  with_items:
-    - "{{ clickhouse_data_directory }}"
+    mode: "{{ clickhouse_data_directory_mode }}"
   become: true
 
-- name: CLICKHOUSE | Ensure user files and access control directories with 0750 mode exist
+- name: CLICKHOUSE | Ensure user files and access control directories exist
   file:
     state: directory
     dest: "{{ item }}"
@@ -57,27 +57,31 @@
     - "{{ clickhouse_user_files_directory }}"
   become: true
 
-- name: CLICKHOUSE | Ensure needed config and tmp directories with 0755 mode exist
+- name: CLICKHOUSE | Ensure needed config directory exist
   file:
     state: directory
-    dest: "{{ item }}"
+    dest: "{{ clickhouse_config_directory }}"
     owner: "{{ clickhouse_user }}"
     group: "{{ clickhouse_group }}"
-    mode: 0755
-  with_items:
-    - "{{ clickhouse_config_directory }}"
-    - "{{ clickhouse_tmp_directory }}"
+    mode: "{{ clickhouse_config_directory_mode }}"
   become: true
 
-- name: CLICKHOUSE | Ensure needed log directory with 0775 mode exist
+- name: CLICKHOUSE | Ensure needed tmp directories exist
   file:
     state: directory
-    dest: "{{ item }}"
+    dest: "{{ clickhouse_tmp_directory }}"
     owner: "{{ clickhouse_user }}"
     group: "{{ clickhouse_group }}"
-    mode: 0775
-  with_items:
-    - "{{ clickhouse_log_directory }}"
+    mode: "{{ clickhouse_tmp_directory_mode }}"
+  become: true
+
+- name: CLICKHOUSE | Ensure needed log directory exist
+  file:
+    state: directory
+    dest: "{{ clickhouse_log_directory }}"
+    owner: "{{ clickhouse_user }}"
+    group: "{{ clickhouse_group }}"
+    mode: "{{ clickhouse_log_directory_mode }}"
   become: true
 
 - name: CLICKHOUSE | Install Clickhouse JDBC Bridge if required

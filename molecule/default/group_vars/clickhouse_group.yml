@@ -1,6 +1,6 @@
 ---
 
-clickhouse_version: 21.11.2.2
+clickhouse_version: 21.11.5.33
 
 clickhouse_admin_user: admin
 clickhouse_admin_password: admin
