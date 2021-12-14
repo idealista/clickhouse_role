@@ -5,10 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/clickhouse_role/tree/develop)
 
+## [3.0.1](https://github.com/idealista/clickhouse_role/tree/3.0.1) (2021-12-14)
+
 ### :hammer_and_wrench: Fixed
 
-- [#10](https://github.com/idealista/clickhouse_role/issues/10) Fix paths permissions
-- [#11](https://github.com/idealista/clickhouse_role/issues/10) Allow custom tag values for replicated macro var
+- [#8](https://github.com/idealista/clickhouse_role/issues/8) Remove ansible deprecation warning @Pablohn26
+- [#10](https://github.com/idealista/clickhouse_role/issues/10) Fix paths permissions @ultraheroe
+- [#11](https://github.com/idealista/clickhouse_role/issues/10) Allow custom tag values for replicated macro var @ultraheroe
 
 ### :heavy_plus_sign: Added
 
