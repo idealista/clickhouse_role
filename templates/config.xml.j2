@@ -342,6 +342,10 @@
   -->
   <max_thread_pool_size>{{ clickhouse_config.max_thread_pool_size }}</max_thread_pool_size>
 
+  <!-- Number of workers to recycle connections in background (see also drain_timeout).
+    If the pool is full, connection will be drained synchronously. -->
+  <!-- <max_threads_for_connection_collector>10</max_threads_for_connection_collector> -->
+
   <!-- On memory constrained environments you may have to set this to value larger than 1.
     -->
   <max_server_memory_usage_to_ram_ratio>{{ clickhouse_config.max_server_memory_usage_to_ram_ratio }}</max_server_memory_usage_to_ram_ratio>
@@ -727,11 +731,23 @@
         <replica>
           <host>{{ replica.host }}</host>
           <port>{{ replica.port }}</port>
+{% if replica.user is defined %}
+          <user>{{ replica.user }}</user>
+{% endif %}
+{% if replica.password is defined %}
+          <password>{{ replica.password }}</password>
+{% endif %}
+{% if replica.priority is defined %}
+          <priority>{{ replica.priority }}</priority>
+{% endif %}
 {% if replica.priority is defined %}
           <priority>{{ replica.priority }}</priority>
 {% endif %}
 {% if replica.secure is defined %}
           <secure>{{ replica.secure }}</secure>
+{% endif %}
+{% if replica.compression is defined %}
+          <compression>{{ replica.compression }}</compression>
 {% endif %}
         </replica>
 {% endfor %}
