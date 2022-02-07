@@ -38,6 +38,9 @@ provisioner:
   name: ansible
   lint:
     name: ansible-lint
+  log: True
+  options:
+    vvv: True
 
 scenario:
   name: default

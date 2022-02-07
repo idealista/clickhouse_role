@@ -1,11 +1,14 @@
 ---
 
-clickhouse_version: 21.11.5.33
+clickhouse_version: 22.1.3.7
 
 clickhouse_admin_user: admin
 clickhouse_admin_password: admin
 
-clickhouse_custom_users:
+# clickhouse_custom_config_file_path: "{{ playbook_dir }}/config_files/config"
+# clickhouse_custom_users_file_path: "{{ playbook_dir }}/config_files/users"
+
+clickhouse_admin_users:
   - user:
     name: "{{ clickhouse_admin_user }}"
     password: "{{ clickhouse_admin_password }}"
@@ -13,29 +16,92 @@ clickhouse_custom_users:
     profile: "default"
     quota: "default"
     access_management: 1
+
+clickhouse_custom_users_xml:
   - user:
-    name: "user1"
-    password: "user1"
+    name: "Bunta"
+    password: "TofuShop"
     networks: "{{ clickhouse_default_networks }}"
     profile: "default"
     quota: "default"
-    databases: [test1]
+    databases: [ex_racing]
+
+clickhouse_custom_users:
   - user:
-    name: "user2"
-    password: "user2"
-    networks: "{{ clickhouse_default_networks }}"
-    profile: "default"
+    name: "Takumi"
+    password_type: PLAINTEXT_PASSWORD
+    password: "AE86"
+    networks:
+      - "IP '::/0'"
+    settings:
+      - "max_memory_usage = 10000000000"
+    role:
+      - projectd_members
+      - tofu_shop
+    profile:
+      - default
+    grantees:
+      - projectd_members
     quota: "default"
-    databases: [test2]
+    databases: [ProjectD]
+  - user:
+    name: "Ryosuke"
+    password_type: PLAINTEXT_PASSWORD
+    password: "PjD4ever"
+    networks:
+      - "IP '::/0'"
+    databases: [ProjectD]
+    grantees:
+      - projectd_members
+      - -tofu_shop
+    profile:
+      - default
+      - max_memory_usage_profile
+    # ldap_server: adf.com
+    # kerberos: ""
+
+clickhouse_custom_roles:
+  - role:
+    name: projectd_members
+    settings:
+      - "max_memory_usage = 10000000000"
+  - role:
+    name: tofu_shop
+    settings:
+      - "max_memory_usage = 100"
+
+clickhouse_custom_settings_profiles:
+  - profile:
+    name: max_memory_usage_profile
+    settings:
+      - max_memory_usage = 100000001
+
+clickhouse_custom_quotas:
+  - quota:
+    name: example_quota
+    # keyed: ip_address  # One of this: user_name | ip_address | client_key | client_key,user_name | client_key,ip_address | NOT KEYED
+    settings:
+      - "INTERVAL 30 minute MAX execution_time = 0.5"
+    to:  # Use a minus to use ALL EXCEPT e.g: -test_role
+      - tofu_shop
+  - quota:
+    name: example_quota_except
+    keyed: NOT KEYED
+    settings:
+      - "INTERVAL 300 minute MAX execution_time = 0.5"
+    to:
+      - -tofu_shop
+
+# Databases
+clickhouse_custom_databases:
+  - name: ProjectD
+    engine: Atomic
+    comment: PjD_data
+  - name: racing
+  - name: ex_racing
 
 clickhouse_listen_hosts:
   - 0.0.0.0
 
 clickhouse_default_networks:
-  - "::/0"
-
-## Databases
-clickhouse_custom_databases:
-  - name: test1
-  - name: test2
-  - name: test3
+  - '::/0'

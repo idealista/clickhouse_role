@@ -59,9 +59,40 @@
     </{{ user.name }}>
 {% endfor %}
 {% endif %}
+  <!-- Admin users -->
+{% if clickhouse_admin_users is defined %}
+{% for user in clickhouse_admin_users %}
+    <{{ user.name }}>
+{% if user.password is defined %}
+      <password>{{ user.password }}</password>
+{% elif user.password_sha256_hex is defined %}
+      <password_sha256_hex>{{ user.password_sha256_hex }}</password_sha256_hex>
+{% elif user.password_double_sha1_hex is defined %}
+      <password_double_sha1_hex>{{ user.password_double_sha1_hex }}</password_double_sha1_hex>
+{% endif %}
+      <networks>
+{% for network in user.networks %}
+        <ip>{{ network }}</ip>
+{% endfor %}
+      </networks>
+      <profile>{{ user.profile }}</profile>
+{% if user.databases is defined %}
+      <allow_databases>
+{% for database in user.databases %}
+        <database>{{ database }}</database>
+{% endfor %}
+      </allow_databases>
+{% endif %}
+      <quota>{{ user.quota }}</quota>
+{% if user.access_management is defined%}
+      <access_management>{{ user.access_management }}</access_management>
+{% endif %}
+    </{{ user.name }}>
+{% endfor %}
+{% endif %}
   <!-- Custom users -->
-{% if clickhouse_custom_users is defined %}
-{% for user in clickhouse_custom_users %}
+{% if clickhouse_custom_users_xml is defined %}
+{% for user in clickhouse_custom_users_xml %}
     <{{ user.name }}>
 {% if user.password is defined %}
       <password>{{ user.password }}</password>
@@ -109,9 +140,9 @@
     </{{ quota.name }}>
 {% endfor %}
 {% endif %}
-{% if clickhouse_custom_quotas is defined %}
+{% if clickhouse_custom_quotas_xml is defined %}
   <!-- Custom quotas -->
-{% for quota in clickhouse_custom_quotas %}
+{% for quota in clickhouse_custom_quotas_xml %}
     <{{ quota.name }}>
       <interval>
         <duration>{{ quota.duration }}</duration>

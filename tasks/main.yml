@@ -6,7 +6,7 @@
     - clickhouse_install
 
 - name: CLICKHOUSE | Configure clickhouse
-  include_tasks: config-clickhouse.yml
+  include_tasks: config/clickhouse.yml
   tags:
     - clickhouse_configure
 
@@ -15,7 +15,27 @@
   tags:
     - clickhouse_service
 
-- name: CLICKHOUSE | Configure databases
-  include_tasks: config-databases.yml
+- name: CLICKHOUSE | Configure settings profiles
+  include_tasks: config/settings-profiles.yml
   tags:
-    - clickhouse_configure
+    - clickhouse_settings_profiles
+
+- name: CLICKHOUSE | Configure roles
+  include_tasks: config/roles.yml
+  tags:
+    - clickhouse_roles
+
+- name: CLICKHOUSE | Configure quotas
+  include_tasks: config/quotas.yml
+  tags:
+    - clickhouse_quotas
+
+- name: CLICKHOUSE | Configure users
+  include_tasks: config/users.yml
+  tags:
+    - clickhouse_users
+
+- name: CLICKHOUSE | Configure databases
+  include_tasks: config/databases.yml
+  tags:
+    - clickhouse_databases

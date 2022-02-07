@@ -1,0 +1,32 @@
+---
+
+- name: CLICKHOUSE | List roles (SQL-driven)
+  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"SELECT name FROM system.roles WHERE storage == 'local directory';\""
+  changed_when: False
+  register: clickhouse_existing_sql_roles
+  no_log: False
+  tags:
+    - clickhouse_roles
+    - select
+
+- name: CLICKHOUSE | Drop roles (SQL-driven)
+  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"DROP ROLE IF EXISTS {{ item }} ;\""
+  with_items: "{{ clickhouse_existing_sql_roles.stdout_lines }}"
+  when:
+    - clickhouse_existing_sql_roles is defined
+    - item not in clickhouse_custom_roles | map(attribute='name') | list
+  no_log: False
+  tags:
+    - clickhouse_roles
+    - delete
+
+- name: CLICKHOUSE | Add roles (SQL-driven)
+  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q {{ lookup('template', 'DDL/ROLE.j2') | quote }}"
+  with_items: "{{ clickhouse_custom_roles }}"
+  when:
+    - clickhouse_custom_roles is defined
+    - item.name not in clickhouse_existing_sql_roles.stdout_lines
+  no_log: False
+  tags:
+    - clickhouse_roles
+    - create

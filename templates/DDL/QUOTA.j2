@@ -1,0 +1,7 @@
+CREATE QUOTA IF NOT EXISTS {{ item.name }}{% if item.cluster is defined %} ON CLUSTER {{item.cluster }}{% endif %}
+{% if item.keyed is defined %}{% if item.keyed == 'NOT KEYED' %} {{ item.keyed }}{% else %} KEYED BY {{ item.keyed }}{% endif %}{% endif %}
+{% if item.settings is defined %} FOR {% for setting in item.settings %}{{ setting }}{{ ", " if not loop.last else "" }}{% endfor %}{% endif %}
+{% if item.to is defined %} TO {% if item.to == 'ALL' %}{{ item.to }}{% elif item.to[0] is match('^[\-]') %}ALL EXCEPT {% for to in item.to %}{{ to | regex_replace('^[\-]', '') }}{{ ", " if not loop.last else "" }}{% endfor %}
+{% else %}{% for to in item.to %}{{ to }}{{ ", " if not loop.last else "" }}{% endfor %}{% endif %} {% endif %}
+;
+{# https://clickhouse.com/docs/en/sql-reference/statements/create/quota/ #}
