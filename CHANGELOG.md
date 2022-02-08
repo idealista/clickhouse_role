@@ -19,6 +19,11 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 - Default molecule scenario and tests
 - Tasks orders and role files skeleton
 
+### :hammer_and_wrench: Fixed
+
+- [#16](https://github.com/idealista/clickhouse_role/issues/16) Fix missing user, password and compression values in remote_servers @ultraheroe
+- [#14](https://github.com/idealista/clickhouse_role/issues/14) Wait for service listening @jmonterrubio
+
 ## [3.0.1](https://github.com/idealista/clickhouse_role/tree/3.0.1) (2021-12-14)
 
 ### :hammer_and_wrench: Fixed
