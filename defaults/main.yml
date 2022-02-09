@@ -5,6 +5,13 @@
 clickhouse_version: 22.1.3.7
 clickhouse_release_type: stable  # Values should be: stable, lts or testing
 
+# Clickhouse role management
+clickhouse_role_manage_users: False
+clickhouse_role_manage_roles: False
+clickhouse_role_manage_databases: False
+clickhouse_role_manage_settings_profiles: False
+clickhouse_role_manage_quotas: False
+
 ## Service options
 # Documentation
 clickhouse_documentation_link: https://clickhouse.tech/docs/en/

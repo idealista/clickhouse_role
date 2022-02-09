@@ -19,23 +19,28 @@
   include_tasks: config/settings-profiles.yml
   tags:
     - clickhouse_settings_profiles
+  when: clickhouse_role_manage_settings_profiles
 
 - name: CLICKHOUSE | Configure roles
   include_tasks: config/roles.yml
   tags:
     - clickhouse_roles
+  when: clickhouse_role_manage_roles
 
 - name: CLICKHOUSE | Configure quotas
   include_tasks: config/quotas.yml
   tags:
     - clickhouse_quotas
+  when: clickhouse_role_manage_quotas
 
 - name: CLICKHOUSE | Configure users
   include_tasks: config/users.yml
   tags:
     - clickhouse_users
+  when: clickhouse_role_manage_users
 
 - name: CLICKHOUSE | Configure databases
   include_tasks: config/databases.yml
   tags:
     - clickhouse_databases
+  when: clickhouse_role_manage_databases

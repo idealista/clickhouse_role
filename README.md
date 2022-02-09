@@ -69,6 +69,7 @@ Look to the [defaults](defaults/main.yml) properties file to see the possible co
 - 🦸 To set your Admin user and use a secure 🔑 password.
 - 📝 To set the `clickhouse_custom_config_file_path` and / or `clickhouse_custom_users_file_path` if you are going to use custom config files.
   - 👉 See the [ClickHouse doc](https://clickhouse.com/docs/en/operations/configuration-files/).
+- ☑️ To enable or disable using `clickhouse_role_manage_X` vars what things the role should manage.
 - 📝 To set users, quotas, profiles, databases to create.
   - ℹ️ Or to unset if you want to DROP things.
   - 👉 See the default molecule scenario [`group_vars`](./molecule/default/group_vars/clickhouse_group.yml) for more
