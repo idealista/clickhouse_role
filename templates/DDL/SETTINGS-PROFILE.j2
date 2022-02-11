@@ -1,0 +1,4 @@
+CREATE SETTINGS PROFILE IF NOT EXISTS {{ item.name }}
+{% if item.settings is defined %} SETTINGS {% for setting in item.settings %}{{ setting }}{{ ", " if not loop.last else "" }}{% endfor %}{% endif %}
+;
+{# https://clickhouse.com/docs/en/sql-reference/statements/create/settings-profile/ #}

@@ -6,11 +6,11 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-ansible = "==4.6.0"
+ansible = "==4.10.0"
 molecule = "==3.5.2"
 docker = "==5.0.3"
-ansible-lint = "==5.2.1"
-molecule-containers = "==1.0.0"
+ansible-lint = "==5.3.2"
+molecule-containers = "==1.0.2"
 yamllint = "==1.26.3"
 
 [requires]

@@ -1,0 +1,10 @@
+CREATE USER IF NOT EXISTS {{ item.name }}{% if item.cluster is defined %} ON CLUSTER {{item.cluster }}{% endif %}
+{% if item.ldap_server is defined %} IDENTIFIED WITH ldap SERVER '{{ item.ldap_server }}'{% elif item.kerberos is defined %} IDENTIFIED WITH kerberos {% if item.kerberos != '' %}REALM '{{ item.kerberos }}'{% endif %}{% elif item.password is defined %} IDENTIFIED WITH {{ item.password_type | default("sha256_password") | lower }}{% if item.password is defined and item.password_type is not defined or (item.password is defined and item.password_type | upper != 'NO_PASSWORD') %} BY '{{ item.password}}'{% endif %}{% else %} NOT IDENTIFIED{% endif %}
+{% if item.networks is defined %} HOST {% for host in item.networks %}{{ host }}{{ ", " if not loop.last else "" }}{% endfor %}{% endif %}
+{% if item.role is defined %} DEFAULT ROLE {% for role in item.role %}{{ role }}{{ ", " if not loop.last else "" }}{% endfor %}{% endif %}
+{% if item.default_database is defined %}DEFAULT DATABASE {{ item.default_database }}{% endif %}
+{% if item.grantees is defined %} GRANTEES {% for grantee in item.grantees %}{% if grantee is not match('^[\-]') %}{{ ", " if not loop.first and grantee is not match('^[\-]') else "" }}{{ grantee }}{% endif %}{% endfor %}{% if item.grantees | map('regex_search', '^[\-]') | select('string') | list| length > 0 %} EXCEPT {% endif %}{% for exception in item.grantees | map('regex_search', '^[\-].*') | select('string') | list %}{{ exception | regex_replace('^[\-]', '')}}{{ ", " if not loop.last else "" }}{% endfor %}{% endif %}
+{% if item.settings is defined %} SETTINGS {% for setting in item.settings %}{{ setting }}{{ ", " if not loop.last else "" }}{% endfor %}{% endif %}
+{% if item.profile is defined %} SETTINGS PROFILE {% for profile in item.profile %}'{{ profile }}'{{ ", " if not loop.last else "" }}{% endfor %}{% endif %}
+;
+{# https://clickhouse.com/docs/en/sql-reference/statements/create/user/ #}

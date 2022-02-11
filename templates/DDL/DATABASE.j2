@@ -1,0 +1,5 @@
+CREATE DATABASE IF NOT EXISTS {{ item.name }}{% if item.cluster is defined %} ON CLUSTER {{item.cluster }}{% endif %}
+{% if item.engine is defined %} ENGINE = {{item.engine }}{% endif %}
+{% if item.comment is defined %} COMMENT '{{item.comment }}'{% endif %}
+;
+{# https://clickhouse.com/docs/en/sql-reference/statements/create/role/ #}

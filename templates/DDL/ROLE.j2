@@ -1,0 +1,5 @@
+CREATE ROLE IF NOT EXISTS {{ item.name }}
+{% if item.settings is defined %} SETTINGS {% for setting in item.settings %}{{ setting }}{{ ", " if not loop.last else "" }}{% endfor %}{% endif %}
+{% if item.profile is defined %} SETTINGS PROFILE {% for profile in item.profile %}'{{ profile }}'{{ ", " if not loop.last else "" }}{% endfor %}{% endif %}
+;
+{# https://clickhouse.com/docs/en/sql-reference/statements/create/role/ #}
