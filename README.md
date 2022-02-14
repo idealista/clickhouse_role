@@ -76,6 +76,7 @@ Look to the [defaults](defaults/main.yml) properties file to see the possible co
 
 ### ❗ You must know
 
+- ⚠️ `clickhouse_replicated_tables_macros` is deprecated, please use `clickhouse_macros` var
 - ⚠️ Note that are two ways to set users for ClickHouse, `users.xml` or via SQL-query, to distinguish both methods note that in this role we use `clickhouse_custom_users_xml` and `clickhouse_custom_users` respectively (SQL recommended).
 - ❗ To make us of the 'EXCEPT' clauses for [quota assignation](https://clickhouse.com/docs/en/sql-reference/statements/create/quota/) or [user grantees](https://clickhouse.com/docs/en/sql-reference/statements/create/user/#grantees) for example, you can add a minus or dash _( - )_ before the name.
 - ❗ When setting `password_type` for users, it should be one of [this](https://clickhouse.com/docs/en/sql-reference/statements/create/user/#identification)

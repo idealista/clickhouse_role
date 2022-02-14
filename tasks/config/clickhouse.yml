@@ -7,7 +7,7 @@
     mode: 0644
   when: clickhouse_custom_config_file_path is not defined
   notify: "{{ clickhouse_handler_on_config_change }}"
-  tags: config_files
+  tags: clickhouse_configure
 
 - name: CLICKHOUSE | Add configuration files (from user files)
   copy:
@@ -18,7 +18,7 @@
     mode: 0644
   when: clickhouse_custom_config_file_path is defined
   notify: "{{ clickhouse_handler_on_config_change }}"
-  tags: config_files
+  tags: clickhouse_configure
 
 - name: CLICKHOUSE | Configure users (from vars)
   template:
@@ -28,7 +28,7 @@
   when: clickhouse_custom_users_file_path is not defined
   notify: "{{ clickhouse_handler_on_config_change }}"
   tags:
-    - config_files
+    - clickhouse_configure
     - clickhouse_users
 
 - name: CLICKHOUSE | Configure users files (from users files)
@@ -41,5 +41,5 @@
   when: clickhouse_custom_users_file_path is defined
   notify: "{{ clickhouse_handler_on_config_change }}"
   tags:
-    - config_files
+    - clickhouse_configure
     - clickhouse_users
