@@ -57,13 +57,17 @@
     - "{{ clickhouse_user_files_directory }}"
   become: true
 
-- name: CLICKHOUSE | Ensure needed config directory exist
+- name: CLICKHOUSE | Ensure needed config directories exist
   file:
     state: directory
-    dest: "{{ clickhouse_config_directory }}"
+    dest: "{{ item }}"
     owner: "{{ clickhouse_user }}"
     group: "{{ clickhouse_group }}"
     mode: "{{ clickhouse_config_directory_mode }}"
+  with_items:
+    - "{{ clickhouse_config_directory }}"
+    - "{{ clickhouse_config_directory_config_d }}"
+    - "{{ clickhouse_config_directory_users_d }}"
   become: true
 
 - name: CLICKHOUSE | Ensure needed tmp directories exist

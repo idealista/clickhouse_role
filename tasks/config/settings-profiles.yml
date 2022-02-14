@@ -1,0 +1,32 @@
+---
+
+- name: CLICKHOUSE | List settings profiles (SQL-driven)
+  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"SELECT name FROM system.settings_profiles WHERE storage == 'local directory';\""
+  changed_when: False
+  register: clickhouse_existing_sql_settings_profiles
+  no_log: False
+  tags:
+    - clickhouse_settings_profiles
+    - select
+
+- name: CLICKHOUSE | Drop settings-profiles (SQL-driven)
+  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"DROP SETTINGS PROFILE IF EXISTS {{ item }} ;\""
+  with_items: "{{ clickhouse_existing_sql_settings_profiles.stdout_lines }}"
+  when:
+    - clickhouse_existing_sql_settings_profiles is defined
+    - item not in clickhouse_custom_settings_profiles | map(attribute='name') | list
+  no_log: False
+  tags:
+    - clickhouse_settings_profiles
+    - delete
+
+- name: CLICKHOUSE | Add settings profiles (SQL-driven)
+  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q {{ lookup('template','DDL/SETTINGS-PROFILE.j2') | quote }}"
+  with_items: "{{ clickhouse_custom_settings_profiles }}"
+  when:
+    - clickhouse_custom_settings_profiles is defined
+    - item.name not in clickhouse_existing_sql_settings_profiles.stdout_lines
+  no_log: False
+  tags:
+    - clickhouse_settings_profiles
+    - create

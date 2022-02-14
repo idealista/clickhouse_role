@@ -16,6 +16,17 @@
     enabled: "{{ clickhouse_service_enabled }}"
     daemon_reload: yes
 
+- name: CLICKHOUSE | Wait for service listening
+  wait_for:
+    host: localhost
+    port: "{{ clickhouse_http_port }}"
+    state: "{{ clickhouse_service_state }}"
+    delay: 5
+    timeout: 300
+  when:
+    - clickhouse_service_enabled
+    - clickhouse_service_state == "started"
+
 - name: CLICKHOUSE | Copy Clickhouse JDBC Bridge service
   template:
     src: "{{ clickhouse_jdbc_bridge_service_template_path }}"

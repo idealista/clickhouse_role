@@ -21,11 +21,16 @@ file:
     group: {{ clickhouse_group }}
     exists: true
     filetype: directory
-{% for item in clickhouse_config_files %}
-{{ clickhouse_config_directory }}/{{ item }}:
+  {{ clickhouse_config_directory }}/{{ clickhouse_config_file_name }}:
+    owner: {{ clickhouse_user }}
+    group: {{ clickhouse_group }}
     exists: true
     filetype: file
-{% endfor %}
+  {{ clickhouse_config_directory }}/{{ clickhouse_users_file_name }}:
+    owner: {{ clickhouse_user }}
+    group: {{ clickhouse_group }}
+    exists: true
+    filetype: file
 
 service:
   {{ clickhouse_service }}:
@@ -69,34 +74,33 @@ http:
   http://localhost:8123?query=SHOW+USERS:
     status: 200
     timeout: 10000
-    body: ["admin","default","readonly","user1","user2"]
+    body: ["admin","default","readonly","Bunta","Takumi"]
     username: {{ clickhouse_admin_user }}
     password: {{ clickhouse_admin_password }}
     skip: false
   http://localhost:8123?query=SHOW+DATABASES:
     status: 200
     timeout: 10000
-    body: ["system","default","test1","test2","test3"]
+    body: ["system","default","ProjectD","ex_racing","racing"]
     username: {{ clickhouse_admin_user }}
     password: {{ clickhouse_admin_password }}
     skip: false
-  http://localhost:8123?query=SHOW+GRANTS+FOR+user1:
+  http://localhost:8123?query=SHOW+GRANTS+FOR+Bunta:
     status: 200
     timeout: 10000
     body: 
-      - "GRANT CREATE TEMPORARY TABLE, KILL QUERY, MOVE PARTITION BETWEEN SHARDS, SYSTEM SHUTDOWN, SYSTEM DROP CACHE, SYSTEM RELOAD, SYSTEM RESTART DISK, SYSTEM FLUSH LOGS, INTROSPECTION, SOURCES ON *.* TO user1"
-      - "GRANT SHOW DICTIONARIES, CREATE DICTIONARY, DROP DICTIONARY, dictGet ON `<no_database>`.* TO user1"
-      - "GRANT SHOW, SELECT, INSERT, ALTER, CREATE DATABASE, CREATE TABLE, CREATE VIEW, CREATE DICTIONARY, CREATE FUNCTION, DROP, TRUNCATE, OPTIMIZE, SYSTEM MERGES, SYSTEM TTL MERGES, SYSTEM FETCHES, SYSTEM MOVES, SYSTEM SENDS, SYSTEM REPLICATION QUEUES, SYSTEM DROP REPLICA, SYSTEM SYNC REPLICA, SYSTEM RESTART REPLICA, SYSTEM RESTORE REPLICA, SYSTEM FLUSH DISTRIBUTED, dictGet ON test1.* TO user1"
+      - "GRANT CREATE TEMPORARY TABLE, KILL QUERY, MOVE PARTITION BETWEEN SHARDS, SYSTEM SHUTDOWN, SYSTEM DROP CACHE, SYSTEM RELOAD, SYSTEM RESTART DISK, SYSTEM FLUSH LOGS, SYSTEM THREAD FUZZER, INTROSPECTION, SOURCES ON *.* TO Bunta"
+      - "GRANT SHOW DICTIONARIES, CREATE DICTIONARY, DROP DICTIONARY, dictGet ON `<no_database>`.* TO Bunta"
+      - "GRANT SHOW, SELECT, INSERT, ALTER, CREATE DATABASE, CREATE TABLE, CREATE VIEW, CREATE DICTIONARY, CREATE FUNCTION, DROP, TRUNCATE, OPTIMIZE, SYSTEM MERGES, SYSTEM TTL MERGES, SYSTEM FETCHES, SYSTEM MOVES, SYSTEM SENDS, SYSTEM REPLICATION QUEUES, SYSTEM DROP REPLICA, SYSTEM SYNC REPLICA, SYSTEM RESTART REPLICA, SYSTEM RESTORE REPLICA, SYSTEM FLUSH DISTRIBUTED, dictGet ON ex_racing.* TO Bunta"
+      
     username: {{ clickhouse_admin_user }}
     password: {{ clickhouse_admin_password }}
     skip: false
-  http://localhost:8123?query=SHOW+GRANTS+FOR+user2:
+  http://localhost:8123?query=SHOW+GRANTS+FOR+Takumi:
     status: 200
     timeout: 10000
     body: 
-      - "GRANT CREATE TEMPORARY TABLE, KILL QUERY, MOVE PARTITION BETWEEN SHARDS, SYSTEM SHUTDOWN, SYSTEM DROP CACHE, SYSTEM RELOAD, SYSTEM RESTART DISK, SYSTEM FLUSH LOGS, INTROSPECTION, SOURCES ON *.* TO user2"
-      - "GRANT SHOW DICTIONARIES, CREATE DICTIONARY, DROP DICTIONARY, dictGet ON `<no_database>`.* TO user2"
-      - "GRANT SHOW, SELECT, INSERT, ALTER, CREATE DATABASE, CREATE TABLE, CREATE VIEW, CREATE DICTIONARY, CREATE FUNCTION, DROP, TRUNCATE, OPTIMIZE, SYSTEM MERGES, SYSTEM TTL MERGES, SYSTEM FETCHES, SYSTEM MOVES, SYSTEM SENDS, SYSTEM REPLICATION QUEUES, SYSTEM DROP REPLICA, SYSTEM SYNC REPLICA, SYSTEM RESTART REPLICA, SYSTEM RESTORE REPLICA, SYSTEM FLUSH DISTRIBUTED, dictGet ON test2.* TO user2"
+      - "GRANT projectd_members, tofu_shop TO Takumi"
     username: {{ clickhouse_admin_user }}
     password: {{ clickhouse_admin_password }}
     skip: false

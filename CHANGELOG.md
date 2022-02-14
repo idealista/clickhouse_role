@@ -5,6 +5,28 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/clickhouse_role/tree/develop)
 
+## [3.1.0](https://github.com/idealista/clickhouse_role/tree/3.1.0) (2022-02-14)
+
+### :heavy_plus_sign: Added
+
+- Option to use custom config xml files
+- [#18](https://github.com/idealista/clickhouse_role/issues/18) Option to create and remove basic users, roles, profiles, quotas, etc @ultraheroe
+
+### :repeat: Updated
+
+- Default ClickHouse version.
+- Requirements versions.
+- Readme instructions.
+- Molecule verify update to use checksum instead of the deprecated command.
+- Default molecule scenario and tests
+- Tasks orders and role files skeleton
+- [#20](https://github.com/idealista/clickhouse_role/issues/20) clickhouse_macros var refactor @ultraheroe
+
+### :hammer_and_wrench: Fixed
+
+- [#16](https://github.com/idealista/clickhouse_role/issues/16) Fix missing user, password and compression values in remote_servers @ultraheroe
+- [#14](https://github.com/idealista/clickhouse_role/issues/14) Wait for service listening @jmonterrubio
+
 ## [3.0.1](https://github.com/idealista/clickhouse_role/tree/3.0.1) (2021-12-14)
 
 ### :hammer_and_wrench: Fixed
