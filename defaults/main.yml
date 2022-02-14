@@ -64,7 +64,7 @@ clickhouse_users_file_name: users.xml
 clickhouse_base_path: "/var/lib"
 clickhouse_config_directory: "/etc/clickhouse-server"
 clickhouse_config_directory_mode: 0700
-clickhouse_config_directory_config_d: "{{ clickhouse_config_directory }}/config_d"
+clickhouse_config_directory_config_d: "{{ clickhouse_config_directory }}/config.d"
 clickhouse_config_directory_users_d: "{{ clickhouse_config_directory }}/users.d"
 clickhouse_log_directory: "/var/log/clickhouse-server"
 clickhouse_log_directory_mode: 0740
@@ -387,7 +387,7 @@ clickhouse_remote_servers:
 #       - clickhouse1
 #       - clickhouse2
 #   - macro: |
-#       <db_default>default</default>
+#       <db_default>default</db_default>
 
 # Graphite
 # clickhouse_graphite:

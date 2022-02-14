@@ -126,4 +126,4 @@ clickhouse_macros:
     server:
       - clickhouse
   - macro: |
-      <db_default>default</default>
+      <db_default>default</db_default>
