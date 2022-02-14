@@ -372,11 +372,22 @@ clickhouse_remote_servers:
 #     host:
 #     port:
 
-# clickhouse_replicated_tables_macros:
+# clickhouse_replicated_tables_macros:  # Var deprecated use clickhouse_macros
 #   - server: servername
 #     macro: |
 #       <shard>1</shard>
 #       <replica>1</replica>
+
+# Macros
+# clickhouse_macros:
+#   - macro: |
+#       <shard>1</shard>
+#       <replica>1</replica>
+#     server:
+#       - clickhouse1
+#       - clickhouse2
+#   - macro: |
+#       <db_default>default</default>
 
 # Graphite
 # clickhouse_graphite:

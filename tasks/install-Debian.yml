@@ -65,9 +65,9 @@
     group: "{{ clickhouse_group }}"
     mode: "{{ clickhouse_config_directory_mode }}"
   with_items:
-    - clickhouse_config_directory
-    - clickhouse_config_directory_config_d
-    - clickhouse_config_directory_users_d
+    - "{{ clickhouse_config_directory }}"
+    - "{{ clickhouse_config_directory_config_d }}"
+    - "{{ clickhouse_config_directory_users_d }}"
   become: true
 
 - name: CLICKHOUSE | Ensure needed tmp directories exist

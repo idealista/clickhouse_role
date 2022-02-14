@@ -833,7 +833,15 @@
   </macros>
   -->
 
-{% if clickhouse_replicated_tables_macros is defined %}
+{% if clickhouse_macros is defined %}
+  <macros>
+{% for macros in clickhouse_macros %}
+{% if macros.server is defined and inventory_hostname in macros.server %}{{ macros.macro|indent(4, true) }}{% endif %}
+{% if macros.server is not defined %}{{ macros.macro|indent(4, true) }}{% endif %}
+{% endfor %}
+  </macros>
+{# Deprecated, please use clickhouse_macros instead of clickhouse_replicated_tables_macros #}
+{% elif clickhouse_replicated_tables_macros is defined %}
   <macros>
 {% for macros in clickhouse_replicated_tables_macros %}
 {% if macros.server == inventory_hostname %}{{ macros.macro|indent(4, true) }}{% endif %}

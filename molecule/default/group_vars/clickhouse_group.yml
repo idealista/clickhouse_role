@@ -118,3 +118,12 @@ clickhouse_listen_hosts:
 
 clickhouse_default_networks:
   - '::/0'
+
+clickhouse_macros:
+  - macro: |
+      <shard>1</shard>
+      <replica>1</replica>
+    server: 
+      - clickhouse
+  - macro: |
+      <db_default>default</default>
