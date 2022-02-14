@@ -123,7 +123,7 @@ clickhouse_macros:
   - macro: |
       <shard>1</shard>
       <replica>1</replica>
-    server: 
+    server:
       - clickhouse
   - macro: |
       <db_default>default</default>
