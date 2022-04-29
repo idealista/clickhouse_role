@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/clickhouse_role/tree/develop)
 
+## [3.1.1](https://github.com/idealista/clickhouse_role/tree/3.1.1) (2022-04-29)
+
+
+:hammer_and_wrench: Fixed
+#23 Fixed task trying to remove '_temporary_and_external_tables' database  @santi-eidu
+
 ## [3.1.0](https://github.com/idealista/clickhouse_role/tree/3.1.0) (2022-02-14)
 
 ### :heavy_plus_sign: Added
