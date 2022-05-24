@@ -26,7 +26,7 @@ These instructions will get you a copy of the role for your Ansible playbook. On
 
 ### Prerequisites :ballot_box_with_check:
 
-Ansible 4.x.x version installed.
+Ansible 5.x.x version installed.
 
 Molecule 3.x.x version installed.
 
@@ -39,7 +39,7 @@ Create or add to your roles dependency file (e.g requirements.yml):
 ```yml
 - src: idealista.clickhouse_role
   scm: git
-  version: 3.0.1
+  version: 3.2.0
   name: clickhouse_role
 ```
 
@@ -70,18 +70,27 @@ Look to the [defaults](defaults/main.yml) properties file to see the possible co
 - 📝 To set the `clickhouse_custom_config_file_path` and / or `clickhouse_custom_users_file_path` if you are going to use custom config files.
   - 👉 See the [ClickHouse doc](https://clickhouse.com/docs/en/operations/configuration-files/).
 - ☑️ To enable or disable using `clickhouse_role_manage_X` vars what things the role should manage.
-- 📝 To set users, quotas, profiles, databases to create.
+- 📝 To set users, quotas, profiles, grants, databases to create.
   - ℹ️ Or to unset if you want to DROP things.
   - 👉 See the default molecule scenario [`group_vars`](./molecule/default/group_vars/clickhouse_group.yml) for more
 
 ### ❗ You must know
 
-- ⚠️ `clickhouse_replicated_tables_macros` is deprecated, please use `clickhouse_macros` var
-- ⚠️ Note that are two ways to set users for ClickHouse, `users.xml` or via SQL-query, to distinguish both methods note that in this role we use `clickhouse_custom_users_xml` and `clickhouse_custom_users` respectively (SQL recommended).
 - ❗ To make us of the 'EXCEPT' clauses for [quota assignation](https://clickhouse.com/docs/en/sql-reference/statements/create/quota/) or [user grantees](https://clickhouse.com/docs/en/sql-reference/statements/create/user/#grantees) for example, you can add a minus or dash _( - )_ before the name.
 - ❗ When setting `password_type` for users, it should be one of [this](https://clickhouse.com/docs/en/sql-reference/statements/create/user/#identification)
 - ❗ When setting `keyed` for quota, it should be one of [this](https://clickhouse.com/docs/en/sql-reference/statements/create/quota/)
 - ❗ In case you're using LDAP or Kerberos, set each with their own property `ldap_server` or 'kerberos' so `password_type` is not required
+- ⚠️ `clickhouse_replicated_tables_macros` is deprecated, please use `clickhouse_macros` var
+
+#### Users and roles
+
+- ⚠️ Note that are two ways to set users for ClickHouse, `users.xml` or via SQL-query, to distinguish both methods note that in this role we use `clickhouse_custom_users_xml` and `clickhouse_custom_users` respectively (SQL recommended).
+- ⚠️ When granting, you must know:
+  - There is an option to disable the before "GRANTS" clean up: `clickhouse_custom_grants_previous_cleanup`
+  - When granting permissions and privileges the order of the items in definition list takes precedence, is recommended to do this grant from less to the most restrictive.
+    - 👉 See example below, more at the default molecule scenario [`group_vars`](./molecule/default/group_vars/clickhouse_group.yml) for more.
+  - Statements Aliases are valid, but not handled at "ansible level" so this results in task making comparisions like `privileges: [DELETE]` vs `system.grants access_type = ALTER DELETE` (from ClickHouse), so we recommend set "un-aliased" perms and privs.
+  - You can GRANT a role to a role, or roles to users with `clickhouse_custom_grant_roles`.
 
 ##### Custom user definition example:
 
@@ -106,6 +115,34 @@ Look to the [defaults](defaults/main.yml) properties file to see the possible co
       databases: [ProjectD]
       # ldap_server: project.d
       # kerberos: ""
+
+  clickhouse_custom_grants:
+  - on:
+    databases: [Akina]
+    tables: ["*"]
+    privileges: [SELECT]
+    to: [initial_d]
+  - on:
+    # cluster:
+    databases: ["Akina"]
+    tables: [calendar, records]
+    # columns: [Notes]
+    privileges: [ALL]
+    to: [Takumi, Iketani]
+    with_grant_option: True
+  - on:
+    # cluster:
+    databases: ["Akina"]
+    tables: [records]
+    privileges: [SELECT, UPDATE]
+    to: [Iketani]
+    with_grant_option: False
+
+  clickhouse_custom_grant_roles:
+    - roles: [initial_d]
+      to: [Takumi, Iketani]
+      # cluster:
+```
 
 ## Testing :test_tube:
 

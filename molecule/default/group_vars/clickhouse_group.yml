@@ -9,6 +9,7 @@ clickhouse_role_manage_roles: True
 clickhouse_role_manage_databases: True
 clickhouse_role_manage_settings_profiles: True
 clickhouse_role_manage_quotas: True
+clickhouse_role_manage_grants: True
 
 # clickhouse_custom_config_file_path: "{{ playbook_dir }}/config_files/config"
 # clickhouse_custom_users_file_path: "{{ playbook_dir }}/config_files/users"
@@ -54,6 +55,12 @@ clickhouse_custom_users:
     quota: "default"
     databases: [ProjectD]
   - user:
+    name: "Iketani"
+    password_type: PLAINTEXT_PASSWORD
+    password: "S13"
+    networks:
+      - "IP '::/0'"
+  - user:
     name: "Ryosuke"
     password_type: PLAINTEXT_PASSWORD
     password: "PjD4ever"
@@ -79,6 +86,42 @@ clickhouse_custom_roles:
     name: tofu_shop
     settings:
       - "max_memory_usage = 100"
+  - role:
+    name: initial_d
+
+clickhouse_custom_grants:
+  - on:
+    databases: [Akina]
+    tables: ["*"]
+    privileges: [SELECT]
+    to: [initial_d]
+  - on:
+    # cluster:
+    databases: ["racing"]
+    tables: ["*"]
+    # columns: ["*"]
+    privileges: [ALL]
+    to: [Takumi, Iketani]
+  - on:
+    # cluster:
+    databases: ["Akina"]
+    tables: [calendar, records]
+    # columns: [Notes]
+    privileges: [ALL]
+    to: [Takumi, Iketani]
+    with_grant_option: True
+  - on:
+    # cluster:
+    databases: ["Akina"]
+    tables: [records]
+    privileges: [SELECT, UPDATE]
+    to: [Iketani]
+    with_grant_option: False
+
+clickhouse_custom_grant_roles:
+  - roles: [initial_d]
+    to: [Takumi, Iketani]
+    # cluster:
 
 # Settings profiles
 clickhouse_custom_settings_profiles:

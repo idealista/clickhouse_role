@@ -5,11 +5,28 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/clickhouse_role/tree/develop)
 
+### :heavy_plus_sign: Added
+
+- [#26](https://github.com/idealista/clickhouse_role/issues/26) New feature to manage GRANT perms and privs
+- Corresponding vars to use that feature
+- Testing vars for this feature in molecule/group_vars
+- Necesary templates
+
+### :hammer_and_wrench: Fixed
+
+- Tasks with no_log set to False
+
+### :repeat: Updated
+
+- Readme
+- Test requirements Ansible version to 5.2.0
+- Task tags
+
 ## [3.1.1](https://github.com/idealista/clickhouse_role/tree/3.1.1) (2022-04-29)
 
+### :hammer_and_wrench: Fixed
 
-:hammer_and_wrench: Fixed
-#23 Fixed task trying to remove '_temporary_and_external_tables' database  @santi-eidu
+- [#23](https://github.com/idealista/clickhouse_role/issues/23) Fixed task trying to remove '_temporary_and_external_tables' database @santi-eidu
 
 ## [3.1.0](https://github.com/idealista/clickhouse_role/tree/3.1.0) (2022-02-14)
 

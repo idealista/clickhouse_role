@@ -11,6 +11,7 @@ clickhouse_role_manage_roles: False
 clickhouse_role_manage_databases: False
 clickhouse_role_manage_settings_profiles: False
 clickhouse_role_manage_quotas: False
+clickhouse_role_manage_grants: False
 
 ## Service options
 # Documentation
@@ -671,6 +672,20 @@ clickhouse_custom_users: []
 
 # Roles
 clickhouse_custom_roles: []
+
+# Grants
+clickhouse_custom_grants_previous_cleanup: True
+# clickhouse_custom_grants:
+#   - on:
+#     cluster:
+#     databases: []
+#     tables: []
+#     columns: []
+#     privileges: []
+#     to: []
+# clickhouse_custom_grant_roles:
+#   - roles: []
+#     to: []
 
 # Quotas
 clickhouse_default_quotas:

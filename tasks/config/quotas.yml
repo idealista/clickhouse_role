@@ -4,10 +4,11 @@
   command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"SELECT name FROM system.quotas WHERE storage == 'local directory';\""
   changed_when: False
   register: clickhouse_existing_sql_quotas
-  no_log: False
+  no_log: True
   tags:
     - clickhouse_quotas
     - select
+    - SQL_driven
 
 - name: CLICKHOUSE | Drop quotas (SQL-driven)
   command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"DROP QUOTA IF EXISTS {{ item }} ;\""
@@ -15,10 +16,11 @@
   when:
     - clickhouse_existing_sql_quotas is defined
     - item not in clickhouse_custom_quotas | map(attribute='name') | list
-  no_log: False
+  no_log: True
   tags:
     - clickhouse_quotas
     - delete
+    - SQL_driven
 
 - name: CLICKHOUSE | Add quotas (SQL-driven)
   command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q {{ lookup('template','DDL/QUOTA.j2') | quote }}"
@@ -26,7 +28,8 @@
   when:
     - clickhouse_custom_quotas is defined
     - item.name not in clickhouse_existing_sql_quotas.stdout_lines
-  no_log: False
+  no_log: True
   tags:
     - clickhouse_quotas
     - create
+    - SQL_driven

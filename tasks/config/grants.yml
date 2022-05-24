@@ -1,0 +1,51 @@
+---
+
+- name: CLICKHOUSE | List perms and privs (SQL-driven)
+  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"
+    SELECT user_name, role_name,
+      ifNull(database, '*') AS database ,
+      ifNull(table, '*') AS table,
+      ifNull(column, '*') AS column,
+      arrayCompact(groupArray(access_type)) AS access_type,
+      grant_option
+    FROM system.grants
+    RIGHT JOIN system.users u ON user_name = u.name AND u.storage = 'local directory'
+    WHERE (user_name in ({{ '' ~ item.to ~ '' | join(', ') }}) or (role_name in ({{ '' ~ item.to ~ '' | join(', ') }})))
+    AND database in ({{ '' ~ item.databases ~ '' | join(', ') }})
+    AND table in ({{ '' ~ item.tables ~ '' | join(', ') }})
+    GROUP BY user_name, role_name, database, table, column, grant_option
+    FORMAT JSON;
+    \""
+  changed_when: False
+  register: clickhouse_existing_sql_grants
+  no_log: True
+  tags:
+    - clickhouse_grants
+    - select
+    - SQL_driven
+
+- name: CLICKHOUSE | Set var with the perms and privs listed
+  set_fact:
+    actual_privs: "{{ (clickhouse_existing_sql_grants.stdout | from_json)['data'] }}"
+  tags:
+    - clickhouse_grants
+
+# All logic of this revokes and grants are in the template because of "speed performance" instead of ansible task doing the loop
+- name: CLICKHOUSE | Revoke user and roles grants missing (SQL-driven)
+  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} --multiquery -q {{ lookup('template', 'DDL/REVOKE.j2') | quote }}"
+  when: actual_privs is defined
+  no_log: True
+  tags:
+    - clickhouse_grants
+    - revoke
+    - SQL_driven
+
+- name: CLICKHOUSE | Do Grants for users and roles (SQL-driven)
+  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} --multiquery -q {{ lookup('template', 'DDL/GRANT.j2') | quote }}"
+  when:
+    - item.privileges is defined
+  no_log: True
+  tags:
+    - clickhouse_grants
+    - grant
+    - SQL_driven
