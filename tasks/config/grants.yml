@@ -34,6 +34,7 @@
 - name: CLICKHOUSE | Revoke user and roles grants missing (SQL-driven)
   command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} --multiquery -q {{ lookup('template', 'DDL/REVOKE.j2') | quote }}"
   when: actual_privs is defined
+  changed_when: False
   no_log: True
   tags:
     - clickhouse_grants
@@ -44,6 +45,7 @@
   command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} --multiquery -q {{ lookup('template', 'DDL/GRANT.j2') | quote }}"
   when:
     - item.privileges is defined
+  changed_when: False
   no_log: True
   tags:
     - clickhouse_grants

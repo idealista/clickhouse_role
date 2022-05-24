@@ -86,10 +86,12 @@ Look to the [defaults](defaults/main.yml) properties file to see the possible co
 
 - ⚠️ Note that are two ways to set users for ClickHouse, `users.xml` or via SQL-query, to distinguish both methods note that in this role we use `clickhouse_custom_users_xml` and `clickhouse_custom_users` respectively (SQL recommended).
 - ⚠️ When granting, you must know:
-  - There is an option to disable the before "GRANTS" clean up: `clickhouse_custom_grants_previous_cleanup`
+  - When performing the GRANT actions to maintain the perms & privs clean a "general" REVOKE is performed before GRANTing
+  - There is an option to disable that before "GRANTS" clean up: `clickhouse_custom_grants_previous_cleanup`
   - When granting permissions and privileges the order of the items in definition list takes precedence, is recommended to do this grant from less to the most restrictive.
     - 👉 See example below, more at the default molecule scenario [`group_vars`](./molecule/default/group_vars/clickhouse_group.yml) for more.
   - Statements Aliases are valid, but not handled at "ansible level" so this results in task making comparisions like `privileges: [DELETE]` vs `system.grants access_type = ALTER DELETE` (from ClickHouse), so we recommend set "un-aliased" perms and privs.
+  - When performing REVOKE or GRANT if a problem occurs may be result in unexpected / removed perms & privs in the ClickHouse DB ¡¡Be extra careful!!
   - You can GRANT a role to a role, or roles to users with `clickhouse_custom_grant_roles`.
 
 ##### Custom user definition example:

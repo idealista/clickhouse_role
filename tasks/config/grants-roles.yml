@@ -3,6 +3,7 @@
 - name: CLICKHOUSE | Assigning roles (SQL-driven)
   command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} --multiquery -q {{ lookup('template', 'DDL/GRANT_ROLE.j2') | quote }}"
   when: clickhouse_custom_grant_roles is defined
+  changed_when: False
   no_log: True
   tags:
     - clickhouse_grants
