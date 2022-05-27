@@ -15,12 +15,13 @@
 - name: CLICKHOUSE | Grant perms & privs
   include_tasks: config/grants.yml
   with_items: "{{ clickhouse_custom_grants }}"
+  when: clickhouse_custom_grants is defined
   tags:
     - clickhouse_grants
 
 - name: CLICKHOUSE | Grant roles
   include_tasks: config/grants-roles.yml
   with_items: "{{ clickhouse_custom_grant_roles }}"
+  when: clickhouse_custom_grant_roles is defined
   tags:
     - clickhouse_grants
-  when: clickhouse_custom_grant_roles is defined
