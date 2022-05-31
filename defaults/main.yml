@@ -2,7 +2,7 @@
 
 ## General
 # Version
-clickhouse_version: 22.1.3.7
+clickhouse_version: 22.2.2.1
 clickhouse_release_type: stable  # Values should be: stable, lts or testing
 
 # Clickhouse role management

@@ -21,6 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 - Readme
 - Test requirements Ansible version to 5.2.0
 - Task tags
+- Clickhouse default version
 
 ## [3.1.1](https://github.com/idealista/clickhouse_role/tree/3.1.1) (2022-04-29)
 
