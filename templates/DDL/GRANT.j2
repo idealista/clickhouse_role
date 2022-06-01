@@ -1,0 +1,4 @@
+{% for database in item.databases %}{% for table in item.tables %}
+GRANT {% if item.cluster is defined %}ON CLUSTER {{ item.cluster }} {% endif %}{% for privilege in item.privileges %}{{ privilege }}{% if item.columns is defined %}({{ item.columns | join(', ') }}){% endif %}{{ ", " if not loop.last else "" }}{% endfor %} ON {{ database }}.{{ table }} TO {{ item.to | join(', ') }}{% if item.with_grant_option is defined and item.with_grant_option|bool %} WITH GRANT OPTION{% endif %}{% if item.with_replace_option is defined and item.with_replace_option|bool %} WITH REPLACE OPTION{% endif %};
+{% endfor %}{% endfor %}
+{# https://clickhouse.com/docs/en/sql-reference/statements/grant #}

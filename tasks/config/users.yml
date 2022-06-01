@@ -4,10 +4,11 @@
   command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"SELECT name FROM system.users WHERE storage == 'local directory';\""
   changed_when: False
   register: clickhouse_existing_sql_users
-  no_log: False
+  no_log: True
   tags:
     - clickhouse_users
     - select
+    - SQL_driven
 
 - name: CLICKHOUSE | Drop users (SQL-driven)
   command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"DROP USER IF EXISTS {{ item }} ;\""
@@ -15,10 +16,11 @@
   when:
     - clickhouse_existing_sql_users is defined
     - item not in clickhouse_custom_users | map(attribute='name') | list
-  no_log: False
+  no_log: True
   tags:
     - clickhouse_users
     - delete
+    - SQL_driven
 
 - name: CLICKHOUSE | Add users (SQL-driven)
   command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q {{ lookup('template', 'DDL/USER.j2') | quote }}"
@@ -26,7 +28,8 @@
   when:
     - clickhouse_custom_users is defined
     - item.name not in clickhouse_existing_sql_users.stdout_lines
-  # no_log: False
+  no_log: True
   tags:
     - clickhouse_users
     - create
+    - SQL_driven

@@ -1,0 +1,25 @@
+{% for grant in actual_privs %}
+{% for priv in grant.access_type %}
+{% set revoke_condition = 
+(grant.user_name in item.to) or (grant.role_name in item.to)
+and grant.database in item.databases
+and grant.table in item.tables
+and grant.column in item.columns|default('*')
+and priv not in item.privileges
+and grant.grant_option|bool != item.with_grant_option|default(False)
+-%}
+{% if revoke_condition %}
+REVOKE {{ priv }}{% if item.columns is defined %}({{ item.columns | join(', ') }}){% endif %} ON {{ grant.database }}.{{ grant.table }} FROM {{ grant.user_name }};
+{% endif %}
+{% if grant.grant_option|bool and not item.with_grant_option|default(False) %}
+REVOKE GRANT OPTION FOR {{ priv }} ON {{ grant.database }}.{{ grant.table }} FROM {{ grant.user_name }};
+{% endif %}
+{% endfor %}
+{% endfor %}
+{# --------------- #}
+{# REVOKE {{ row.1 }}{% if item.columns is defined %}({{ item.columns | join(', ') }}){% endif %} ON {{ row.0.database }}.{{ row.0.table }} FROM {{ row.0.user_name }};
+
+{% if row.0.grant_option == 'True' and item.with_grant_option == 'False' %}
+REVOKE GRANT OPTION FOR {{ row.1 }} ON {{ row.0.database }}.{{ row.0.table }} FROM {{ row.0.user_name }};
+{% endif %} #}
+{# https://clickhouse.com/docs/en/sql-reference/statements/grant #}
