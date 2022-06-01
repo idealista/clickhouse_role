@@ -1,0 +1,2 @@
+GRANT {% if item.cluster is defined %}ON CLUSTER {{ item.cluster }} {% endif %}{{ item.roles | join(', ') }} TO {{ item.to | join(', ') }}{% if item.with_admin_option is defined and item.with_admin_option|bool %} WITH ADMIN OPTION{% endif %}{% if item.with_replace_option is defined and item.with_replace_option|bool %} WITH REPLACE OPTION{% endif %};
+{# https://clickhouse.com/docs/en/sql-reference/statements/grant #}

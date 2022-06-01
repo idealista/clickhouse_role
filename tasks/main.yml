@@ -44,3 +44,9 @@
   tags:
     - clickhouse_databases
   when: clickhouse_role_manage_databases
+
+- name: CLICKHOUSE | Configure perms & privs
+  include_tasks: config/perms_and_privs.yml
+  tags:
+    - clickhouse_grants
+  when: clickhouse_role_manage_grants
