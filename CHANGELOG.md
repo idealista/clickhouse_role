@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/clickhouse_role/tree/develop)
 
+## [3.2.0](https://github.com/idealista/clickhouse_role/tree/3.2.0) (2022-06-01)
+
 ### :heavy_plus_sign: Added
 
 - [#26](https://github.com/idealista/clickhouse_role/issues/26) New feature to manage GRANT perms and privs
