@@ -47,9 +47,9 @@ clickhouse_prerequisite_repos:
   - ca-certificates
   - dirmngr
 clickhouse_service: "clickhouse-server"
-clickhouse_deb_repo: "deb https://repo.clickhouse.com/deb/{{ clickhouse_release_type }}/ main/"
+clickhouse_deb_repo: "deb https://packages.clickhouse.com/deb {{  clickhouse_release_type }} main"
 clickhouse_deb_keyserver: hkp://keyserver.ubuntu.com:80
-clickhouse_deb_keyid: E0C56BD4
+clickhouse_deb_keyid: 8919F6BD2B48D754
 clickhouse_packages:
   - procps
   - "clickhouse-client={{clickhouse_version}}"
@@ -57,7 +57,6 @@ clickhouse_packages:
   - "clickhouse-server={{clickhouse_version}}"
 
 # Config templates
-clickhouse_service_template_path: clickhouse-server.service.j2
 clickhouse_config_file_name: config.xml
 clickhouse_users_file_name: users.xml
 
