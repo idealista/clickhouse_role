@@ -1,9 +1,13 @@
 ---
 
-- name: CLICKHOUSE | Remove file (delete file if exists)
-  file:
-    path: "/etc/systemd/system/{{ clickhouse_service }}.service"
-    state: absent
+- name: CLICKHOUSE | Copy systemd unit configuration file
+  template:
+    src: "{{ clickhouse_service_template_path }}"
+    dest: "/etc/systemd/system/{{ clickhouse_service }}.service"
+    mode: 0644
+    owner: root
+    group: root
+  notify: reload-clickhouse
 
 - name: CLICKHOUSE | Configuring service
   systemd:

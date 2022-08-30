@@ -1,11 +1,11 @@
 ---
 
 - name: restart-clickhouse
-  service:
+  systemd:
     name: "{{ clickhouse_service }}"
     state: restarted
 
 - name: reload-clickhouse
-  service:
+  systemd:
     name: "{{ clickhouse_service }}"
     state: reloaded
