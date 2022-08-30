@@ -57,6 +57,7 @@ clickhouse_packages:
   - "clickhouse-server={{clickhouse_version}}"
 
 # Config templates
+clickhouse_service_template_path: clickhouse-server.service.j2
 clickhouse_config_file_name: config.xml
 clickhouse_users_file_name: users.xml
 
