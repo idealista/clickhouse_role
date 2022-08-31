@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/clickhouse_role/tree/develop)
 
+## [3.2.1](https://github.com/idealista/clickhouse_role/tree/3.2.1) (2022-08-30)
+
+### :hammer_and_wrench: Fixed
+
+- [#30](https://github.com/idealista/clickhouse_role/issues/30) Fixed clickhouse server fails after upgrading
+
 ## [3.2.0](https://github.com/idealista/clickhouse_role/tree/3.2.0) (2022-06-01)
 
 ### :heavy_plus_sign: Added
