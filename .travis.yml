@@ -7,7 +7,7 @@ os: linux
 services:
   - docker
 install:
-  - pip install pipenv==2022.10.12
+  - pip install -I pipenv
   - pipenv sync
 env:
   jobs:
