@@ -10,6 +10,11 @@
   tags:
     - clickhouse_configure
 
+- name: CLICKHOUSE | Configure copier
+  include_tasks: config/copier.yml
+  tags:
+    - clickhouse_configure_copier
+
 - name: CLICKHOUSE | Service
   include_tasks: service-clickhouse.yml
   tags:

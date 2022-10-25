@@ -199,6 +199,16 @@ clickhouse_default_networks:
 
 clickhouse_http_server_default_response: <![CDATA[<html ng-app="SMI2"><head><base href="http://ui.tabix.io/"></head><body><div ui-view="" class="content-ui"></div><script src="http://loader.tabix.io/master.js"></script></body></html>]]>
 
+# Copier Configuration
+clickhouse_copier_config_file_name: copier-config.xml
+clickhouse_copier_config_directory: "{{ clickhouse_config_directory }}"
+# clickhouse_copier_custom_config_file_path: "{{ playbook_dir }}/config_files/copier"
+clickhouse_copier_logger_level: information
+clickhouse_copier_logger_log: /var/log/clickhouse-server/clickhouse-copier.log
+clickhouse_copier_logger_errorlog: /var/log/clickhouse-server/clickhouse-copier.err.log
+clickhouse_copier_logger_size: 1000M
+clickhouse_copier_logger_count: 10
+
 # GRPC
 # clickhouse_grpc_port: 9100
 clickhouse_enable_ssl: false

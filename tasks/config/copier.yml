@@ -1,0 +1,21 @@
+---
+
+- name: CLICKHOUSE | Add copier configuration files (from vars)
+  template:
+    src: "{{ clickhouse_copier_config_file_name }}.j2"
+    dest: "{{ clickhouse_config_directory }}/{{ clickhouse_copier_config_file_name }}"
+    mode: 0644
+  when: clickhouse_copier_custom_config_file_path is not defined
+  notify: "{{ clickhouse_handler_on_config_change }}"
+  tags: clickhouse_configure_copier
+
+- name: CLICKHOUSE | Add copier configuration files (from user files)
+  copy:
+    src: "{{ clickhouse_copier_custom_config_file_path }}/"
+    dest: "{{ clickhouse_copier_config_directory }}"
+    owner: "{{ clickhouse_user }}"
+    group: "{{ clickhouse_group }}"
+    mode: 0644
+  when: clickhouse_copier_custom_config_file_path is defined
+  notify: "{{ clickhouse_handler_on_config_change }}"
+  tags: clickhouse_configure_copier
