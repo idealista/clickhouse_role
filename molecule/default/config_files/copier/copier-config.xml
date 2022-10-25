@@ -1,0 +1,24 @@
+<!-- This file for configure copier in clickhouse-server (source or destination) -->
+<clickhouse>
+    <logger>
+        <level>trace</level>
+        <log>/var/log/clickhouse-server/clickhouse-copier.log</log>
+        <errorlog>/var/log/clickhouse-server/clickhouse-copier.err.log</errorlog>
+        <size>1000M</size>
+        <count>10</count>
+    </logger>
+    <zookeeper>
+        <node>
+            <host>zookeeper-test1</host>
+            <port>2181</port>
+        </node>
+        <node>
+            <host>zookeeper-test2</host>
+            <port>2181</port>
+        </node>
+        <node>
+            <host>zookeeper-test3</host>
+            <port>2181</port>
+        </node>
+    </zookeeper>
+</clickhouse>

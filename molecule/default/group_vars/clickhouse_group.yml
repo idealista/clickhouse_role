@@ -170,3 +170,20 @@ clickhouse_macros:
       - clickhouse
   - macro: |
       <db_default>default</db_default>
+
+# Copier Configuration
+clickhouse_copier_logger_level: information
+clickhouse_copier_logger_log: /var/log/clickhouse-server/clickhouse-copier.log
+clickhouse_copier_logger_errorlog: /var/log/clickhouse-server/clickhouse-copier.err.log
+clickhouse_copier_logger_size: 1000M
+clickhouse_copier_logger_count: 10
+clickhouse_zookeeper:
+  - node:
+    host: zookeeper-test1
+    port: 2181
+  - node:
+    host: zookeeper-test2
+    port: 2181
+  - node:
+    host: zookeeper-test3
+    port: 2181
