@@ -87,20 +87,3 @@
     group: "{{ clickhouse_group }}"
     mode: "{{ clickhouse_log_directory_mode }}"
   become: true
-
-- name: CLICKHOUSE | Install Clickhouse JDBC Bridge if required
-  apt:
-    deb: "{{ clickhouse_jdbc_bridge_deb_package }}"
-    install_recommends: no
-  when: clickhouse_jdbc_bridge is defined
-
-- name: CLICKHOUSE | Copy Clickhouse JDBC Bridge driver config
-  copy:
-    src: "{{ item }}"
-    dest: "{{ clickhouse_jdbc_bridge_playbook_drivers_path }}"
-    owner: "{{ clickhouse_user }}"
-    group: "{{ clickhouse_group }}"
-    mode: 0640
-  with_fileglob:
-    - "{{ clickhouse_jdbc_bridge_drivers_path }}/*"
-  when: clickhouse_jdbc_bridge is defined

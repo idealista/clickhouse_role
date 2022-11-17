@@ -1,0 +1,36 @@
+---
+
+- name: CLICKHOUSE | Install Clickhouse JDBC Bridge if required
+  apt:
+    deb: "{{ clickhouse_jdbc_bridge_deb_package }}"
+    install_recommends: no
+  when: clickhouse_jdbc_bridge is defined
+
+- name: CLICKHOUSE | Copy Clickhouse JDBC Bridge driver config
+  copy:
+    src: "{{ item }}"
+    dest: "{{ clickhouse_jdbc_bridge_playbook_drivers_path }}"
+    owner: "{{ clickhouse_user }}"
+    group: "{{ clickhouse_group }}"
+    mode: 0640
+  with_fileglob:
+    - "{{ clickhouse_jdbc_bridge_drivers_path }}/*"
+  when: clickhouse_jdbc_bridge is defined
+
+- name: CLICKHOUSE | Copy Clickhouse JDBC Bridge service
+  template:
+    src: "{{ clickhouse_jdbc_bridge_service_template_path }}"
+    dest: "/etc/systemd/system/{{ clickhouse_jdbc_bridge_service }}.service"
+    mode: 0644
+    owner: root
+    group: root
+  notify: Reload-clickhouse
+  when: clickhouse_jdbc_bridge is defined
+
+- name: CLICKHOUSE | Configuring Clickhouse JDBC Bridge service
+  systemd:
+    name: "{{ clickhouse_jdbc_bridge_service }}"
+    state: "{{ clickhouse_jdbc_bridge_service_state }}"
+    enabled: "{{ clickhouse_jdbc_bridge_service_enabled }}"
+    daemon_reload: yes
+  when: clickhouse_jdbc_bridge is defined

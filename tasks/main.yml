@@ -16,9 +16,14 @@
     - clickhouse_configure_copier
 
 - name: CLICKHOUSE | Service
-  include_tasks: service-clickhouse.yml
+  include_tasks: service/clickhouse.yml
   tags:
     - clickhouse_service
+
+- name: CLICKHOUSE | Service
+  include_tasks: service/jdbc-bridge.yml
+  tags:
+    - clickhouse_jdbc_bridge_service
 
 - name: CLICKHOUSE | Configure settings profiles
   include_tasks: config/settings-profiles.yml
