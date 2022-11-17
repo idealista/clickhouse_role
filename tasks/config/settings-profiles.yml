@@ -23,7 +23,7 @@
     - SQL_driven
 
 - name: CLICKHOUSE | Add settings profiles (SQL-driven)
-  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q {{ lookup('template','DDL/SETTINGS-PROFILE.j2') | quote }}"
+  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q {{ lookup('template', 'DDL/SETTINGS-PROFILE.j2') | quote }}"
   with_items: "{{ clickhouse_custom_settings_profiles }}"
   when:
     - clickhouse_custom_settings_profiles is defined

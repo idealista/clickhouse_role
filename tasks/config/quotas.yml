@@ -23,7 +23,7 @@
     - SQL_driven
 
 - name: CLICKHOUSE | Add quotas (SQL-driven)
-  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q {{ lookup('template','DDL/QUOTA.j2') | quote }}"
+  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q {{ lookup('template', 'DDL/QUOTA.j2') | quote }}"
   with_items: "{{ clickhouse_custom_quotas }}"
   when:
     - clickhouse_custom_quotas is defined
