@@ -36,13 +36,13 @@
     state: present
     update_cache: true
 
-- name: CLICKHOUSE | Ensure data directory exist
+- name: CLICKHOUSE | Ensure base directory exist
   file:
     state: directory
-    dest: "{{ clickhouse_data_directory }}"
+    dest: "{{ clickhouse_base_path }}"
     owner: "{{ clickhouse_user }}"
     group: "{{ clickhouse_group }}"
-    mode: "{{ clickhouse_data_directory_mode }}"
+    mode: "{{ clickhouse_base_directory_mode }}"
   become: true
 
 - name: CLICKHOUSE | Ensure user files and access control directories exist

@@ -62,19 +62,20 @@ clickhouse_config_file_name: config.xml
 clickhouse_users_file_name: users.xml
 
 # Directories
-clickhouse_base_path: "/var/lib"
+clickhouse_base_path: "/var/lib/clickhouse"
+clickhouse_base_directory_mode: 0700
 clickhouse_config_directory: "/etc/clickhouse-server"
 clickhouse_config_directory_mode: 0700
 clickhouse_config_directory_config_d: "{{ clickhouse_config_directory }}/config.d"
 clickhouse_config_directory_users_d: "{{ clickhouse_config_directory }}/users.d"
 clickhouse_log_directory: "/var/log/clickhouse-server"
 clickhouse_log_directory_mode: 0740
-clickhouse_data_directory: "{{ clickhouse_base_path }}/clickhouse"
+clickhouse_data_directory: "{{ clickhouse_base_path }}/data"
 clickhouse_data_directory_mode: 0700
-clickhouse_tmp_directory: "{{ clickhouse_base_path }}/clickhouse/tmp"
+clickhouse_tmp_directory: "{{ clickhouse_base_path }}/tmp"
 clickhouse_tmp_directory_mode: 0755
-clickhouse_user_files_directory: "{{ clickhouse_base_path }}/clickhouse/user_files"
-clickhouse_access_control_directory: "{{ clickhouse_base_path }}/clickhouse/access/"
+clickhouse_user_files_directory: "{{ clickhouse_base_path }}/user_files"
+clickhouse_access_control_directory: "{{ clickhouse_base_path }}/access/"
 # clickhouse_custom_config_file_path: "{{ playbook_dir }}/config_files/config"
 # clickhouse_custom_users_file_path: "{{ playbook_dir }}/config_files/users"
 
@@ -275,19 +276,33 @@ clickhouse_invalidcertificatehandler:
 
 # JDBC Bridge
 # clickhouse_jdbc_bridge_service: clickhouse-jdbc-bridge
-# clickhouse_jdbc_bridge_service_template_path: clickhouse-jdbc-bridge.service.j2
+# clickhouse_jdbc_bridge_service_template_path: jdbc-bridge/clickhouse-jdbc-bridge.service.j2
 # clickhouse_jdbc_bridge_service_state: started
 # clickhouse_jdbc_bridge_service_enabled: True
-# clickhouse_jdbc_bridge_playbook_drivers_path:
-# clickhouse_jdbc_bridge_drivers_path:
+# clickhouse_jdbc_bridge_config_path: "/etc/clickhouse-jdbc-bridge"
+# clickhouse_jdbc_bridge_playbook_drivers_path: "{{ playbook_dir }}/files/jdbc-drivers"
+# clickhouse_jdbc_bridge_drivers_path: "{{ clickhouse_base_path }}/drivers/"
 # clickhouse_jdbc_bridge_documentation_link: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/blob/v{{ clickhouse_jdbc_bridge_version }}/README.md"
 # clickhouse_jdbc_bridge_log: /var/log/clickhouse-jdbc-bridge
-# clickhouse_jdbc_bridge_version: 2.0.6
+# clickhouse_jdbc_bridge_version: 2.1.0
 # clickhouse_jdbc_bridge_deb_package: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v{{ clickhouse_jdbc_bridge_version }}/clickhouse-jdbc-bridge_{{ clickhouse_jdbc_bridge_version }}-1_all.deb"
 # clickhouse_jdbc_bridge_rpm_package: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v{{ clickhouse_jdbc_bridge_version }}/clickhouse-jdbc-bridge-{{ clickhouse_jdbc_bridge_version }}-1.noarch.rpm"
 # clickhouse_jdbc_bridge:
 #   host: 127.0.0.1
 #   port: 9019
+# clickhouse_jdbc_bridge_datasources_path: "{{ clickhouse_jdbc_bridge_config_path }}/config/datasources"
+
+# This is just an example other driver may require other settings
+# clickhouse_jdbc_bridge_datasources:
+#   - name: clickhouse_test
+#     datasource:
+#       $schema: "../datasource.jschema"
+#       clickhouse:
+#         driverUrls: []
+#         driverClassName:
+#         jdbcUrl:
+#         username:
+#         password:
 
 # clickhouse_remote_servers:
 #   - server:
