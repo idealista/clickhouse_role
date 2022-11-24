@@ -188,3 +188,31 @@ clickhouse_zookeeper:
   - node:
     host: zookeeper-test3
     port: 2181
+
+# JDBC Bridge
+clickhouse_jdbc_bridge_service: clickhouse-jdbc-bridge
+clickhouse_jdbc_bridge_service_template_path: jdbc-bridge/clickhouse-jdbc-bridge.service.j2
+clickhouse_jdbc_bridge_service_state: started
+clickhouse_jdbc_bridge_service_enabled: True
+clickhouse_jdbc_bridge_config_path: "/etc/clickhouse-jdbc-bridge"
+clickhouse_jdbc_bridge_file_drivers_path: "{{ playbook_dir }}/files/jdbc-drivers"
+clickhouse_jdbc_bridge_drivers_path: "{{ clickhouse_base_path }}/drivers/"
+clickhouse_jdbc_bridge_documentation_link: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/blob/v{{ clickhouse_jdbc_bridge_version }}/README.md"
+clickhouse_jdbc_bridge_log: /var/log/clickhouse-jdbc-bridge
+clickhouse_jdbc_bridge_version: 2.1.0
+clickhouse_jdbc_bridge_deb_package: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v{{ clickhouse_jdbc_bridge_version }}/clickhouse-jdbc-bridge_{{ clickhouse_jdbc_bridge_version }}-1_all.deb"
+# clickhouse_jdbc_bridge_rpm_package: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v{{ clickhouse_jdbc_bridge_version }}/clickhouse-jdbc-bridge-{{ clickhouse_jdbc_bridge_version }}-1.noarch.rpm"
+clickhouse_jdbc_bridge:
+  host: 127.0.0.1
+  port: 9019
+clickhouse_jdbc_bridge_datasources_path: "{{ clickhouse_jdbc_bridge_config_path }}/config/datasources"
+clickhouse_jdbc_bridge_datasources:
+  - name: clickhouse_test
+    datasource:
+      $schema: "../datasource.jschema"
+      clickhouse:
+        driverUrls: ["https://repo1.maven.org/maven2/com/clickhouse/clickhouse-jdbc/0.3.2-patch8/clickhouse-jdbc-0.3.2-patch8-http.jar"]
+        driverClassName: "com.clickhouse.jdbc.ClickHouseDriver"
+        jdbcUrl: "jdbc:clickhouse://localhost:8123/system?compress=false"
+        username: "{{ clickhouse_admin_user }}"
+        password: "{{ clickhouse_admin_password }}"

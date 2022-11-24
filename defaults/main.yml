@@ -275,6 +275,7 @@ clickhouse_invalidcertificatehandler:
 #   realm:
 
 # JDBC Bridge
+clickhouse_jdbc_bridge_handler_on_config_change: "Restart-clickhouse-JDBC-bridge"
 # clickhouse_jdbc_bridge_service: clickhouse-jdbc-bridge
 # clickhouse_jdbc_bridge_service_template_path: jdbc-bridge/clickhouse-jdbc-bridge.service.j2
 # clickhouse_jdbc_bridge_service_state: started

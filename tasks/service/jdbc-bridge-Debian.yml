@@ -1,0 +1,68 @@
+---
+
+- name: JDBC Bridge | Ensure needed jdbc-bridge directories exist
+  file:
+    state: directory
+    dest: "{{ item }}"
+    owner: "{{ clickhouse_user }}"
+    group: "{{ clickhouse_group }}"
+    mode: 0750
+  with_items:
+    - "{{ clickhouse_jdbc_bridge_config_path }}"
+    - "{{ clickhouse_jdbc_bridge_drivers_path }}"
+    - "{{ clickhouse_jdbc_bridge_datasources_path }}"
+  become: true
+  tags:
+    - clickhouse_jdbc_bridge_service
+
+- name: CLICKHOUSE | Install Clickhouse JDBC Bridge if required
+  apt:
+    deb: "{{ clickhouse_jdbc_bridge_deb_package }}"
+    install_recommends: no
+  tags:
+    - clickhouse_jdbc_bridge_service
+
+- name: "CLICKHOUSE | Copy Clickhouse JDBC Bridge drivers from {{ clickhouse_jdbc_bridge_file_drivers_path }}"
+  copy:
+    src: "{{ item }}"
+    dest: "{{ clickhouse_jdbc_bridge_drivers_path }}"
+    owner: "{{ clickhouse_user }}"
+    group: "{{ clickhouse_group }}"
+    mode: 0640
+  with_fileglob:
+    - "{{ clickhouse_jdbc_bridge_file_drivers_path }}/*"
+  tags:
+    - clickhouse_jdbc_bridge_service
+
+- name: CLICKHOUSE | Generate JDBC Bridge templates for datasources
+  template:
+    src: "jdbc-bridge/datasource.json.j2"
+    dest: "{{ clickhouse_jdbc_bridge_datasources_path }}/{{ item.name }}.json"
+    owner: "{{ clickhouse_user }}"
+    group: "{{ clickhouse_group }}"
+    mode: 0644
+  with_items: "{{ clickhouse_jdbc_bridge_datasources }}"
+  become: true
+  notify: "{{ clickhouse_jdbc_bridge_handler_on_config_change }}"
+  tags:
+    - clickhouse_jdbc_bridge_service
+
+- name: CLICKHOUSE | Copy Clickhouse JDBC Bridge service
+  template:
+    src: "{{ clickhouse_jdbc_bridge_service_template_path }}"
+    dest: "/etc/systemd/system/{{ clickhouse_jdbc_bridge_service }}.service"
+    mode: 0644
+    owner: root
+    group: root
+  tags:
+    - clickhouse_jdbc_bridge_service
+
+- name: CLICKHOUSE | Configuring Clickhouse JDBC Bridge service
+  systemd:
+    name: "{{ clickhouse_jdbc_bridge_service }}"
+    state: "{{ clickhouse_jdbc_bridge_service_state }}"
+    enabled: "{{ clickhouse_jdbc_bridge_service_enabled }}"
+    daemon_reload: yes
+  notify: "{{ clickhouse_jdbc_bridge_handler_on_config_change }}"
+  tags:
+    - clickhouse_jdbc_bridge_service

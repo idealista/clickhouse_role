@@ -9,3 +9,15 @@
   systemd:
     name: "{{ clickhouse_service }}"
     state: reloaded
+
+- name: Restart-clickhouse-JDBC-bridge
+  systemd:
+    name: "{{ clickhouse_jdbc_bridge_service }}"
+    state: restarted
+  when: clickhouse_jdbc_bridge is defined
+
+- name: Reload-clickhouse-JDBC-bridge
+  systemd:
+    name: "{{ clickhouse_jdbc_bridge_service }}"
+    state: reloaded
+  when: clickhouse_jdbc_bridge is defined

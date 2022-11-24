@@ -1,7 +1,7 @@
 {{ ansible_managed | comment }}
 [Unit]
 Description=ClickHouse JDBC Bridge
-Documentation={{ clickhouse_jdbc_bridge_documentation_link }}
+Documentation={{ clickhouse_jdbc_bridge_documentation_link | default('') }}
 Requires=network-online.target
 After=network-online.target
 

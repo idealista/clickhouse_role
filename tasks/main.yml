@@ -15,15 +15,16 @@
   tags:
     - clickhouse_configure_copier
 
-- name: CLICKHOUSE | Service
+- name: CLICKHOUSE | ClickHouse Service
   include_tasks: service/clickhouse.yml
   tags:
     - clickhouse_service
 
-- name: CLICKHOUSE | Service
-  include_tasks: service/jdbc-bridge.yml
+- name: CLICKHOUSE | JDBC Bridge Service
+  include_tasks: service/jdbc-bridge-{{ ansible_distribution }}.yml
   tags:
     - clickhouse_jdbc_bridge_service
+  when: clickhouse_jdbc_bridge is defined
 
 - name: CLICKHOUSE | Configure settings profiles
   include_tasks: config/settings-profiles.yml
