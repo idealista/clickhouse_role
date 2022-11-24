@@ -18,7 +18,7 @@ clickhouse_role_manage_grants: False
 clickhouse_documentation_link: https://clickhouse.tech/docs/en/
 
 # Set to restart-clickhouse if you need a complete restart of the service i.e. changing listeners config
-clickhouse_handler_on_config_change: "restart-clickhouse"
+clickhouse_handler_on_config_change: "Restart-clickhouse"
 
 # Owner
 clickhouse_user: clickhouse
