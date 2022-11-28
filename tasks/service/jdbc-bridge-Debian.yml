@@ -1,16 +1,31 @@
 ---
 
-- name: JDBC Bridge | Ensure needed jdbc-bridge directories exist
+- name: CLICKHOUSE | Ensure clickhouse jdbc bridge group
+  group:
+    name: "{{ clickhouse_jdbc_bridge_group }}"
+    system: yes
+    state: present
+
+- name: CLICKHOUSE | Ensure clickhouse jdbc bridge user
+  user:
+    name: "{{ clickhouse_jdbc_bridge_user }}"
+    group: "{{ clickhouse_jdbc_bridge_group }}"
+    system: yes
+    shell: /usr/sbin/nologin
+    createhome: no
+
+- name: CLICKHOUSE | Ensure needed jdbc-bridge directories exist
   file:
     state: directory
     dest: "{{ item }}"
-    owner: "{{ clickhouse_user }}"
-    group: "{{ clickhouse_group }}"
+    owner: "{{ clickhouse_jdbc_bridge_user }}"
+    group: "{{ clickhouse_jdbc_bridge_group }}"
     mode: 0750
   with_items:
     - "{{ clickhouse_jdbc_bridge_config_path }}"
     - "{{ clickhouse_jdbc_bridge_drivers_path }}"
     - "{{ clickhouse_jdbc_bridge_datasources_path }}"
+    - "{{ clickhouse_jdbc_bridge_log_path }}"
   become: true
   tags:
     - clickhouse_jdbc_bridge_service
@@ -26,8 +41,8 @@
   copy:
     src: "{{ item }}"
     dest: "{{ clickhouse_jdbc_bridge_drivers_path }}"
-    owner: "{{ clickhouse_user }}"
-    group: "{{ clickhouse_group }}"
+    owner: "{{ clickhouse_jdbc_bridge_user }}"
+    group: "{{ clickhouse_jdbc_bridge_group }}"
     mode: 0640
   with_fileglob:
     - "{{ clickhouse_jdbc_bridge_file_drivers_path }}/*"
@@ -38,8 +53,8 @@
   template:
     src: "jdbc-bridge/datasource.json.j2"
     dest: "{{ clickhouse_jdbc_bridge_datasources_path }}/{{ item.name }}.json"
-    owner: "{{ clickhouse_user }}"
-    group: "{{ clickhouse_group }}"
+    owner: "{{ clickhouse_jdbc_bridge_user }}"
+    group: "{{ clickhouse_jdbc_bridge_group }}"
     mode: 0644
   with_items: "{{ clickhouse_jdbc_bridge_datasources }}"
   become: true
