@@ -1,0 +1,5 @@
+#!/bin/bash
+
+{% if clickhouse_jdbc_bridge_env is defined %}
+{{ clickhouse_jdbc_bridge_env|indent(0, true) }}
+{% endif %}

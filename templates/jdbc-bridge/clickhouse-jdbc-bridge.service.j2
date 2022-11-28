@@ -8,8 +8,8 @@ After=network-online.target
 [Service]
 PrivateTmp={{ clickhouse_private_tmp }}
 Type=simple
-User=root
-Group=root
+User={{ clickhouse_jdbc_bridge_user }}
+Group={{ clickhouse_jdbc_bridge_group }}
 RuntimeDirectory={{ clickhouse_jdbc_bridge_service }}
 LimitNOFILE={{ clickhouse_limit_no_file }}
 

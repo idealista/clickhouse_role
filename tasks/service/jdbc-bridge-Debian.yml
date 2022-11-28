@@ -62,6 +62,26 @@
   tags:
     - clickhouse_jdbc_bridge_service
 
+- name: CLICKHOUSE | Copy Clickhouse JDBC Bridge logging properties
+  template:
+    src: "jdbc-bridge/logging.properties.j2"
+    dest: "{{ clickhouse_jdbc_bridge_config_path }}/logging.properties"
+    owner: "{{ clickhouse_jdbc_bridge_user }}"
+    group: "{{ clickhouse_jdbc_bridge_group }}"
+    mode: 0644
+  tags:
+    - clickhouse_jdbc_bridge_service
+
+- name: CLICKHOUSE | Copy Clickhouse JDBC Bridge env file
+  template:
+    src: "jdbc-bridge/set-env.sh.j2"
+    dest: "{{ clickhouse_jdbc_bridge_config_path }}/set-env.sh"
+    owner: "{{ clickhouse_jdbc_bridge_user }}"
+    group: "{{ clickhouse_jdbc_bridge_group }}"
+    mode: 0744
+  tags:
+    - clickhouse_jdbc_bridge_service
+
 - name: CLICKHOUSE | Copy Clickhouse JDBC Bridge service
   template:
     src: "{{ clickhouse_jdbc_bridge_service_template_path }}"

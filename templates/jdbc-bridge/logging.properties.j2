@@ -1,0 +1,14 @@
+handlers=java.util.logging.FileHandler, java.util.logging.ConsoleHandler
+
+java.util.logging.ConsoleHandler.level={{ clickhouse_jdbc_bridge_log_level }}
+java.util.logging.ConsoleHandler.formatter=java.util.logging.SimpleFormatter
+java.util.logging.SimpleFormatter.format=[%1$tF %1$tT] [%4$-7s] %5$s %n
+
+java.util.logging.FileHandler.level=INFO
+java.util.logging.FileHandler.pattern={{ clickhouse_jdbc_bridge_log_file }}
+java.util.logging.FileHandler.limit=10000000
+java.util.logging.FileHandler.count=5
+java.util.logging.FileHandler.formatter=java.util.logging.SimpleFormatter
+java.util.logging.SimpleFormatter.format=[%1$tF %1$tT] [%4$-7s] %5$s %n
+
+.level={{ clickhouse_jdbc_bridge_log_level }}
