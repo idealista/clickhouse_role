@@ -14,9 +14,6 @@ RuntimeDirectory={{ clickhouse_jdbc_bridge_service }}
 LimitNOFILE={{ clickhouse_limit_no_file }}
 
 ExecStart=/usr/local/bin/clickhouse-jdbc-bridge
-
-StandardOutput={{ clickhouse_jdbc_bridge_log_file }}
-StandardError={{ clickhouse_jdbc_bridge_error_file }}
 ExecReload=/bin/kill -HUP $MAINPID
 KillSignal=SIGTERM
 Restart=always
