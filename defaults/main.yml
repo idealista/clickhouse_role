@@ -4,6 +4,8 @@
 # Version
 clickhouse_version: 22.8.8.3
 clickhouse_release_type: lts  # Values should be: stable, lts or testing
+clickhouse_install_db: True
+clickhouse_install_bridge: False
 
 # Clickhouse role management
 clickhouse_role_manage_users: False
