@@ -4,6 +4,8 @@
 # Version
 clickhouse_version: 22.8.8.3
 clickhouse_release_type: lts  # Values should be: stable, lts or testing
+clickhouse_install_db: True
+clickhouse_install_bridge: False
 
 # Clickhouse role management
 clickhouse_role_manage_users: False
@@ -276,6 +278,8 @@ clickhouse_invalidcertificatehandler:
 
 # JDBC Bridge
 clickhouse_jdbc_bridge_handler_on_config_change: "Restart-clickhouse-JDBC-bridge"
+# clickhouse_jdbc_bridge_user: "{{ clickhouse_user }}"
+# clickhouse_jdbc_bridge_group: "{{ clickhouse_group }}"
 # clickhouse_jdbc_bridge_service: clickhouse-jdbc-bridge
 # clickhouse_jdbc_bridge_service_template_path: jdbc-bridge/clickhouse-jdbc-bridge.service.j2
 # clickhouse_jdbc_bridge_service_state: started
@@ -284,7 +288,11 @@ clickhouse_jdbc_bridge_handler_on_config_change: "Restart-clickhouse-JDBC-bridge
 # clickhouse_jdbc_bridge_playbook_drivers_path: "{{ playbook_dir }}/files/jdbc-drivers"
 # clickhouse_jdbc_bridge_drivers_path: "{{ clickhouse_base_path }}/drivers/"
 # clickhouse_jdbc_bridge_documentation_link: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/blob/v{{ clickhouse_jdbc_bridge_version }}/README.md"
-# clickhouse_jdbc_bridge_log: /var/log/clickhouse-jdbc-bridge
+# clickhouse_jdbc_bridge_log_path: /var/log/clickhouse-jdbc-bridge
+# clickhouse_jdbc_bridge_log_file: "{{ clickhouse_jdbc_bridge_log_path }}/clickhouse-jdbc-bridge.log"
+# clickhouse_jdbc_bridge_log_level: DEBUG
+# clickhouse_jdbc_bridge_env: |
+#   JVM_ARGS="-Xms1024m -Xmx2048m"
 # clickhouse_jdbc_bridge_version: 2.1.0
 # clickhouse_jdbc_bridge_deb_package: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v{{ clickhouse_jdbc_bridge_version }}/clickhouse-jdbc-bridge_{{ clickhouse_jdbc_bridge_version }}-1_all.deb"
 # clickhouse_jdbc_bridge_rpm_package: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v{{ clickhouse_jdbc_bridge_version }}/clickhouse-jdbc-bridge-{{ clickhouse_jdbc_bridge_version }}-1.noarch.rpm"

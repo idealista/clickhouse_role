@@ -4,60 +4,76 @@
   include_tasks: "install-{{ ansible_distribution }}.yml"
   tags:
     - clickhouse_install
+  when: clickhouse_install_db is not defined or clickhouse_install_db
 
 - name: CLICKHOUSE | Configure clickhouse
   include_tasks: config/clickhouse.yml
   tags:
     - clickhouse_configure
+  when: clickhouse_install_db is not defined or clickhouse_install_db
 
 - name: CLICKHOUSE | Configure copier
   include_tasks: config/copier.yml
   tags:
     - clickhouse_configure_copier
+  when: clickhouse_install_db is not defined or clickhouse_install_db
 
 - name: CLICKHOUSE | ClickHouse Service
   include_tasks: service/clickhouse.yml
   tags:
     - clickhouse_service
+  when: clickhouse_install_db is not defined or clickhouse_install_db
 
 - name: CLICKHOUSE | JDBC Bridge Service
   include_tasks: service/jdbc-bridge-{{ ansible_distribution }}.yml
   tags:
     - clickhouse_jdbc_bridge_service
-  when: clickhouse_jdbc_bridge is defined
+  when: clickhouse_install_bridge
 
 - name: CLICKHOUSE | Configure settings profiles
   include_tasks: config/settings-profiles.yml
   tags:
     - clickhouse_settings_profiles
-  when: clickhouse_role_manage_settings_profiles
+  when:
+    - clickhouse_role_manage_settings_profiles
+    - clickhouse_install_db is not defined or clickhouse_install_db
 
 - name: CLICKHOUSE | Configure roles
   include_tasks: config/roles.yml
   tags:
     - clickhouse_roles
-  when: clickhouse_role_manage_roles
+  when:
+    - clickhouse_role_manage_roles
+    - clickhouse_install_db is not defined or clickhouse_install_db
 
 - name: CLICKHOUSE | Configure quotas
   include_tasks: config/quotas.yml
   tags:
     - clickhouse_quotas
-  when: clickhouse_role_manage_quotas
+  when:
+    - clickhouse_role_manage_quotas
+    - clickhouse_install_db is not defined or clickhouse_install_db
 
 - name: CLICKHOUSE | Configure users
   include_tasks: config/users.yml
   tags:
     - clickhouse_users
-  when: clickhouse_role_manage_users
+  when:
+    - clickhouse_role_manage_users
+    - clickhouse_install_db is not defined or clickhouse_install_db
 
 - name: CLICKHOUSE | Configure databases
   include_tasks: config/databases.yml
   tags:
     - clickhouse_databases
-  when: clickhouse_role_manage_databases
+  when:
+    - clickhouse_role_manage_databases
+    - clickhouse_install_db is not defined or clickhouse_install_db
 
 - name: CLICKHOUSE | Configure perms & privs
   include_tasks: config/perms_and_privs.yml
   tags:
     - clickhouse_grants
-  when: clickhouse_role_manage_grants
+  when:
+    - clickhouse_role_manage_grants
+    - clickhouse_install_db is not defined or clickhouse_install_db

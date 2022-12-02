@@ -8,15 +8,12 @@ After=network-online.target
 [Service]
 PrivateTmp={{ clickhouse_private_tmp }}
 Type=simple
-User=root
-Group=root
+User={{ clickhouse_jdbc_bridge_user }}
+Group={{ clickhouse_jdbc_bridge_group }}
 RuntimeDirectory={{ clickhouse_jdbc_bridge_service }}
 LimitNOFILE={{ clickhouse_limit_no_file }}
 
 ExecStart=/usr/local/bin/clickhouse-jdbc-bridge
-
-StandardOutput={{ clickhouse_jdbc_bridge_log }}
-StandardError={{ clickhouse_jdbc_bridge_log }}
 ExecReload=/bin/kill -HUP $MAINPID
 KillSignal=SIGTERM
 Restart=always
