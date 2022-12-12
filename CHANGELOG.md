@@ -5,6 +5,20 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/clickhouse_role/tree/develop)
 
+## [3.3.0](https://github.com/idealista/clickhouse_role/tree/3.3.0) (2022-11-12)
+
+### :hammer_and_wrench: Fixed
+
+- [#36](https://github.com/idealista/clickhouse_role/issues/36) Ansible galaxy meta malformed
+
+### :heavy_plus_sign: Added
+
+- [#35](https://github.com/idealista/clickhouse_role/issues/35) Clickhouse copier basic configuration 
+
+### :repeat: Updated
+
+- [#34](https://github.com/idealista/clickhouse_role/issues/34) The Clickhouse JDBC engine requirements installation
+
 ## [3.2.1](https://github.com/idealista/clickhouse_role/tree/3.2.1) (2022-08-30)
 
 ### :hammer_and_wrench: Fixed
