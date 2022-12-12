@@ -1,7 +1,8 @@
 ---
 
 # Version
-clickhouse_version: 22.2.2.1
+clickhouse_version: 22.8.8.3
+clickhouse_release_type: lts
 
 # Clickhouse role management
 clickhouse_role_manage_users: True
@@ -170,3 +171,54 @@ clickhouse_macros:
       - clickhouse
   - macro: |
       <db_default>default</db_default>
+
+# Copier Configuration
+clickhouse_copier_logger_level: information
+clickhouse_copier_logger_log: /var/log/clickhouse-server/clickhouse-copier.log
+clickhouse_copier_logger_errorlog: /var/log/clickhouse-server/clickhouse-copier.err.log
+clickhouse_copier_logger_size: 1000M
+clickhouse_copier_logger_count: 10
+clickhouse_zookeeper:
+  - node:
+    host: zookeeper-test1
+    port: 2181
+  - node:
+    host: zookeeper-test2
+    port: 2181
+  - node:
+    host: zookeeper-test3
+    port: 2181
+
+# JDBC Bridge
+clickhouse_jdbc_bridge_service: clickhouse-jdbc-bridge
+clickhouse_jdbc_bridge_user: "{{ clickhouse_user }}"
+clickhouse_jdbc_bridge_group: "{{ clickhouse_group }}"
+clickhouse_jdbc_bridge_service_template_path: jdbc-bridge/clickhouse-jdbc-bridge.service.j2
+clickhouse_jdbc_bridge_service_state: started
+clickhouse_jdbc_bridge_service_enabled: True
+clickhouse_jdbc_bridge_config_path: "/etc/clickhouse-jdbc-bridge"
+clickhouse_jdbc_bridge_file_drivers_path: "{{ playbook_dir }}/files/jdbc-drivers"
+clickhouse_jdbc_bridge_drivers_path: "{{ clickhouse_base_path }}/drivers/"
+clickhouse_jdbc_bridge_documentation_link: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/blob/v{{ clickhouse_jdbc_bridge_version }}/README.md"
+clickhouse_jdbc_bridge_log_path: /var/log/clickhouse-jdbc-bridge
+clickhouse_jdbc_bridge_log_file: "{{ clickhouse_jdbc_bridge_log_path }}/clickhouse-jdbc-bridge.log"
+clickhouse_jdbc_bridge_log_level: DEBUG
+clickhouse_jdbc_bridge_env: |
+  JVM_ARGS="-Xms1024m -Xmx2048m"
+clickhouse_jdbc_bridge_version: 2.1.0
+clickhouse_jdbc_bridge_deb_package: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v{{ clickhouse_jdbc_bridge_version }}/clickhouse-jdbc-bridge_{{ clickhouse_jdbc_bridge_version }}-1_all.deb"
+# clickhouse_jdbc_bridge_rpm_package: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v{{ clickhouse_jdbc_bridge_version }}/clickhouse-jdbc-bridge-{{ clickhouse_jdbc_bridge_version }}-1.noarch.rpm"
+clickhouse_jdbc_bridge:
+  host: 127.0.0.1
+  port: 9019
+clickhouse_jdbc_bridge_datasources_path: "{{ clickhouse_jdbc_bridge_config_path }}/config/datasources"
+clickhouse_jdbc_bridge_datasources:
+  - name: clickhouse_test
+    datasource:
+      $schema: "../datasource.jschema"
+      clickhouse:
+        driverUrls: ["https://repo1.maven.org/maven2/com/clickhouse/clickhouse-jdbc/0.3.2-patch8/clickhouse-jdbc-0.3.2-patch8-http.jar"]
+        driverClassName: "com.clickhouse.jdbc.ClickHouseDriver"
+        jdbcUrl: "jdbc:clickhouse://localhost:8123/system?compress=false"
+        username: "{{ clickhouse_admin_user }}"
+        password: "{{ clickhouse_admin_password }}"

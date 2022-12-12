@@ -2,8 +2,10 @@
 
 ## General
 # Version
-clickhouse_version: 22.2.2.1
-clickhouse_release_type: stable  # Values should be: stable, lts or testing
+clickhouse_version: 22.8.8.3
+clickhouse_release_type: lts  # Values should be: stable, lts or testing
+clickhouse_install_db: True
+clickhouse_install_bridge: False
 
 # Clickhouse role management
 clickhouse_role_manage_users: False
@@ -18,7 +20,7 @@ clickhouse_role_manage_grants: False
 clickhouse_documentation_link: https://clickhouse.tech/docs/en/
 
 # Set to restart-clickhouse if you need a complete restart of the service i.e. changing listeners config
-clickhouse_handler_on_config_change: "restart-clickhouse"
+clickhouse_handler_on_config_change: "Restart-clickhouse"
 
 # Owner
 clickhouse_user: clickhouse
@@ -47,14 +49,14 @@ clickhouse_prerequisite_repos:
   - ca-certificates
   - dirmngr
 clickhouse_service: "clickhouse-server"
-clickhouse_deb_repo: "deb https://packages.clickhouse.com/deb {{  clickhouse_release_type }} main"
+clickhouse_deb_repo: "deb https://packages.clickhouse.com/deb {{ clickhouse_release_type }} main"
 clickhouse_deb_keyserver: hkp://keyserver.ubuntu.com:80
 clickhouse_deb_keyid: 8919F6BD2B48D754
 clickhouse_packages:
   - procps
-  - "clickhouse-client={{clickhouse_version}}"
-  - "clickhouse-common-static={{clickhouse_version}}"
-  - "clickhouse-server={{clickhouse_version}}"
+  - "clickhouse-client={{ clickhouse_version }}"
+  - "clickhouse-common-static={{ clickhouse_version }}"
+  - "clickhouse-server={{ clickhouse_version }}"
 
 # Config templates
 clickhouse_service_template_path: clickhouse-server.service.j2
@@ -62,19 +64,20 @@ clickhouse_config_file_name: config.xml
 clickhouse_users_file_name: users.xml
 
 # Directories
-clickhouse_base_path: "/var/lib"
+clickhouse_base_path: "/var/lib/clickhouse"
+clickhouse_base_directory_mode: 0700
 clickhouse_config_directory: "/etc/clickhouse-server"
 clickhouse_config_directory_mode: 0700
 clickhouse_config_directory_config_d: "{{ clickhouse_config_directory }}/config.d"
 clickhouse_config_directory_users_d: "{{ clickhouse_config_directory }}/users.d"
 clickhouse_log_directory: "/var/log/clickhouse-server"
 clickhouse_log_directory_mode: 0740
-clickhouse_data_directory: "{{ clickhouse_base_path }}/clickhouse"
+clickhouse_data_directory: "{{ clickhouse_base_path }}/data"
 clickhouse_data_directory_mode: 0700
-clickhouse_tmp_directory: "{{ clickhouse_base_path }}/clickhouse/tmp"
+clickhouse_tmp_directory: "{{ clickhouse_base_path }}/tmp"
 clickhouse_tmp_directory_mode: 0755
-clickhouse_user_files_directory: "{{ clickhouse_base_path }}/clickhouse/user_files"
-clickhouse_access_control_directory: "{{ clickhouse_base_path }}/clickhouse/access/"
+clickhouse_user_files_directory: "{{ clickhouse_base_path }}/user_files"
+clickhouse_access_control_directory: "{{ clickhouse_base_path }}/access/"
 # clickhouse_custom_config_file_path: "{{ playbook_dir }}/config_files/config"
 # clickhouse_custom_users_file_path: "{{ playbook_dir }}/config_files/users"
 
@@ -199,6 +202,16 @@ clickhouse_default_networks:
 
 clickhouse_http_server_default_response: <![CDATA[<html ng-app="SMI2"><head><base href="http://ui.tabix.io/"></head><body><div ui-view="" class="content-ui"></div><script src="http://loader.tabix.io/master.js"></script></body></html>]]>
 
+# Copier Configuration
+clickhouse_copier_config_file_name: copier-config.xml
+clickhouse_copier_config_directory: "{{ clickhouse_config_directory }}"
+# clickhouse_copier_custom_config_file_path: "{{ playbook_dir }}/config_files/copier"
+clickhouse_copier_logger_level: information
+clickhouse_copier_logger_log: /var/log/clickhouse-server/clickhouse-copier.log
+clickhouse_copier_logger_errorlog: /var/log/clickhouse-server/clickhouse-copier.err.log
+clickhouse_copier_logger_size: 1000M
+clickhouse_copier_logger_count: 10
+
 # GRPC
 # clickhouse_grpc_port: 9100
 clickhouse_enable_ssl: false
@@ -264,20 +277,41 @@ clickhouse_invalidcertificatehandler:
 #   realm:
 
 # JDBC Bridge
+clickhouse_jdbc_bridge_handler_on_config_change: "Restart-clickhouse-JDBC-bridge"
+# clickhouse_jdbc_bridge_user: "{{ clickhouse_user }}"
+# clickhouse_jdbc_bridge_group: "{{ clickhouse_group }}"
 # clickhouse_jdbc_bridge_service: clickhouse-jdbc-bridge
-# clickhouse_jdbc_bridge_service_template_path: clickhouse-jdbc-bridge.service.j2
+# clickhouse_jdbc_bridge_service_template_path: jdbc-bridge/clickhouse-jdbc-bridge.service.j2
 # clickhouse_jdbc_bridge_service_state: started
 # clickhouse_jdbc_bridge_service_enabled: True
-# clickhouse_jdbc_bridge_playbook_drivers_path:
-# clickhouse_jdbc_bridge_drivers_path:
+# clickhouse_jdbc_bridge_config_path: "/etc/clickhouse-jdbc-bridge"
+# clickhouse_jdbc_bridge_playbook_drivers_path: "{{ playbook_dir }}/files/jdbc-drivers"
+# clickhouse_jdbc_bridge_drivers_path: "{{ clickhouse_base_path }}/drivers/"
 # clickhouse_jdbc_bridge_documentation_link: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/blob/v{{ clickhouse_jdbc_bridge_version }}/README.md"
-# clickhouse_jdbc_bridge_log: /var/log/clickhouse-jdbc-bridge
-# clickhouse_jdbc_bridge_version: 2.0.6
+# clickhouse_jdbc_bridge_log_path: /var/log/clickhouse-jdbc-bridge
+# clickhouse_jdbc_bridge_log_file: "{{ clickhouse_jdbc_bridge_log_path }}/clickhouse-jdbc-bridge.log"
+# clickhouse_jdbc_bridge_log_level: DEBUG
+# clickhouse_jdbc_bridge_env: |
+#   JVM_ARGS="-Xms1024m -Xmx2048m"
+# clickhouse_jdbc_bridge_version: 2.1.0
 # clickhouse_jdbc_bridge_deb_package: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v{{ clickhouse_jdbc_bridge_version }}/clickhouse-jdbc-bridge_{{ clickhouse_jdbc_bridge_version }}-1_all.deb"
 # clickhouse_jdbc_bridge_rpm_package: "https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v{{ clickhouse_jdbc_bridge_version }}/clickhouse-jdbc-bridge-{{ clickhouse_jdbc_bridge_version }}-1.noarch.rpm"
 # clickhouse_jdbc_bridge:
 #   host: 127.0.0.1
 #   port: 9019
+# clickhouse_jdbc_bridge_datasources_path: "{{ clickhouse_jdbc_bridge_config_path }}/config/datasources"
+
+# This is just an example other driver may require other settings
+# clickhouse_jdbc_bridge_datasources:
+#   - name: clickhouse_test
+#     datasource:
+#       $schema: "../datasource.jschema"
+#       clickhouse:
+#         driverUrls: []
+#         driverClassName:
+#         jdbcUrl:
+#         username:
+#         password:
 
 # clickhouse_remote_servers:
 #   - server:

@@ -414,10 +414,10 @@
   <compiled_expression_cache_elements_size>{{ clickhouse_config.compiled_expression_cache_elements_size }}</compiled_expression_cache_elements_size>
 
   <!-- Path to data directory, with trailing slash. -->
-  <path>{{ clickhouse_data_directory }}</path>
+  <path>{{ clickhouse_base_path }}</path>
 
   <!-- Path to temporary data for processing hard queries. -->
-  <tmp_path>{{ clickhouse_tmp_directory }} </tmp_path>
+  <tmp_path>{{ clickhouse_tmp_directory }}</tmp_path>
 
   <!-- Policy from the <storage_configuration> for the temporary files.
     If not set <tmp_path> is used, otherwise <tmp_path> is ignored.

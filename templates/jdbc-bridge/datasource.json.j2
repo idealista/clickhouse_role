@@ -1,0 +1,6 @@
+{# {
+{%- for key, value in clickhouse_jdbc_bridge_datasources.items() recursive %}
+    "{{ key }}": {% if value is string %}"{{ value }}"{% elif value is mapping %}{{ "{" }}{{ loop(value.items()) | indent(4) }}
+    {{ "}" }}{% elif value is sequence %}{{ value | tojson }}{% else %}{{ value }}{% endif %}{{ "," if not loop.last else "" }}{% endfor %}
+} #}
+{{ item.datasource | to_json }}
