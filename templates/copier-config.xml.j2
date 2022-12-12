@@ -1,0 +1,20 @@
+<!-- This file for configure copier in clickhouse-server (source or destination) -->
+<clickhouse>
+    <logger>
+        <level>{{ clickhouse_copier_logger_level }}</level>
+        <log>{{ clickhouse_copier_logger_log }}</log>
+        <errorlog>{{ clickhouse_copier_logger_errorlog }}</errorlog>
+        <size>{{ clickhouse_copier_logger_size }}</size>
+        <count>{{ clickhouse_copier_logger_count }}</count>
+    </logger>
+{% if clickhouse_zookeeper is defined %}
+    <zookeeper>
+{% for node in clickhouse_zookeeper %}
+        <node>
+            <host>{{ node.host }}</host>
+            <port>{{ node.port }}</port>
+        </node>
+{% endfor %}
+    </zookeeper>
+{% endif %}
+</clickhouse>

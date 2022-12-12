@@ -2,7 +2,7 @@
 
 - name: CLICKHOUSE | Previous grants cleaning (Optional step)
   command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"
-    REVOKE ALL ON *.* FROM ALL EXCEPT {{ (clickhouse_default_users | default([]) + clickhouse_admin_users | default([]) + clickhouse_custom_users_xml | default([]) ) | map(attribute='name') | join(', ') }};
+    REVOKE ALL ON *.* FROM ALL EXCEPT {{ (clickhouse_default_users | default([]) + clickhouse_admin_users | default([]) + clickhouse_custom_users_xml | default([])) | map(attribute='name') | join(', ') }};
     \""
   changed_when: False
   when: clickhouse_custom_grants_previous_cleanup

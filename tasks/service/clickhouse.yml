@@ -7,7 +7,7 @@
     mode: 0644
     owner: root
     group: root
-  notify: reload-clickhouse
+  notify: Reload-clickhouse
 
 - name: CLICKHOUSE | Configuring service
   systemd:
@@ -26,21 +26,3 @@
   when:
     - clickhouse_service_enabled
     - clickhouse_service_state == "started"
-
-- name: CLICKHOUSE | Copy Clickhouse JDBC Bridge service
-  template:
-    src: "{{ clickhouse_jdbc_bridge_service_template_path }}"
-    dest: "/etc/systemd/system/{{ clickhouse_jdbc_bridge_service }}.service"
-    mode: 0644
-    owner: root
-    group: root
-  notify: reload-clickhouse
-  when: clickhouse_jdbc_bridge is defined
-
-- name: CLICKHOUSE | Configuring Clickhouse JDBC Bridge service
-  systemd:
-    name: "{{ clickhouse_jdbc_bridge_service }}"
-    state: "{{ clickhouse_jdbc_bridge_service_state }}"
-    enabled: "{{ clickhouse_jdbc_bridge_service_enabled }}"
-    daemon_reload: yes
-  when: clickhouse_jdbc_bridge is defined
