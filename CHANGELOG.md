@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/clickhouse_role/tree/develop)
 
+## [3.3.1](https://github.com/idealista/clickhouse_role/tree/3.3.1) (2023-01-18)
+
+### :heavy_plus_sign: Added
+
+- [#41](https://github.com/idealista/clickhouse_role/issues/41) add TTL to system tables and default TTL values.
+
 ## [3.3.0](https://github.com/idealista/clickhouse_role/tree/3.3.0) (2022-11-12)
 
 ### :hammer_and_wrench: Fixed

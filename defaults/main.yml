@@ -453,7 +453,7 @@ clickhouse_tables_log:
   query_log:
     database: system
     table: query_log
-    # ttl: event_date + INTERVAL 30 DAY DELETE
+    ttl: event_date + INTERVAL 30 DAY DELETE
     partition_by: toYYYYMM(event_date)
     # engine: ENGINE = MergeTree PARTITION BY toYYYYMM(event_date) ORDER BY (event_date, event_time) SETTINGS index_granularity = 1024  # Instead of partition_by, you can provide full engine expression
     flush_interval_milliseconds: 7500
@@ -461,24 +461,28 @@ clickhouse_tables_log:
   trace_log:
     database: system
     table: trace_log
+    ttl: event_date + INTERVAL 30 DAY DELETE
     partition_by: toYYYYMM(event_date)
     flush_interval_milliseconds: 7500
   # Thread log
   thread_log:
     database: system
     table: query_thread_log
+    ttl: event_date + INTERVAL 30 DAY DELETE
     partition_by: toYYYYMM(event_date)
     flush_interval_milliseconds: 7500
   # Views log
   views_log:
     database: system
     table: query_views_log
+    ttl: event_date + INTERVAL 30 DAY DELETE
     partition_by: toYYYYMM(event_date)
     flush_interval_milliseconds: 7500
   # Part log
   part_log:
     database: system
     table: part_log
+    ttl: event_date + INTERVAL 30 DAY DELETE
     partition_by: toYYYYMM(event_date)
     flush_interval_milliseconds: 7500
   # Text log
@@ -492,12 +496,14 @@ clickhouse_tables_log:
   metric_log:
     database: system
     table: metric_log
+    ttl: event_date + INTERVAL 30 DAY DELETE
     flush_interval_milliseconds: 7500
     collect_interval_milliseconds: 1000
   # Asynchronous metric log:
   asynchronous_metric_log:
     database: system
     table: asynchronous_metric_log
+    ttl: event_date + INTERVAL 30 DAY DELETE
     flush_interval_milliseconds: 7000
   # OpenTelemetry log
   opentelemetry_span_log:
@@ -512,12 +518,14 @@ clickhouse_tables_log:
   crash_log:
     database: system
     table: crash_log
+    ttl: event_date + INTERVAL 30 DAY DELETE
     partition_by:
     flush_interval_milliseconds: 1000
   # Session log
   session_log:
     database: system
     table: session_log
+    ttl: event_date + INTERVAL 30 DAY DELETE
     partition_by: toYYYYMM(event_date)
     flush_interval_milliseconds: 7500
 
