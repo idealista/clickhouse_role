@@ -1003,6 +1003,9 @@
     <table>{{ clickhouse_tables_log.trace_log.table }}</table>
     <partition_by>{{ clickhouse_tables_log.trace_log.partition_by }}</partition_by>
     <flush_interval_milliseconds>{{ clickhouse_tables_log.trace_log.flush_interval_milliseconds }}</flush_interval_milliseconds>
+{% if clickhouse_tables_log.trace_log.ttl is defined %}
+    <ttl>{{ clickhouse_tables_log.trace_log.ttl }}</ttl>
+{% endif %}
   </trace_log>
 
   <!-- Query thread log. Has information about all threads participated in query execution.
@@ -1012,6 +1015,9 @@
     <table>{{ clickhouse_tables_log.thread_log.table }}</table>
     <partition_by>{{ clickhouse_tables_log.thread_log.partition_by }}(event_date)</partition_by>
     <flush_interval_milliseconds>{{ clickhouse_tables_log.thread_log.flush_interval_milliseconds }}</flush_interval_milliseconds>
+{% if clickhouse_tables_log.thread_log.ttl is defined %}
+    <ttl>{{ clickhouse_tables_log.thread_log.ttl }}</ttl>
+{% endif %}
   </query_thread_log>
 
   <!-- Query views log. Has information about all dependent views associated with a query.
@@ -1021,6 +1027,9 @@
     <table>{{ clickhouse_tables_log.views_log.table }}</table>
     <partition_by>{{ clickhouse_tables_log.views_log.partition_by }}</partition_by>
     <flush_interval_milliseconds>{{ clickhouse_tables_log.views_log.flush_interval_milliseconds }}</flush_interval_milliseconds>
+{% if clickhouse_tables_log.views_log.ttl is defined %}
+    <ttl>{{ clickhouse_tables_log.views_log.ttl }}</ttl>
+{% endif %}
   </query_views_log>
 
   <!-- Uncomment if use part log.
@@ -1030,6 +1039,9 @@
     <table>{{ clickhouse_tables_log.part_log.table }}</table>
     <partition_by>{{ clickhouse_tables_log.part_log.partition_by }}(event_date)</partition_by>
     <flush_interval_milliseconds>{{ clickhouse_tables_log.part_log.flush_interval_milliseconds }}</flush_interval_milliseconds>
+{% if clickhouse_tables_log.part_log.ttl is defined %}
+    <ttl>{{ clickhouse_tables_log.part_log.ttl }}</ttl>
+{% endif %}
   </part_log>
 
   <!-- Uncomment to write text log into table.
@@ -1047,6 +1059,9 @@
     <database>{{ clickhouse_tables_log.text_log.database }}</database>
     <table>{{ clickhouse_tables_log.text_log.table }}</table>
     <flush_interval_milliseconds>{{ clickhouse_tables_log.text_log.flush_interval_milliseconds }}</flush_interval_milliseconds>
+{% if clickhouse_tables_log.text_log.ttl is defined %}
+    <ttl>{{ clickhouse_tables_log.text_log.ttl }}</ttl>
+{% endif %}
     <level></level>
   </text_log>
 {% endif %}
@@ -1056,6 +1071,9 @@
     <database>{{ clickhouse_tables_log.metric_log.database }}</database>
     <table>{{ clickhouse_tables_log.metric_log.table }}</table>
     <flush_interval_milliseconds>{{ clickhouse_tables_log.metric_log.flush_interval_milliseconds }}</flush_interval_milliseconds>
+{% if clickhouse_tables_log.metric_log.ttl is defined %}
+    <ttl>{{ clickhouse_tables_log.metric_log.ttl }}</ttl>
+{% endif %}
     <collect_interval_milliseconds>{{ clickhouse_tables_log.metric_log.collect_interval_milliseconds }}</collect_interval_milliseconds>
   </metric_log>
 
@@ -1071,6 +1089,9 @@
       no need to flush more often.
     -->
     <flush_interval_milliseconds>{{ clickhouse_tables_log.asynchronous_metric_log.flush_interval_milliseconds }}</flush_interval_milliseconds>
+{% if clickhouse_tables_log.asynchronous_metric_log.ttl is defined %}
+    <ttl>{{ clickhouse_tables_log.asynchronous_metric_log.ttl }}</ttl>
+{% endif %}
   </asynchronous_metric_log>
 
   <!--
@@ -1103,6 +1124,9 @@
     <table>{{ clickhouse_tables_log.crash_log.table }}</table>
     <partition_by>{{ clickhouse_tables_log.crash_log.partition_by }}</partition_by>
     <flush_interval_milliseconds>{{ clickhouse_tables_log.crash_log.flush_interval_milliseconds }}</flush_interval_milliseconds>
+{% if clickhouse_tables_log.crash_log.ttl is defined %}
+    <ttl>{{ clickhouse_tables_log.crash_log.ttl }}</ttl>
+{% endif %}
   </crash_log>
 
   <!-- Session log. Stores user log in (successful or not) and log out events. -->
@@ -1111,6 +1135,9 @@
     <table>{{ clickhouse_tables_log.session_log.table }}</table>
     <partition_by>{{ clickhouse_tables_log.session_log.partition_by }}</partition_by>
     <flush_interval_milliseconds>{{ clickhouse_tables_log.session_log.flush_interval_milliseconds }}</flush_interval_milliseconds>
+{% if clickhouse_tables_log.session_log.ttl is defined %}
+    <ttl>{{ clickhouse_tables_log.session_log.ttl }}</ttl>
+{% endif %}
   </session_log>
 
   <!-- Parameters for embedded dictionaries, used in Yandex.Metrica.
