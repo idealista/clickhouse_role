@@ -36,15 +36,6 @@
     state: present
     update_cache: true
 
-- name: CLICKHOUSE | Ensure base directory exist
-  file:
-    state: directory
-    dest: "{{ clickhouse_base_path }}"
-    owner: "{{ clickhouse_user }}"
-    group: "{{ clickhouse_group }}"
-    mode: "{{ clickhouse_base_directory_mode }}"
-  become: true
-
 - name: CLICKHOUSE | Ensure user files and access control directories exist
   file:
     state: directory
@@ -87,3 +78,10 @@
     group: "{{ clickhouse_group }}"
     mode: "{{ clickhouse_log_directory_mode }}"
   become: true
+
+- name: CLICKHOUSE | Clickhouse extra packages are installed (apt)
+  apt:
+    name: "{{ clickhouse_packages_extra }}"
+    state: present
+    update_cache: true
+  when: clickhouse_packages_extra is defined

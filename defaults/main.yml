@@ -57,6 +57,8 @@ clickhouse_packages:
   - "clickhouse-client={{ clickhouse_version }}"
   - "clickhouse-common-static={{ clickhouse_version }}"
   - "clickhouse-server={{ clickhouse_version }}"
+# clickhouse_packages_extra:
+#   - clickhouse-common-static-dbg
 
 # Config templates
 clickhouse_service_template_path: clickhouse-server.service.j2
