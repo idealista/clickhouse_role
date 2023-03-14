@@ -14,6 +14,15 @@
     shell: /usr/sbin/nologin
     createhome: no
 
+- name: CLICKHOUSE | Ensure base directory exist
+  file:
+    state: directory
+    dest: "{{ clickhouse_base_path }}"
+    owner: "{{ clickhouse_user }}"
+    group: "{{ clickhouse_group }}"
+    mode: "{{ clickhouse_base_directory_mode }}"
+  become: true
+
 - name: CLICKHOUSE | Update repositories cache and install apt-transport-https, dirmngr packages
   apt:
     name: "{{ clickhouse_prerequisite_repos }}"
@@ -35,15 +44,6 @@
     name: "{{ clickhouse_packages }}"
     state: present
     update_cache: true
-
-- name: CLICKHOUSE | Ensure base directory exist
-  file:
-    state: directory
-    dest: "{{ clickhouse_base_path }}"
-    owner: "{{ clickhouse_user }}"
-    group: "{{ clickhouse_group }}"
-    mode: "{{ clickhouse_base_directory_mode }}"
-  become: true
 
 - name: CLICKHOUSE | Ensure user files and access control directories exist
   file:
@@ -87,3 +87,10 @@
     group: "{{ clickhouse_group }}"
     mode: "{{ clickhouse_log_directory_mode }}"
   become: true
+
+- name: CLICKHOUSE | Clickhouse extra packages are installed (apt)
+  apt:
+    name: "{{ clickhouse_packages_extra }}"
+    state: present
+    update_cache: true
+  when: clickhouse_packages_extra is defined
