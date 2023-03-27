@@ -5,6 +5,7 @@
     name: "{{ clickhouse_group }}"
     system: yes
     state: present
+  tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Ensure clickhouse user
   user:
@@ -13,6 +14,7 @@
     system: yes
     shell: /usr/sbin/nologin
     createhome: no
+  tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Ensure base directory exist
   file:
@@ -22,28 +24,33 @@
     group: "{{ clickhouse_group }}"
     mode: "{{ clickhouse_base_directory_mode }}"
   become: true
+  tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Update repositories cache and install apt-transport-https, dirmngr packages
   apt:
     name: "{{ clickhouse_prerequisite_repos }}"
     state: present
+  tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Be sure key is present
   apt_key:
     keyserver: "{{ clickhouse_deb_keyserver }}"
     id: "{{ clickhouse_deb_keyid }}"
     state: present
+  tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Add clickhouse apt repository (deb)
   apt_repository:
     repo: "{{ clickhouse_deb_repo }}"
     state: present
+  tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Be sure clickhouse packages are installed (apt)
   apt:
     name: "{{ clickhouse_packages }}"
     state: present
     update_cache: true
+  tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Ensure user files and access control directories exist
   file:
@@ -56,6 +63,7 @@
     - "{{ clickhouse_access_control_directory }}"
     - "{{ clickhouse_user_files_directory }}"
   become: true
+  tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Ensure needed config directories exist
   file:
@@ -69,6 +77,7 @@
     - "{{ clickhouse_config_directory_config_d }}"
     - "{{ clickhouse_config_directory_users_d }}"
   become: true
+  tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Ensure needed tmp directories exist
   file:
@@ -78,6 +87,7 @@
     group: "{{ clickhouse_group }}"
     mode: "{{ clickhouse_tmp_directory_mode }}"
   become: true
+  tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Ensure needed log directory exist
   file:
@@ -87,6 +97,7 @@
     group: "{{ clickhouse_group }}"
     mode: "{{ clickhouse_log_directory_mode }}"
   become: true
+  tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Clickhouse extra packages are installed (apt)
   apt:
@@ -94,3 +105,4 @@
     state: present
     update_cache: true
   when: clickhouse_packages_extra is defined
+  tags: [clickhouse_install]

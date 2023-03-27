@@ -6,7 +6,7 @@
     \""
   changed_when: False
   when: clickhouse_custom_grants_previous_cleanup
-  # no_log: True
+  no_log: True
   tags:
     - clickhouse_grants
     - select

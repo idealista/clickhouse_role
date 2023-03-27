@@ -1,4 +1,4 @@
-CREATE USER IF NOT EXISTS {{ item.name }}{% if item.cluster is defined %} ON CLUSTER {{item.cluster }}{% endif %}
+CREATE USER IF NOT EXISTS '{{ item.name }}'{% if item.cluster is defined %} ON CLUSTER {{item.cluster }}{% endif %}
 {% if item.ldap_server is defined %} IDENTIFIED WITH ldap SERVER '{{ item.ldap_server }}'{% elif item.kerberos is defined %} IDENTIFIED WITH kerberos {% if item.kerberos != '' %}REALM '{{ item.kerberos }}'{% endif %}{% elif item.password is defined %} IDENTIFIED WITH {{ item.password_type | default("sha256_password") | lower }}{% if item.password is defined and item.password_type is not defined or (item.password is defined and item.password_type | upper != 'NO_PASSWORD') %} BY '{{ item.password}}'{% endif %}{% else %} NOT IDENTIFIED{% endif %}
 {% if item.networks is defined %} HOST {% for host in item.networks %}{{ host }}{{ ", " if not loop.last else "" }}{% endfor %}{% endif %}
 {% if item.role is defined %} DEFAULT ROLE {% for role in item.role %}{{ role }}{{ ", " if not loop.last else "" }}{% endfor %}{% endif %}
