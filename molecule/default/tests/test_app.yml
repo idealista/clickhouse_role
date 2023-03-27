@@ -21,12 +21,12 @@ file:
     group: {{ clickhouse_group }}
     exists: true
     filetype: directory
-  {{ clickhouse_config_directory }}/{{ clickhouse_config_file_name }}:
+  "{{ clickhouse_config_directory }}/{{ clickhouse_config_file_name }}":
     owner: {{ clickhouse_user }}
     group: {{ clickhouse_group }}
     exists: true
     filetype: file
-  {{ clickhouse_config_directory }}/{{ clickhouse_users_file_name }}:
+  "{{ clickhouse_config_directory }}/{{ clickhouse_users_file_name }}":
     owner: {{ clickhouse_user }}
     group: {{ clickhouse_group }}
     exists: true
@@ -74,14 +74,14 @@ http:
   http://localhost:8123?query=SHOW+USERS:
     status: 200
     timeout: 10000
-    body: ["admin","default","readonly","Bunta","Takumi"]
+    body: ["admin", "default", "readonly", "Bunta", "Takumi"]
     username: {{ clickhouse_admin_user }}
     password: {{ clickhouse_admin_password }}
     skip: false
   http://localhost:8123?query=SHOW+DATABASES:
     status: 200
     timeout: 10000
-    body: ["system","default","ProjectD","ex_racing","racing"]
+    body: ["system", "default", "ProjectD", "ex_racing", "racing"]
     username: {{ clickhouse_admin_user }}
     password: {{ clickhouse_admin_password }}
     skip: false

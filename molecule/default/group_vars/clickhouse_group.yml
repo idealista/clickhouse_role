@@ -5,6 +5,7 @@ clickhouse_version: 22.8.8.3
 clickhouse_release_type: lts
 
 # Clickhouse role management
+clickhouse_install_db: True
 clickhouse_role_manage_users: True
 clickhouse_role_manage_roles: True
 clickhouse_role_manage_databases: True
