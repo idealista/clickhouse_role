@@ -246,6 +246,9 @@ clickhouse_preferserverciphers_client: true
 clickhouse_invalidcertificatehandler:
   name: RejectCertificateHandler  # Use for self-signed: AcceptCertificateHandler
 
+# Specify backend authenticacion: AD / LDAP (By default, AD)
+clickhouse_auth_backend: AD
+
 # LDAP
 # clickhouse_ldap:
 #   serverame:
