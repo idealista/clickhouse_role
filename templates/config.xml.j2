@@ -508,11 +508,11 @@
       {% if clickhouse_ldap.port is defined -%}<port>{{ clickhouse_ldap.port }}</port>{% endif -%}
       {% if clickhouse_ldap.bind_dn is defined -%}<bind_dn>{{ clickhouse_ldap.bind_dn }}</bind_dn>{% endif -%}
       {% if clickhouse_ldap.base_dn is defined or clickhouse_ldap.scope or clickhouse_ldap.search_filter -%}
-      <user_dn_detection>
+      {% if clickhouse_auth_backend == 'AD' -%}<user_dn_detection>{% endif -%}
         {% if clickhouse_ldap.base_dn is defined -%}<base_dn>{{ clickhouse_ldap.base_dn }}</base_dn>{% endif -%}
         {% if clickhouse_ldap.scope is defined -%}<scope>{{ clickhouse_ldap.scope }}</scope>{% endif -%}
         {% if clickhouse_ldap.search_filter is defined -%}<search_filter>{{ clickhouse_ldap.search_filter }}</search_filter>{% endif -%}
-      </user_dn_detection>
+      {% if clickhouse_auth_backend == 'AD' -%}</user_dn_detection>{% endif -%}
       {% endif -%}
       {% if clickhouse_ldap.verification_cooldown is defined -%}<verification_cooldown>{{ clickhouse_ldap.verification_cooldown }}</verification_cooldown>{% endif -%}
       {% if clickhouse_ldap.enable_tls is defined -%}<enable_tls>{{ clickhouse_ldap.enable_tls }}</enable_tls>{% endif -%}
