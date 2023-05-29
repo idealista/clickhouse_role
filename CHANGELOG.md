@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/clickhouse_role/tree/develop)
 
+## [3.3.4(https://github.com/idealista/clickhouse_role/tree/3.3.4 (2023-05-29)
+
+### :heavy_plus_sign: Added
+
+- [#53](https://github.com/idealista/clickhouse_role/issues/53) Add LDAP support for authentication.
+
 ## [3.3.3(https://github.com/idealista/clickhouse_role/tree/3.3.3 (2023-03-27)
 
 ### :repeat: Updated
