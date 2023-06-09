@@ -503,27 +503,29 @@
         </my_ad_server>
     -->
     {% if clickhouse_ldap is defined -%}
-    <{{ clickhouse_ldap.servername }}>
-      {% if clickhouse_ldap.host is defined -%}<host>{{ clickhouse_ldap.host }}</host>{% endif -%}
-      {% if clickhouse_ldap.port is defined -%}<port>{{ clickhouse_ldap.port }}</port>{% endif -%}
-      {% if clickhouse_ldap.bind_dn is defined -%}<bind_dn>{{ clickhouse_ldap.bind_dn }}</bind_dn>{% endif -%}
-      {% if clickhouse_ldap.base_dn is defined or clickhouse_ldap.scope or clickhouse_ldap.search_filter -%}
-      {% if clickhouse_auth_backend == 'AD' -%}<user_dn_detection>{% endif -%}
-        {% if clickhouse_ldap.base_dn is defined -%}<base_dn>{{ clickhouse_ldap.base_dn }}</base_dn>{% endif -%}
-        {% if clickhouse_ldap.scope is defined -%}<scope>{{ clickhouse_ldap.scope }}</scope>{% endif -%}
-        {% if clickhouse_ldap.search_filter is defined -%}<search_filter>{{ clickhouse_ldap.search_filter }}</search_filter>{% endif -%}
-      {% if clickhouse_auth_backend == 'AD' -%}</user_dn_detection>{% endif -%}
-      {% endif -%}
-      {% if clickhouse_ldap.verification_cooldown is defined -%}<verification_cooldown>{{ clickhouse_ldap.verification_cooldown }}</verification_cooldown>{% endif -%}
-      {% if clickhouse_ldap.enable_tls is defined -%}<enable_tls>{{ clickhouse_ldap.enable_tls }}</enable_tls>{% endif -%}
-      {% if clickhouse_ldap.tls_minimum_protocol_version is defined -%}<tls_minimum_protocol_version>{{ clickhouse_ldap.tls_minimum_protocol_version }}</tls_minimum_protocol_version>{% endif -%}
-      {% if clickhouse_ldap.tls_require_cert is defined -%}<tls_require_cert>{{ clickhouse_ldap.tls_require_cert }}</tls_require_cert>{% endif -%}
-      {% if clickhouse_ldap.tls_cert_file is defined -%}<tls_cert_file>{{ clickhouse_ldap.tls_cert_file }}</tls_cert_file>{% endif -%}
-      {% if clickhouse_ldap.tls_key_file is defined -%}<tls_key_file>{{ clickhouse_ldap.tls_key_file }}</tls_key_file>{% endif -%}
-      {% if clickhouse_ldap.tls_ca_cert_file is defined -%}<tls_ca_cert_file>{{ clickhouse_ldap.tls_ca_cert_file }}</tls_ca_cert_file>{% endif -%}
-      {% if clickhouse_ldap.tls_ca_cert_dir is defined -%}<tls_ca_cert_dir>{{ clickhouse_ldap.tls_ca_cert_dir }}</tls_ca_cert_dir>{% endif -%}
-      {% if clickhouse_ldap.tls_cipher_suite is defined -%}<tls_cipher_suite>{{ clickhouse_ldap.tls_cipher_suite }}</tls_cipher_suite>{% endif -%}
-    </{{ clickhouse_ldap.servername }}>
+    {% for ldap_server in clickhouse_ldap %}
+        <{{ ldap_server.servername }}>
+          {% if ldap_server.host is defined -%}<host>{{ ldap_server.host }}</host>{% endif -%}
+          {% if ldap_server.port is defined -%}<port>{{ ldap_server.port }}</port>{% endif -%}
+          {% if ldap_server.bind_dn is defined -%}<bind_dn>{{ ldap_server.bind_dn }}</bind_dn>{% endif -%}
+          {% if ldap_server.base_dn is defined or ldap_server.scope or ldap_server.search_filter -%}
+          {% if clickhouse_auth_backend == 'AD' -%}<user_dn_detection>{% endif -%}
+            {% if ldap_server.base_dn is defined -%}<base_dn>{{ ldap_server.base_dn }}</base_dn>{% endif -%}
+            {% if ldap_server.scope is defined -%}<scope>{{ ldap_server.scope }}</scope>{% endif -%}
+            {% if ldap_server.search_filter is defined -%}<search_filter>{{ ldap_server.search_filter }}</search_filter>{% endif -%}
+          {% if clickhouse_auth_backend == 'AD' -%}</user_dn_detection>{% endif -%}
+          {% endif -%}
+          {% if ldap_server.verification_cooldown is defined -%}<verification_cooldown>{{ ldap_server.verification_cooldown }}</verification_cooldown>{% endif -%}
+          {% if ldap_server.enable_tls is defined -%}<enable_tls>{{ ldap_server.enable_tls }}</enable_tls>{% endif -%}
+          {% if ldap_server.tls_minimum_protocol_version is defined -%}<tls_minimum_protocol_version>{{ ldap_server.tls_minimum_protocol_version }}</tls_minimum_protocol_version>{% endif -%}
+          {% if ldap_server.tls_require_cert is defined -%}<tls_require_cert>{{ ldap_server.tls_require_cert }}</tls_require_cert>{% endif -%}
+          {% if ldap_server.tls_cert_file is defined -%}<tls_cert_file>{{ ldap_server.tls_cert_file }}</tls_cert_file>{% endif -%}
+          {% if ldap_server.tls_key_file is defined -%}<tls_key_file>{{ ldap_server.tls_key_file }}</tls_key_file>{% endif -%}
+          {% if ldap_server.tls_ca_cert_file is defined -%}<tls_ca_cert_file>{{ ldap_server.tls_ca_cert_file }}</tls_ca_cert_file>{% endif -%}
+          {% if ldap_server.tls_ca_cert_dir is defined -%}<tls_ca_cert_dir>{{ ldap_server.tls_ca_cert_dir }}</tls_ca_cert_dir>{% endif -%}
+          {% if ldap_server.tls_cipher_suite is defined -%}<tls_cipher_suite>{{ ldap_server.tls_cipher_suite }}</tls_cipher_suite>{% endif -%}
+        </{{ ldap_server.servername }}>
+    {% endfor %}
     {% endif -%}
   </ldap_servers>
 
@@ -622,23 +624,29 @@
         </ldap>
     -->
     {% if clickhouse_user_directories_ldap is defined -%}
+    {% for user_directory in clickhouse_user_directories_ldap -%}
     <ldap>
-      <server>{{ clickhouse_user_directories_ldap.server }}</server>
-      {% if clickhouse_user_directories_ldap.roles is defined -%}
+      <server>{{ user_directory.server }}</server>
+      {% if user_directory.roles is defined -%}
       <roles>
-        {% for role in clickhouse_user_directories_ldap.roles -%}
+        {% for role in user_directory.roles -%}
         <{{ role }} />
         {% endfor -%}
       </roles>
       {% endif -%}
+      {% if user_directory.role_mappings is defined -%}
+      {% for role_mapping in user_directory.role_mappings -%}
       <role_mapping>
-        <base_dn>{{ clickhouse_user_directories_ldap.base_dn }}</base_dn>
-        <scope>{{ clickhouse_user_directories_ldap.scope }}</scope>
-        <search_filter>{{ clickhouse_user_directories_ldap.search_filter }}</search_filter>
-        <attribute>{{ clickhouse_user_directories_ldap.attribute }}</attribute>
-        <prefix>{{ clickhouse_user_directories_ldap.prefix }}</prefix>
+        <base_dn>{{ role_mapping.base_dn }}</base_dn>
+        <scope>{{ role_mapping.scope }}</scope>
+        <search_filter>{{ role_mapping.search_filter }}</search_filter>
+        <attribute>{{ role_mapping.attribute }}</attribute>
+        <prefix>{{ role_mapping.prefix }}</prefix>
       </role_mapping>
+      {% endfor -%}
+      {% endif -%}
     </ldap>
+    {% endfor -%}
     {% endif -%}
   </user_directories>
 

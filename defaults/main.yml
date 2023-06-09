@@ -251,31 +251,32 @@ clickhouse_auth_backend: AD
 
 # LDAP
 # clickhouse_ldap:
-#   serverame:
-#   host:
-#   port:
-#   bind_dn:
-#   base_dn:
-#   scope:
-#   search_filter:
-#   verification_cooldown:
-#   enable_tls:
-#   tls_minimum_protocol_version:
-#   tls_require_cert:
-#   tls_cert_file:
-#   tls_key_file:
-#   tls_ca_cert_file:
-#   tls_ca_cert_dir:
-#   tls_cipher_suite:
+#   - serverame:
+#     host:
+#     port:
+#     bind_dn:
+#     base_dn:
+#     scope:
+#     search_filter:
+#     verification_cooldown:
+#     enable_tls:
+#     tls_minimum_protocol_version:
+#     tls_require_cert:
+#     tls_cert_file:
+#     tls_key_file:
+#     tls_ca_cert_file:
+#     tls_ca_cert_dir:
+#     tls_cipher_suite:
 
 # clickhouse_user_directories_ldap:
 #   server:
 #   roles: []
-#   base_dn:
-#   scope:
-#   search_filter:
-#   attribute:
-#   prefix:
+#   role_mappings:
+#     - base_dn:
+#       scope:
+#       search_filter:
+#       attribute:
+#       prefix:
 
 # Kerberos
 # clickhouse_kerberos:
