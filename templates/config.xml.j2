@@ -624,23 +624,29 @@
         </ldap>
     -->
     {% if clickhouse_user_directories_ldap is defined -%}
+    {% for user_directory in clickhouse_user_directories_ldap -%}
     <ldap>
-      <server>{{ clickhouse_user_directories_ldap.server }}</server>
-      {% if clickhouse_user_directories_ldap.roles is defined -%}
+      <server>{{ user_directory.server }}</server>
+      {% if user_directory.roles is defined -%}
       <roles>
-        {% for role in clickhouse_user_directories_ldap.roles -%}
+        {% for role in user_directory.roles -%}
         <{{ role }} />
         {% endfor -%}
       </roles>
       {% endif -%}
+      {% if user_directory.role_mappings is defined -%}
+      {% for role_mapping in user_directory.role_mappings -%}
       <role_mapping>
-        <base_dn>{{ clickhouse_user_directories_ldap.base_dn }}</base_dn>
-        <scope>{{ clickhouse_user_directories_ldap.scope }}</scope>
-        <search_filter>{{ clickhouse_user_directories_ldap.search_filter }}</search_filter>
-        <attribute>{{ clickhouse_user_directories_ldap.attribute }}</attribute>
-        <prefix>{{ clickhouse_user_directories_ldap.prefix }}</prefix>
+        <base_dn>{{ role_mapping.base_dn }}</base_dn>
+        <scope>{{ role_mapping.scope }}</scope>
+        <search_filter>{{ role_mapping.search_filter }}</search_filter>
+        <attribute>{{ role_mapping.attribute }}</attribute>
+        <prefix>{{ role_mapping.prefix }}</prefix>
       </role_mapping>
+      {% endfor -%}
+      {% endif -%}
     </ldap>
+    {% endfor -%}
     {% endif -%}
   </user_directories>
 
