@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/clickhouse_role/tree/develop)
 
+## [3.3.6(https://github.com/idealista/clickhouse_role/tree/3.3.6 (2023-06-09)
+
+### :hammer_and_wrench: Fixed
+
+- [#59](https://github.com/idealista/clickhouse_role/issues/59) Fix role wiping when there are users from readonly storage
+
 ## [3.3.5(https://github.com/idealista/clickhouse_role/tree/3.3.5 (2023-06-09)
 
 ### :heavy_plus_sign: Added
