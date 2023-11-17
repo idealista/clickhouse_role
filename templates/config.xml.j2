@@ -797,6 +797,37 @@
   Values for substitutions are specified in /clickhouse/name_of_substitution elements in that file.
   -->
 
+<!-- Clickhouse Keeper -->
+{% if clickhouse_keeper is defined %}
+{% for keeper_server in clickhouse_keeper.keeper_servers %}
+{% if keeper_server.server is defined and inventory_hostname == keeper_server.server %}
+    <keeper_server>
+        <!-- Clients use this port to connect (should match zookeeper port) -->
+        <tcp_port>{{ clickhouse_keeper.tcp_port }}</tcp_port>
+        <server_id>{{ keeper_server.id }}</server_id>
+        <log_storage_path>{{ clickhouse_keeper.log_storage_path }}</log_storage_path>
+        <snapshot_storage_path>{{ clickhouse_keeper.snapshot_storage_path }}</snapshot_storage_path>
+    
+        <coordination_settings>
+            <operation_timeout_ms>{{ clickhouse_keeper.coordination_settings.operation_timeout_ms }}</operation_timeout_ms>
+            <session_timeout_ms>{{ clickhouse_keeper.coordination_settings.session_timeout_ms }}</session_timeout_ms>
+            <raft_logs_level>{{ clickhouse_keeper.coordination_settings.raft_logs_level }}</raft_logs_level>
+        </coordination_settings>
+    
+        <raft_configuration>
+{% for keeper_server in clickhouse_keeper.keeper_servers %}
+            <server>
+                <id>{{ keeper_server.id }}</id>
+                <hostname>{{ keeper_server.hostname }}</hostname>
+                <port>{{ keeper_server.port }}</port>
+            </server>
+{% endfor %}
+        </raft_configuration>
+    </keeper_server>
+{% endif %}
+{% endfor %}
+{% endif %}
+
   <!-- ZooKeeper is used to store metadata about replicas, when using Replicated tables.
   Optional. If you don't use replicated tables, you could omit that.
   See https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/replication/
@@ -1270,6 +1301,15 @@
     </{{ clickhouse_encryption.encryption }}>
 {% endif %}
   </encryption_codecs>
+
+  <!-- Default arguments passed to Replicated table engines -->
+{% if clickhouse_default_replica_path is defined %}
+  <default_replica_path>{{ clickhouse_default_replica_path }}</default_replica_path>
+{% endif %}
+{% if clickhouse_default_replica_name is defined %}
+  <default_replica_name>{{ clickhouse_default_replica_name }}</default_replica_name>
+{% endif %}
+
 
   <!-- Allow to execute distributed DDL queries (CREATE, DROP, ALTER, RENAME) on cluster.
     Works only if ZooKeeper is enabled. Comment it if such functionality isn't required. -->

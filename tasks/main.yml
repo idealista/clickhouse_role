@@ -1,7 +1,7 @@
 ---
 
 - name: CLICKHOUSE | Install
-  include_tasks: "install-{{ ansible_distribution }}.yml"
+  include_tasks: "install-{{ ansible_os_family | capitalize }}.yml"
   tags:
     - clickhouse_install
   when: clickhouse_install_db is not defined or clickhouse_install_db

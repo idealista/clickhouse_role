@@ -5,6 +5,16 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/clickhouse_role/tree/develop)
 
+## [3.4.0(https://github.com/idealista/clickhouse_role/tree/3.4.0 (2023-11-17)
+
+### :heavy_plus_sign: Added
+
+- [#64](https://github.com/idealista/clickhouse_role/issues/64) Add clickhouse_keeper and default replica params enhancement
+
+### :repeat: Updated
+
+- [#65](https://github.com/idealista/clickhouse_role/issues/65) Update to use ansible_os_family var instead of ansible_distribution var for main.yml
+
 ## [3.3.6(https://github.com/idealista/clickhouse_role/tree/3.3.6 (2023-06-09)
 
 ### :hammer_and_wrench: Fixed
@@ -57,7 +67,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ### :heavy_plus_sign: Added
 
-- [#35](https://github.com/idealista/clickhouse_role/issues/35) Clickhouse copier basic configuration 
+- [#35](https://github.com/idealista/clickhouse_role/issues/35) Clickhouse copier basic configuration
 
 ### :repeat: Updated
 
