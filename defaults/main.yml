@@ -408,6 +408,22 @@ clickhouse_remote_servers:
             host: localhost
             port: 1
 
+# Clickhouse Keeper
+# clickhouse_keeper:
+#   tcp_port:
+#   log_storage_path:
+#   snapshot_storage_path:
+#   coordination_settings:
+#     operation_timeout_ms:
+#     session_timeout_ms:
+#     raft_logs_level:
+#   keeper_servers:
+#   - keeper_server:
+#     server:
+#     id:
+#     hostname:
+#     port:
+
 # Zookeeper
 # clickhouse_zookeeper:
 #   - node:
@@ -556,6 +572,10 @@ clickhouse_tables_log:
 #       # Key from a value / file or from ENV, use only one option.
 #       value:
 #       # from_env: ENV
+
+# Default replica params
+# clickhouse_default_replica_path:
+# clickhouse_default_replica_name:
 
 # Distributed DDL
 # clickhouse_distributed_ddl:
