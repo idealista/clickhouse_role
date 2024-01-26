@@ -1052,7 +1052,7 @@
   <query_thread_log>
     <database>{{ clickhouse_tables_log.thread_log.database }}</database>
     <table>{{ clickhouse_tables_log.thread_log.table }}</table>
-    <partition_by>{{ clickhouse_tables_log.thread_log.partition_by }}(event_date)</partition_by>
+    <partition_by>{{ clickhouse_tables_log.thread_log.partition_by }}</partition_by>
     <flush_interval_milliseconds>{{ clickhouse_tables_log.thread_log.flush_interval_milliseconds }}</flush_interval_milliseconds>
 {% if clickhouse_tables_log.thread_log.ttl is defined %}
     <ttl>{{ clickhouse_tables_log.thread_log.ttl }}</ttl>
@@ -1076,7 +1076,7 @@
   <part_log>
     <database>{{ clickhouse_tables_log.part_log.database }}</database>
     <table>{{ clickhouse_tables_log.part_log.table }}</table>
-    <partition_by>{{ clickhouse_tables_log.part_log.partition_by }}(event_date)</partition_by>
+    <partition_by>{{ clickhouse_tables_log.part_log.partition_by }}</partition_by>
     <flush_interval_milliseconds>{{ clickhouse_tables_log.part_log.flush_interval_milliseconds }}</flush_interval_milliseconds>
 {% if clickhouse_tables_log.part_log.ttl is defined %}
     <ttl>{{ clickhouse_tables_log.part_log.ttl }}</ttl>
