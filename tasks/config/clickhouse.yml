@@ -20,6 +20,16 @@
   notify: "{{ clickhouse_handler_on_config_change }}"
   tags: clickhouse_configure
 
+- name: CLICKHOUSE | Add extra configuration files
+  copy:
+    src: "{{ clickhouse_custom_extra_config_file_path }}/"
+    dest: "{{ clickhouse_config_directory_config_d }}/"
+    owner: "{{ clickhouse_user }}"
+    group: "{{ clickhouse_group }}"
+    mode: 0644
+  when: clickhouse_custom_extra_config_file_path is defined
+  tags: clickhouse_configure
+
 - name: CLICKHOUSE | Configure users (from vars)
   template:
     src: "{{ clickhouse_users_file_name }}.j2"
@@ -43,3 +53,13 @@
   tags:
     - clickhouse_configure
     - clickhouse_users
+
+- name: CLICKHOUSE | Add extra user configuration files
+  copy:
+    src: "{{ clickhouse_custom_extra_users_file_path }}/"
+    dest: "{{ clickhouse_config_directory_users_d }}/"
+    owner: "{{ clickhouse_user }}"
+    group: "{{ clickhouse_group }}"
+    mode: 0644
+  when: clickhouse_custom_extra_users_file_path is defined
+  tags: clickhouse_configure
