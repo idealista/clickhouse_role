@@ -13,8 +13,8 @@ clickhouse_role_manage_settings_profiles: True
 clickhouse_role_manage_quotas: True
 clickhouse_role_manage_grants: True
 
-# clickhouse_custom_config_file_path: "{{ playbook_dir }}/config_files/config"
-# clickhouse_custom_users_file_path: "{{ playbook_dir }}/config_files/users"
+clickhouse_custom_extra_config_file_path: "{{ playbook_dir }}/config_files/config/config.d"
+clickhouse_custom_extra_users_file_path: "{{ playbook_dir }}/config_files/users/users.d"
 
 # Users
 clickhouse_admin_user: admin

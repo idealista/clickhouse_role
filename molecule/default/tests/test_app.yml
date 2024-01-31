@@ -31,6 +31,16 @@ file:
     group: {{ clickhouse_group }}
     exists: true
     filetype: file
+  "{{ clickhouse_config_directory_config_d }}/log_disable.xml":
+    owner: {{ clickhouse_user }}
+    group: {{ clickhouse_group }}
+    exists: true
+    filetype: file
+  "{{ clickhouse_config_directory_users_d }}/log_queries.xml":
+    owner: {{ clickhouse_user }}
+    group: {{ clickhouse_group }}
+    exists: true
+    filetype: file
 
 service:
   {{ clickhouse_service }}:
