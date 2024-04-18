@@ -22,8 +22,9 @@ platforms:
       - /run
       - /run/lock
     volumes:
-      - '/sys/fs/cgroup:/sys/fs/cgroup:ro'
-    command: '/lib/systemd/systemd'
+      - '/sys/fs/cgroup:/sys/fs/cgroup:rw'
+    command: ${MOLECULE_DOCKER_COMMAND:-"/lib/systemd/systemd"}
+    cgroupns_mode: host
     stop_signal: 'RTMIN+3'
     exposed_ports:
       - 8123/tcp

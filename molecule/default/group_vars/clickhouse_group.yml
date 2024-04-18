@@ -1,9 +1,5 @@
 ---
 
-# Version
-clickhouse_version: 22.8.8.3
-clickhouse_release_type: lts
-
 # Clickhouse role management
 clickhouse_install_db: True
 clickhouse_role_manage_users: True
@@ -12,6 +8,8 @@ clickhouse_role_manage_databases: True
 clickhouse_role_manage_settings_profiles: True
 clickhouse_role_manage_quotas: True
 clickhouse_role_manage_grants: True
+
+clickhouse_private_tmp: false
 
 clickhouse_custom_extra_config_file_path: "{{ playbook_dir }}/config_files/config/config.d"
 clickhouse_custom_extra_users_file_path: "{{ playbook_dir }}/config_files/users/users.d"

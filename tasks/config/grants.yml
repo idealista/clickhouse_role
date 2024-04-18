@@ -1,7 +1,7 @@
 ---
 
 - name: CLICKHOUSE | List perms and privs (SQL-driven)
-  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"
+  ansible.builtin.command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"
     SELECT user_name, role_name,
       ifNull(database, '*') AS database ,
       ifNull(table, '*') AS table,
@@ -25,16 +25,17 @@
     - SQL_driven
 
 - name: CLICKHOUSE | Set var with the perms and privs listed
-  set_fact:
+  ansible.builtin.set_fact:
     actual_privs: "{{ (clickhouse_existing_sql_grants.stdout | from_json)['data'] }}"
   tags:
     - clickhouse_grants
 
 # All logic of this revokes and grants are in the template because of "speed performance" instead of ansible task doing the loop
 - name: CLICKHOUSE | Revoke user and roles grants missing (SQL-driven)
-  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} --multiquery -q {{ lookup('template', 'DDL/REVOKE.j2') | quote }}"
+  ansible.builtin.command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} --multiquery -q {{ lookup('template', 'DDL/REVOKE.j2') | quote }}"
   when: actual_privs is defined
-  changed_when: False
+  register: revoke_grants_missing
+  changed_when: revoke_grants_missing.rc != 0
   no_log: True
   tags:
     - clickhouse_grants
@@ -42,10 +43,11 @@
     - SQL_driven
 
 - name: CLICKHOUSE | Do Grants for users and roles (SQL-driven)
-  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} --multiquery -q {{ lookup('template', 'DDL/GRANT.j2') | quote }}"
+  ansible.builtin.command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} --multiquery -q {{ lookup('template', 'DDL/GRANT.j2') | quote }}"
   when:
     - item.privileges is defined
-  changed_when: False
+  register: do_grants
+  changed_when: do_grants.rc != 0
   no_log: True
   tags:
     - clickhouse_grants

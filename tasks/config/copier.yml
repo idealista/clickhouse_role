@@ -1,7 +1,7 @@
 ---
 
 - name: CLICKHOUSE | Add copier configuration files (from vars)
-  template:
+  ansible.builtin.template:
     src: "{{ clickhouse_copier_config_file_name }}.j2"
     dest: "{{ clickhouse_config_directory }}/{{ clickhouse_copier_config_file_name }}"
     mode: 0644
@@ -10,7 +10,7 @@
   tags: clickhouse_configure_copier
 
 - name: CLICKHOUSE | Add copier configuration files (from user files)
-  copy:
+  ansible.builtin.copy:
     src: "{{ clickhouse_copier_custom_config_file_path }}/"
     dest: "{{ clickhouse_copier_config_directory }}"
     owner: "{{ clickhouse_user }}"

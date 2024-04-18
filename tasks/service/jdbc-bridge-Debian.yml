@@ -1,13 +1,13 @@
 ---
 
 - name: CLICKHOUSE | Ensure clickhouse jdbc bridge group
-  group:
+  ansible.builtin.group:
     name: "{{ clickhouse_jdbc_bridge_group }}"
     system: yes
     state: present
 
 - name: CLICKHOUSE | Ensure clickhouse jdbc bridge user
-  user:
+  ansible.builtin.user:
     name: "{{ clickhouse_jdbc_bridge_user }}"
     group: "{{ clickhouse_jdbc_bridge_group }}"
     system: yes
@@ -15,7 +15,7 @@
     createhome: no
 
 - name: CLICKHOUSE | Ensure needed jdbc-bridge directories exist
-  file:
+  ansible.builtin.file:
     state: directory
     dest: "{{ item }}"
     owner: "{{ clickhouse_jdbc_bridge_user }}"
@@ -31,14 +31,14 @@
     - clickhouse_jdbc_bridge_service
 
 - name: CLICKHOUSE | Install Clickhouse JDBC Bridge if required
-  apt:
+  ansible.builtin.apt:
     deb: "{{ clickhouse_jdbc_bridge_deb_package }}"
     install_recommends: no
   tags:
     - clickhouse_jdbc_bridge_service
 
 - name: "CLICKHOUSE | Copy Clickhouse JDBC Bridge drivers from {{ clickhouse_jdbc_bridge_file_drivers_path }}"
-  copy:
+  ansible.builtin.copy:
     src: "{{ item }}"
     dest: "{{ clickhouse_jdbc_bridge_drivers_path }}"
     owner: "{{ clickhouse_jdbc_bridge_user }}"
@@ -50,7 +50,7 @@
     - clickhouse_jdbc_bridge_service
 
 - name: CLICKHOUSE | Generate JDBC Bridge templates for datasources
-  template:
+  ansible.builtin.template:
     src: "jdbc-bridge/datasource.json.j2"
     dest: "{{ clickhouse_jdbc_bridge_datasources_path }}/{{ item.name }}.json"
     owner: "{{ clickhouse_jdbc_bridge_user }}"
@@ -63,7 +63,7 @@
     - clickhouse_jdbc_bridge_service
 
 - name: CLICKHOUSE | Copy Clickhouse JDBC Bridge logging properties
-  template:
+  ansible.builtin.template:
     src: "jdbc-bridge/logging.properties.j2"
     dest: "{{ clickhouse_jdbc_bridge_config_path }}/logging.properties"
     owner: "{{ clickhouse_jdbc_bridge_user }}"
@@ -73,7 +73,7 @@
     - clickhouse_jdbc_bridge_service
 
 - name: CLICKHOUSE | Copy Clickhouse JDBC Bridge env file
-  template:
+  ansible.builtin.template:
     src: "jdbc-bridge/set-env.sh.j2"
     dest: "{{ clickhouse_jdbc_bridge_config_path }}/set-env.sh"
     owner: "{{ clickhouse_jdbc_bridge_user }}"
@@ -83,7 +83,7 @@
     - clickhouse_jdbc_bridge_service
 
 - name: CLICKHOUSE | Copy Clickhouse JDBC Bridge service
-  template:
+  ansible.builtin.template:
     src: "{{ clickhouse_jdbc_bridge_service_template_path }}"
     dest: "/etc/systemd/system/{{ clickhouse_jdbc_bridge_service }}.service"
     mode: 0644
@@ -93,7 +93,7 @@
     - clickhouse_jdbc_bridge_service
 
 - name: CLICKHOUSE | Configuring Clickhouse JDBC Bridge service
-  systemd:
+  ansible.builtin.systemd:
     name: "{{ clickhouse_jdbc_bridge_service }}"
     state: "{{ clickhouse_jdbc_bridge_service_state }}"
     enabled: "{{ clickhouse_jdbc_bridge_service_enabled }}"

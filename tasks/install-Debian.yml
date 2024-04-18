@@ -1,14 +1,14 @@
 ---
 
 - name: CLICKHOUSE | Ensure clickhouse group
-  group:
+  ansible.builtin.group:
     name: "{{ clickhouse_group }}"
     system: yes
     state: present
   tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Ensure clickhouse user
-  user:
+  ansible.builtin.user:
     name: "{{ clickhouse_user }}"
     group: "{{ clickhouse_group }}"
     system: yes
@@ -17,7 +17,7 @@
   tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Ensure base directory exist
-  file:
+  ansible.builtin.file:
     state: directory
     dest: "{{ clickhouse_base_path }}"
     owner: "{{ clickhouse_user }}"
@@ -26,34 +26,34 @@
   become: true
   tags: [clickhouse_install]
 
-- name: CLICKHOUSE | Update repositories cache and install apt-transport-https, dirmngr packages
+- name: CLICKHOUSE | Update repositories cache and install apt-transport-https, dirmngr ansible.builtin.packages
   apt:
     name: "{{ clickhouse_prerequisite_repos }}"
     state: present
   tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Be sure key is present
-  apt_key:
+  ansible.builtin.apt_key:
     keyserver: "{{ clickhouse_deb_keyserver }}"
     id: "{{ clickhouse_deb_keyid }}"
     state: present
   tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Add clickhouse apt repository (deb)
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "{{ clickhouse_deb_repo }}"
     state: present
   tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Be sure clickhouse packages are installed (apt)
-  apt:
+  ansible.builtin.apt:
     name: "{{ clickhouse_packages }}"
     state: present
     update_cache: true
   tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Ensure user files and access control directories exist
-  file:
+  ansible.builtin.file:
     state: directory
     dest: "{{ item }}"
     owner: "{{ clickhouse_user }}"
@@ -66,7 +66,7 @@
   tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Ensure needed config directories exist
-  file:
+  ansible.builtin.file:
     state: directory
     dest: "{{ item }}"
     owner: "{{ clickhouse_user }}"
@@ -80,7 +80,7 @@
   tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Ensure needed tmp directories exist
-  file:
+  ansible.builtin.file:
     state: directory
     dest: "{{ clickhouse_tmp_directory }}"
     owner: "{{ clickhouse_user }}"
@@ -90,7 +90,7 @@
   tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Ensure needed log directory exist
-  file:
+  ansible.builtin.file:
     state: directory
     dest: "{{ clickhouse_log_directory }}"
     owner: "{{ clickhouse_user }}"
@@ -100,7 +100,7 @@
   tags: [clickhouse_install]
 
 - name: CLICKHOUSE | Clickhouse extra packages are installed (apt)
-  apt:
+  ansible.builtin.apt:
     name: "{{ clickhouse_packages_extra }}"
     state: present
     update_cache: true

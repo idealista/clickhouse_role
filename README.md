@@ -5,7 +5,7 @@
 
 ![Logo](https://raw.githubusercontent.com/idealista/clickhouse_role/main/logo.gif)
 
-This ansible role installs [Clickhouse](https://clickhouse.com/) in a Debian environment. It has been tested for Debian bullseye and buster.
+This ansible role installs [Clickhouse](https://clickhouse.com/) in a Debian environment. It has been tested for Debian bullseye.
 
 This role has been generated using the [cookiecutter](https://github.com/cookiecutter/cookiecutter) tool, you can generate a similar role that fits your needs using the this [cookiecutter template](https://github.com/idealista/cookiecutter-ansible-role).
 
@@ -159,7 +159,7 @@ For more information read the [pipenv docs](ipenv-fork.readthedocs.io/en/latest/
 ### Testing
 
 ```sh
-$ pipenv run molecule test 
+$ pipenv run molecule test
 ```
 
 ## Built With :building_construction:

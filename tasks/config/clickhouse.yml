@@ -1,7 +1,7 @@
 ---
 
 - name: CLICKHOUSE | Add configuration files (from vars)
-  template:
+  ansible.builtin.template:
     src: "{{ clickhouse_config_file_name }}.j2"
     dest: "{{ clickhouse_config_directory }}/{{ clickhouse_config_file_name }}"
     mode: 0644
@@ -10,7 +10,7 @@
   tags: clickhouse_configure
 
 - name: CLICKHOUSE | Add configuration files (from user files)
-  copy:
+  ansible.builtin.copy:
     src: "{{ clickhouse_custom_config_file_path }}/"
     dest: "{{ clickhouse_config_directory }}"
     owner: "{{ clickhouse_user }}"
@@ -21,7 +21,7 @@
   tags: clickhouse_configure
 
 - name: CLICKHOUSE | Add extra configuration files
-  copy:
+  ansible.builtin.copy:
     src: "{{ clickhouse_custom_extra_config_file_path }}/"
     dest: "{{ clickhouse_config_directory_config_d }}/"
     owner: "{{ clickhouse_user }}"
@@ -31,7 +31,7 @@
   tags: clickhouse_configure
 
 - name: CLICKHOUSE | Configure users (from vars)
-  template:
+  ansible.builtin.template:
     src: "{{ clickhouse_users_file_name }}.j2"
     dest: "{{ clickhouse_config_directory }}/{{ clickhouse_users_file_name }}"
     mode: 0644
@@ -42,7 +42,7 @@
     - clickhouse_users
 
 - name: CLICKHOUSE | Configure users files (from users files)
-  copy:
+  ansible.builtin.copy:
     src: "{{ clickhouse_custom_users_file_path }}/"
     dest: "{{ clickhouse_config_directory }}"
     owner: "{{ clickhouse_user }}"
@@ -55,7 +55,7 @@
     - clickhouse_users
 
 - name: CLICKHOUSE | Add extra user configuration files
-  copy:
+  ansible.builtin.copy:
     src: "{{ clickhouse_custom_extra_users_file_path }}/"
     dest: "{{ clickhouse_config_directory_users_d }}/"
     owner: "{{ clickhouse_user }}"
