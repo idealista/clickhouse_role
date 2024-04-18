@@ -41,7 +41,7 @@ clickhouse_service_state: started
 #clickhouse_log_file:
 clickhouse_log_output: "{% if clickhouse_log_file is defined %} file:{{ clickhouse_log_file }} {% else %} journal {% endif %}"
 
-clickhouse_private_tmp: false
+clickhouse_private_tmp: true
 clickhouse_limit_no_file: 500000
 
 # DEBIAN - Clickhouse
