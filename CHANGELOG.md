@@ -5,20 +5,31 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/clickhouse_role/tree/develop)
 
-## [3.5.0(https://github.com/idealista/clickhouse_role/tree/3.5.0 (2024-01-31)
+## [3.5.1](https://github.com/idealista/clickhouse_role/tree/3.5.1) (2024-04-18)
+
+### :hammer_and_wrench: Fixed
+
+- [#73](https://github.com/idealista/clickhouse_role/issues/73) text_log table config crashes Clickhouse
+
+### :repeat: Updated
+
+- Tasks now are using FQDN
+- Test requirements has been updated
+
+## [3.5.0](https://github.com/idealista/clickhouse_role/tree/3.5.0) (2024-01-31)
 
 ### :heavy_plus_sign: Added
 
 - [#70](https://github.com/idealista/clickhouse_role/issues/70) Include extra config and users files
 - Update default lts version to latest (23.8.9.54)
 
-## [3.4.1(https://github.com/idealista/clickhouse_role/tree/3.4.1 (2024-01-26)
+## [3.4.1](https://github.com/idealista/clickhouse_role/tree/3.4.1) (2024-01-26)
 
 ### :hammer_and_wrench: Fixed
 
 - [#67](https://github.com/idealista/clickhouse_role/issues/67) Fix log tables partitioning
 
-## [3.4.0(https://github.com/idealista/clickhouse_role/tree/3.4.0 (2023-11-17)
+## [3.4.0](https://github.com/idealista/clickhouse_role/tree/3.4.0) (2023-11-17)
 
 ### :heavy_plus_sign: Added
 
@@ -28,25 +39,25 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 - [#65](https://github.com/idealista/clickhouse_role/issues/65) Update to use ansible_os_family var instead of ansible_distribution var for main.yml
 
-## [3.3.6(https://github.com/idealista/clickhouse_role/tree/3.3.6 (2023-06-09)
+## [3.3.6](https://github.com/idealista/clickhouse_role/tree/3.3.6) (2023-06-09)
 
 ### :hammer_and_wrench: Fixed
 
 - [#59](https://github.com/idealista/clickhouse_role/issues/59) Fix role wiping when there are users from readonly storage
 
-## [3.3.5(https://github.com/idealista/clickhouse_role/tree/3.3.5 (2023-06-09)
+## [3.3.5](https://github.com/idealista/clickhouse_role/tree/3.3.5) (2023-06-09)
 
 ### :heavy_plus_sign: Added
 
 - [#56](https://github.com/idealista/clickhouse_role/issues/56) Add support for several ldap servers and role mappings
 
-## [3.3.4(https://github.com/idealista/clickhouse_role/tree/3.3.4 (2023-05-29)
+## [3.3.4](https://github.com/idealista/clickhouse_role/tree/3.3.4) (2023-05-29)
 
 ### :heavy_plus_sign: Added
 
 - [#53](https://github.com/idealista/clickhouse_role/issues/53) Add LDAP support for authentication.
 
-## [3.3.3(https://github.com/idealista/clickhouse_role/tree/3.3.3 (2023-03-27)
+## [3.3.3](https://github.com/idealista/clickhouse_role/tree/3.3.3) (2023-03-27)
 
 ### :repeat: Updated
 
@@ -56,7 +67,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 - Some typos and quotation
 
-## [3.3.2](https://github.com/idealista/clickhouse_role/tree/3.3.2 (2023-01-18)
+## [3.3.2](https://github.com/idealista/clickhouse_role/tree/3.3.2) (2023-01-18)
 
 ### :heavy_plus_sign: Added
 
