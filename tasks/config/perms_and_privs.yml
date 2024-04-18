@@ -1,7 +1,7 @@
 ---
 
 - name: CLICKHOUSE | Get all LDAP users for grants cleaning (Optional step)
-  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"
+  ansible.builtin.command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"
     SELECT name FROM system.users WHERE storage == 'ldap';
     \""
   register: ldap_user_list
@@ -14,8 +14,8 @@
     - SQL_driven
 
 - name: CLICKHOUSE | Previous grants cleaning (Optional step)
-  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"
-    REVOKE ALL ON *.* FROM ALL EXCEPT {{ ((clickhouse_default_users | default([]) + clickhouse_admin_users | default([]) + clickhouse_custom_users_xml | default([])) | map(attribute='name') | list + (ldap_user_list.stdout_lines | default([])))   | join(', ') }};
+  ansible.builtin.command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"
+    REVOKE ALL ON *.* FROM ALL EXCEPT {{ ((clickhouse_default_users | default([]) + clickhouse_admin_users | default([]) + clickhouse_custom_users_xml | default([])) | map(attribute='name') | list + (ldap_user_list.stdout_lines | default([]))) | join(', ') }};
     \""
   changed_when: False
   when: clickhouse_custom_grants_previous_cleanup
@@ -26,14 +26,14 @@
     - SQL_driven
 
 - name: CLICKHOUSE | Grant perms & privs
-  include_tasks: config/grants.yml
+  ansible.builtin.include_tasks: config/grants.yml
   with_items: "{{ clickhouse_custom_grants }}"
   when: clickhouse_custom_grants is defined
   tags:
     - clickhouse_grants
 
 - name: CLICKHOUSE | Grant roles
-  include_tasks: config/grants-roles.yml
+  ansible.builtin.include_tasks: config/grants-roles.yml
   with_items: "{{ clickhouse_custom_grant_roles }}"
   when: clickhouse_custom_grant_roles is defined
   tags:

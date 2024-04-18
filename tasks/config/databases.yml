@@ -1,7 +1,7 @@
 ---
 
 - name: CLICKHOUSE | Create default database (SQL-driven)
-  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q 'CREATE DATABASE IF NOT EXISTS `{{ clickhouse_default_database }}`'" # noqa 204
+  ansible.builtin.command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q 'CREATE DATABASE IF NOT EXISTS `{{ clickhouse_default_database }}`'" # noqa 204
   changed_when: False
   when: clickhouse_default_database is defined
   no_log: True
@@ -11,7 +11,7 @@
     - SQL_driven
 
 - name: CLICKHOUSE | List databases (SQL-driven)
-  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"SELECT name FROM system.databases WHERE LOWER(name) NOT IN ('_temporary_and_external_tables', 'information_schema', 'default', 'system');\""
+  ansible.builtin.command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"SELECT name FROM system.databases WHERE LOWER(name) NOT IN ('_temporary_and_external_tables', 'information_schema', 'default', 'system');\""
   changed_when: False
   register: clickhouse_existing_sql_databases
   no_log: True
@@ -21,7 +21,7 @@
     - SQL_driven
 
 - name: CLICKHOUSE | Drop databases (SQL-driven)
-  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"DROP DATABASE IF EXISTS {{ item }} ;\""
+  ansible.builtin.command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"DROP DATABASE IF EXISTS {{ item }} ;\""
   with_items: "{{ clickhouse_existing_sql_databases.stdout_lines }}"
   when:
     - clickhouse_existing_sql_databases is defined
@@ -33,7 +33,7 @@
     - SQL_driven
 
 - name: CLICKHOUSE | Create custom databases (SQL-driven)
-  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q {{ lookup('template', 'DDL/DATABASE.j2') | quote }}"
+  ansible.builtin.command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q {{ lookup('template', 'DDL/DATABASE.j2') | quote }}"
   with_items: "{{ clickhouse_custom_databases }}"
   when:
     - clickhouse_custom_databases is defined
