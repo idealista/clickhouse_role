@@ -17,6 +17,8 @@
     - clickhouse_existing_sql_users is defined
     - item not in clickhouse_custom_users | map(attribute='name') | list
   no_log: True
+  register: drop_users
+  changed_when: drop_users.rc != 0
   tags:
     - clickhouse_users
     - delete
@@ -29,6 +31,8 @@
     - clickhouse_custom_users is defined
     - item.name not in clickhouse_existing_sql_users.stdout_lines
   no_log: True
+  register: add_users
+  changed_when: add_users.rc != 0
   tags:
     - clickhouse_users
     - create

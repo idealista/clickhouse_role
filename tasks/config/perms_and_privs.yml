@@ -17,7 +17,8 @@
   ansible.builtin.command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"
     REVOKE ALL ON *.* FROM ALL EXCEPT {{ ((clickhouse_default_users | default([]) + clickhouse_admin_users | default([]) + clickhouse_custom_users_xml | default([])) | map(attribute='name') | list + (ldap_user_list.stdout_lines | default([]))) | join(', ') }};
     \""
-  changed_when: False
+  register: grants_clean
+  changed_when: grants_clean.rc != 0
   when: clickhouse_custom_grants_previous_cleanup
   no_log: True
   tags:

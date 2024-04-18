@@ -17,6 +17,8 @@
     - clickhouse_existing_sql_settings_profiles is defined
     - item not in clickhouse_custom_settings_profiles | map(attribute='name') | list
   no_log: True
+  register: drop_profiles
+  changed_when: drop_profiles.rc != 0
   tags:
     - clickhouse_settings_profiles
     - delete
@@ -29,6 +31,8 @@
     - clickhouse_custom_settings_profiles is defined
     - item.name not in clickhouse_existing_sql_settings_profiles.stdout_lines
   no_log: True
+  register: add_profiles
+  changed_when: add_profiles.rc != 0
   tags:
     - clickhouse_settings_profiles
     - create

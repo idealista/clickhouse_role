@@ -3,7 +3,8 @@
 - name: CLICKHOUSE | Assigning roles (SQL-driven)
   ansible.builtin.command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} --multiquery -q {{ lookup('template', 'DDL/GRANT_ROLE.j2') | quote }}"
   when: clickhouse_custom_grant_roles is defined
-  changed_when: False
+  register: assigning_roles
+  changed_when: assigning_roles.rc != 0
   no_log: True
   tags:
     - clickhouse_grants

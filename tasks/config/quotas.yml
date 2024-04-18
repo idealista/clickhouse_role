@@ -17,6 +17,8 @@
     - clickhouse_existing_sql_quotas is defined
     - item not in clickhouse_custom_quotas | map(attribute='name') | list
   no_log: True
+  register: drop_quotas
+  changed_when: drop_quotas.rc != 0
   tags:
     - clickhouse_quotas
     - delete
@@ -29,6 +31,8 @@
     - clickhouse_custom_quotas is defined
     - item.name not in clickhouse_existing_sql_quotas.stdout_lines
   no_log: True
+  register: add_quotas
+  changed_when: add_quotas.rc != 0
   tags:
     - clickhouse_quotas
     - create

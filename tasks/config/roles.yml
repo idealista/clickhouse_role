@@ -17,6 +17,8 @@
     - clickhouse_existing_sql_roles is defined
     - item not in clickhouse_custom_roles | map(attribute='name') | list
   no_log: True
+  register: drop_roles
+  changed_when: drop_roles.rc != 0
   tags:
     - clickhouse_roles
     - delete
@@ -29,6 +31,8 @@
     - clickhouse_custom_roles is defined
     - item.name not in clickhouse_existing_sql_roles.stdout_lines
   no_log: True
+  register: add_roles
+  changed_when: add_roles.rc != 0
   tags:
     - clickhouse_roles
     - create

@@ -27,6 +27,8 @@
     - clickhouse_existing_sql_databases is defined
     - item not in clickhouse_custom_databases | map(attribute='name') | list
   no_log: True
+  register: drop_databases
+  changed_when: drop_databases.rc != 0
   tags:
     - clickhouse_databases
     - delete
@@ -39,6 +41,8 @@
     - clickhouse_custom_databases is defined
     - item.name not in clickhouse_existing_sql_databases.stdout_lines
   no_log: True
+  register: add_databases
+  changed_when: add_databases.rc != 0
   tags:
     - clickhouse_databases
     - create
