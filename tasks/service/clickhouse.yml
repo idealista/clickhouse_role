@@ -1,7 +1,7 @@
 ---
 
 - name: CLICKHOUSE | Copy systemd unit configuration file
-  template:
+  ansible.builtin.template:
     src: "{{ clickhouse_service_template_path }}"
     dest: "/etc/systemd/system/{{ clickhouse_service }}.service"
     mode: 0644
@@ -10,14 +10,14 @@
   notify: Reload-clickhouse
 
 - name: CLICKHOUSE | Configuring service
-  systemd:
+  ansible.builtin.systemd:
     name: "{{ clickhouse_service }}"
     state: "{{ clickhouse_service_state }}"
     enabled: "{{ clickhouse_service_enabled }}"
     daemon_reload: yes
 
 - name: CLICKHOUSE | Wait for service listening
-  wait_for:
+  ansible.builtin.wait_for:
     host: localhost
     port: "{{ clickhouse_http_port }}"
     state: "{{ clickhouse_service_state }}"

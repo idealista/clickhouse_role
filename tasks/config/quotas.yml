@@ -1,7 +1,7 @@
 ---
 
 - name: CLICKHOUSE | List quotas (SQL-driven)
-  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"SELECT name FROM system.quotas WHERE storage == 'local directory';\""
+  ansible.builtin.command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"SELECT name FROM system.quotas WHERE storage == 'local directory';\""
   changed_when: False
   register: clickhouse_existing_sql_quotas
   no_log: True
@@ -11,24 +11,28 @@
     - SQL_driven
 
 - name: CLICKHOUSE | Drop quotas (SQL-driven)
-  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"DROP QUOTA IF EXISTS {{ item }} ;\""
+  ansible.builtin.command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q \"DROP QUOTA IF EXISTS {{ item }} ;\""
   with_items: "{{ clickhouse_existing_sql_quotas.stdout_lines }}"
   when:
     - clickhouse_existing_sql_quotas is defined
     - item not in clickhouse_custom_quotas | map(attribute='name') | list
   no_log: True
+  register: drop_quotas
+  changed_when: drop_quotas.rc != 0
   tags:
     - clickhouse_quotas
     - delete
     - SQL_driven
 
 - name: CLICKHOUSE | Add quotas (SQL-driven)
-  command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q {{ lookup('template', 'DDL/QUOTA.j2') | quote }}"
+  ansible.builtin.command: "clickhouse-client -u {{ clickhouse_admin_user }} --password {{ clickhouse_admin_password }} -q {{ lookup('template', 'DDL/QUOTA.j2') | quote }}"
   with_items: "{{ clickhouse_custom_quotas }}"
   when:
     - clickhouse_custom_quotas is defined
     - item.name not in clickhouse_existing_sql_quotas.stdout_lines
   no_log: True
+  register: add_quotas
+  changed_when: add_quotas.rc != 0
   tags:
     - clickhouse_quotas
     - create

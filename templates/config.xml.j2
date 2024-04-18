@@ -807,13 +807,13 @@
         <server_id>{{ keeper_server.id }}</server_id>
         <log_storage_path>{{ clickhouse_keeper.log_storage_path }}</log_storage_path>
         <snapshot_storage_path>{{ clickhouse_keeper.snapshot_storage_path }}</snapshot_storage_path>
-    
+
         <coordination_settings>
             <operation_timeout_ms>{{ clickhouse_keeper.coordination_settings.operation_timeout_ms }}</operation_timeout_ms>
             <session_timeout_ms>{{ clickhouse_keeper.coordination_settings.session_timeout_ms }}</session_timeout_ms>
             <raft_logs_level>{{ clickhouse_keeper.coordination_settings.raft_logs_level }}</raft_logs_level>
         </coordination_settings>
-    
+
         <raft_configuration>
 {% for keeper_server in clickhouse_keeper.keeper_servers %}
             <server>
@@ -1101,7 +1101,9 @@
 {% if clickhouse_tables_log.text_log.ttl is defined %}
     <ttl>{{ clickhouse_tables_log.text_log.ttl }}</ttl>
 {% endif %}
-    <level></level>
+{% if clickhouse_tables_log.text_log.level is defined %}
+    <level>clickhouse_tables_log.text_log.level</level>
+{% endif %}
   </text_log>
 {% endif %}
 
