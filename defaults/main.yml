@@ -2,7 +2,7 @@
 
 ## General
 # Version
-clickhouse_version: 23.8.2.7
+clickhouse_version: 23.8.9.54
 clickhouse_release_type: lts  # Values should be: stable, lts or testing
 clickhouse_install_db: True
 clickhouse_install_bridge: False
