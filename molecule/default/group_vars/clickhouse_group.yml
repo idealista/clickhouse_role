@@ -26,6 +26,9 @@ clickhouse_admin_users:
     profile: "default"
     quota: "default"
     access_management: 1
+    named_collection_control: 1
+    show_named_collections: 1
+    show_named_collections_secrets: 1
 
 clickhouse_custom_users_xml:
   - user:
