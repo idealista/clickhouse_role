@@ -59,6 +59,12 @@
 {% if user.named_collection_control is defined%}
       <named_collection_control>{{ user.named_collection_control }}</named_collection_control>
 {% endif %}
+{% if user.show_named_collections is defined%}
+      <show_named_collections>{{ user.show_named_collections }}</show_named_collections>
+{% endif %}
+{% if user.show_named_collections_secrets is defined%}
+      <show_named_collections_secrets>{{ user.show_named_collections_secrets }}</show_named_collections_secrets>
+{% endif %}
     </{{ user.name }}>
 {% endfor %}
 {% endif %}
@@ -93,6 +99,12 @@
 {% if user.named_collection_control is defined%}
       <named_collection_control>{{ user.named_collection_control }}</named_collection_control>
 {% endif %}
+{% if user.show_named_collections is defined%}
+      <show_named_collections>{{ user.show_named_collections }}</show_named_collections>
+{% endif %}
+{% if user.show_named_collections_secrets is defined%}
+      <show_named_collections_secrets>{{ user.show_named_collections_secrets }}</show_named_collections_secrets>
+{% endif %}
     </{{ user.name }}>
 {% endfor %}
 {% endif %}
@@ -126,6 +138,12 @@
 {% endif %}
 {% if user.named_collection_control is defined%}
       <named_collection_control>{{ user.named_collection_control }}</named_collection_control>
+{% endif %}
+{% if user.show_named_collections is defined%}
+      <show_named_collections>{{ user.show_named_collections }}</show_named_collections>
+{% endif %}
+{% if user.show_named_collections_secrets is defined%}
+      <show_named_collections_secrets>{{ user.show_named_collections_secrets }}</show_named_collections_secrets>
 {% endif %}
     </{{ user.name }}>
 {% endfor %}

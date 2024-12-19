@@ -2,7 +2,7 @@
 
 ## General
 # Version
-clickhouse_version: 23.8.9.54
+clickhouse_version: 23.8.2.7
 clickhouse_release_type: lts  # Values should be: stable, lts or testing
 clickhouse_install_db: True
 clickhouse_install_bridge: False
@@ -708,6 +708,8 @@ clickhouse_default_users:
 #     quota: "default"
 #     access_management: 1
 #     named_collection_control: 1
+#     show_named_collections: 1
+#     show_named_collections_secrets: 1
 
 # Users examples
 # clickhouse_admin_user: admin
@@ -723,7 +725,7 @@ clickhouse_default_users:
 #     profile: "default"
 #     quota: "default"
 #     access_management: 1
-#     named_collection_control: 1
+
 #   - user:
 #     name: "user1"
 #     password: "user1"
