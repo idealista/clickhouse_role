@@ -707,6 +707,9 @@ clickhouse_default_users:
 #     profile: "default"
 #     quota: "default"
 #     access_management: 1
+#     named_collection_control: 1
+#     show_named_collections: 1
+#     show_named_collections_secrets: 1
 
 # Users examples
 # clickhouse_admin_user: admin
@@ -722,6 +725,7 @@ clickhouse_default_users:
 #     profile: "default"
 #     quota: "default"
 #     access_management: 1
+
 #   - user:
 #     name: "user1"
 #     password: "user1"
